@@ -5,41 +5,69 @@
     <meta name="viewport" content="width=1024">
     <title>The Million Dollar Homepage 2.0</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
 <body>
     <div id="wrapper">
         <div id="top-bar">
-            <div class="payment-methods">
-                <span class="pay-item" onclick="copyText('912221034')">Binance ID: <b>912221034</b></span>
-                <span class="pay-item" onclick="copyText('TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6')">USDT (TRC20): <b>Click to Copy Address</b></span>
+            <div class="address-container">
+                <span class="addr" onclick="copyText('912221034')">Binance ID: <b>912221034</b></span>
+                <span class="addr" onclick="copyText('TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6')">USDT (TRC20): <b>TTapBkTq...FmR8Ws6</b></span>
+                <span class="addr" onclick="copyText('0x443792A4884e8e855f954ccEF910778Aff1eb78E')">MetaMask: <b>0x443792...f1eb78E</b></span>
             </div>
-            <div class="twitter-follow">
-                <a href="https://x.com/ARCHIVEKAWSAR" target="_blank">Follow /ARCHIVEKAWSAR</a>
+            <div class="twitter-section">
+                <a href="https://x.com/ARCHIVEKAWSAR" target="_blank" class="tw-btn">
+                    <i class="fab fa-twitter"></i> Follow /ARCHIVEKAWSAR
+                </a>
             </div>
         </div>
 
         <div id="header">
-            <h1>The Million Dollar Homepage 2.0 <span class="price-tag">• $5 per block •</span></h1>
-            <div class="nav-links">
+            <h1>The Million Dollar Homepage 2.0</h1>
+            <div class="stats-row">
+                Total Plots: 10,000 | Claimed: <span id="sold-count">0</span> | Vacant: <span id="rem-count">10,000</span>
+            </div>
+            <div class="nav">
                 <a href="index.html">Homepage</a> | 
                 <a href="order.html">Buy block</a> | 
-                <a href="support.html">Contact me</a>
+                <a href="https://wa.me/8801576940717" target="_blank">Contact me</a>
             </div>
         </div>
 
-        <div id="content-area">
-            <div class="side-border"></div>
-            <div id="canvas-container">
+        <div id="content-main">
+            <div id="canvas-wrapper">
                 <canvas id="mainCanvas" width="1000" height="1000"></canvas>
                 <div id="tooltip"></div>
             </div>
-            <div class="side-border"></div>
+        </div>
+
+        <div class="info-section">
+            <div class="notice-box">
+                <h3>• One-Time Acquisition</h3>
+                <p>This is a lifetime digital heritage. No annual or renewal fees are required once acquired. Everything is preserved forever.</p>
+                <h3>• Data Modification</h3>
+                <p>$7 administrative fee is applicable for any updates. Each update increases the sovereign value of the plot.</p>
+                <h3>• Service Window</h3>
+                <p>Our elite concierge desk is active 24h: Thursday, Friday, and Saturday for priority processing.</p>
+            </div>
+            <div class="steps-box">
+                <h3>ACQUISITION STEPS</h3>
+                <p>01. Complete payment via Binance/USDT/MetaMask.</p>
+                <p>02. Prepare 4K Media, Name, and Target URL.</p>
+                <p>03. Submit transaction details to WhatsApp Support.</p>
+                <p>04. Synchronization completed within 2-4 hours.</p>
+            </div>
+        </div>
+
+        <div id="download-area">
+            <button onclick="downloadHD()" class="dl-btn"><i class="fas fa-camera"></i> DOWNLOAD 4K CANVAS IMAGE</button>
         </div>
 
         <div id="footer">
-            <p>© 2026 ARCHIVEKAWSAR. All rights reserved. I am not responsible for the content of external sites. Images featured on homepage are © of their respective owners.</p>
+            <p>© 2026 ARCHIVEKAWSAR. All rights reserved. I am not responsible for the content of external sites.</p>
         </div>
     </div>
     <script src="script.js"></script>
