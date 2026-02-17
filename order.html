@@ -2,138 +2,46 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>RESERVE | THE ONE HOMEPAGE</title>
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <title>Buy Pixels | $5 per Plot</title>
     <style>
-        body { 
-            background: #fff; 
-            color: #000; 
-            font-family: Arial, sans-serif; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            height: 100vh; 
-            margin: 0; 
-        }
-        .box { 
-            background: #f9f9f9; 
-            padding: 35px; 
-            border-radius: 15px; 
-            border: 2px solid #ff0000; 
-            text-align: center; 
-            width: 400px; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-        }
-        .payment-info { 
-            background: #fff; 
-            border: 1px dashed #ff0000; 
-            padding: 15px; 
-            border-radius: 8px; 
-            font-size: 13px; 
-            margin-bottom: 25px; 
-            text-align: left; 
-            line-height: 1.6;
-        }
-        input { 
-            width: 100%; 
-            padding: 14px; 
-            margin: 10px 0; 
-            border: 1px solid #ccc; 
-            border-radius: 8px; 
-            font-size: 15px; 
-            box-sizing: border-box;
-            text-align: center;
-        }
-        .btn-order { 
-            width: 100%; 
-            padding: 16px; 
-            background: #ff0000; 
-            color: #fff; 
-            border: none; 
-            border-radius: 8px; 
-            font-weight: bold; 
-            cursor: pointer; 
-            font-size: 16px;
-            margin-top: 10px;
-        }
-        .btn-order:hover { background: #cc0000; }
-        
-        #celeb { display: none; flex-direction: column; align-items: center; }
-        .success-icon { font-size: 50px; color: #2ebd85; margin-bottom: 10px; }
+        body { font-family: Arial, sans-serif; text-align: center; padding: 50px; background:#fff; }
+        .buy-box { border: 1px solid #000; padding: 30px; display: inline-block; width: 380px; background: #fafafa; }
+        h2 { color: #ff0000; margin-top: 0; }
+        input { width: 90%; padding: 12px; margin: 10px 0; border: 1px solid #ccc; font-size: 15px; }
+        button { background: #ff0000; color: #fff; padding: 15px; width: 100%; border: none; font-weight: bold; cursor: pointer; font-size: 16px; margin-top: 10px; }
+        .payment { background:#eee; padding:15px; font-size:12px; text-align:left; margin-bottom:20px; border:1px dashed #000; }
     </style>
 </head>
 <body>
-
-    <div class="box" id="f-box">
-        <h2 style="color:#ff0000; margin-top:0;">RESERVE PLOTS</h2>
-        <p style="font-size: 14px; color: #666;">সর্বনিম্ন অর্ডার: ১০টি প্লট ($৫,০০০)</p>
-        
-        <div class="payment-info">
-            <strong>Payment Method:</strong><br>
-            • BINANCE UID: 912221034<br>
-            • USDT (TRC20): TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6<br>
-            • METAMASK: 0x443792A4884e8e855f954ccEF910778Aff1eb78E
+    <div class="buy-box">
+        <h2>BUY PIXELS</h2>
+        <p>Price: <b>$5 per 10x10 block</b></p>
+        <div class="payment">
+            <b>Payment Details:</b><br>
+            - Binance ID: 912221034<br>
+            - USDT (TRC20): TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6
         </div>
-
-        <input type="text" id="bn" placeholder="Your Brand/Company Name">
-        <input type="number" id="pn" placeholder="Plot Number (1-10000)">
-        <button class="btn-order" onclick="submitOrder()">PLACE ORDER NOW</button>
-        <p style="font-size: 11px; color: #888; margin-top: 15px;">পেমেন্ট শেষে ট্রানজেকশন আইডি সহ হোয়াটসঅ্যাপে যোগাযোগ করুন।</p>
-    </div>
-
-    <div id="celeb">
-        <div class="success-icon">✔</div>
-        <h1 style="color:#ff0000;">ORDER SUBMITTED!</h1>
-        <p id="ub" style="font-weight:bold; font-size:20px;"></p>
-        <p>Send Screenshot & Logo to WhatsApp</p>
-        <a href="https://wa.me/8801576940717" style="background:#25D366; color:#fff; padding:15px 30px; border-radius:30px; text-decoration:none; font-weight:bold; margin-top:20px; display:inline-block;">GO TO WHATSAPP</a>
+        <input type="text" id="brand" placeholder="Your Brand Name">
+        <input type="number" id="plotID" placeholder="Desired Plot ID (1-10000)">
+        <button onclick="submitOrder()">Submit & Pay $5</button>
+        <p style="font-size: 11px; color: #666; margin-top: 15px;">After submission, you will be redirected to WhatsApp to send payment proof.</p>
     </div>
 
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
-
     <script>
-        // আপনার Firebase কনফিগারেশন
-        const firebaseConfig = {
-            apiKey: "AIzaSyDJbVCF0AkLkCiCwFBc1Ki5PrKxFeYt8_E",
-            authDomain: "milliondollarhomepage2-71ba3.firebaseapp.com",
-            databaseURL: "https://milliondollarhomepage2-71ba3-default-rtdb.firebaseio.com",
-            projectId: "milliondollarhomepage2-71ba3",
-            storageBucket: "milliondollarhomepage2-71ba3.firebasestorage.app",
-            messagingSenderId: "895107568682",
-            appId: "1:895107568682:web:d48003f71701005f3d5f53"
-        };
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.database();
-
+        firebase.initializeApp({databaseURL: "https://milliondollarhomepage2-71ba3-default-rtdb.firebaseio.com"});
         function submitOrder() {
-            const name = document.getElementById('bn').value;
-            const plot = document.getElementById('pn').value;
-
-            if(!name || !plot || plot < 1 || plot > 10000) {
-                return alert("সঠিক তথ্য দিন (প্লট নম্বর ১-১০,০০০ এর মধ্যে হতে হবে)!");
-            }
-
-            // ডাটাবেসে অর্ডার সেভ করা
-            db.ref('orders/' + plot).set({
+            const name = document.getElementById('brand').value;
+            const plot = document.getElementById('plotID').value;
+            if(!name || !plot) return alert("Please fill all fields!");
+            
+            firebase.database().ref('orders/' + plot).set({
                 name: name,
                 plotID: plot,
-                status: "Pending",
-                timestamp: Date.now()
+                status: "Pending"
             }).then(() => {
-                // অ্যানিমেশন এবং সাকসেস মেসেজ
-                document.getElementById('f-box').style.display = 'none';
-                document.getElementById('celeb').style.display = 'flex';
-                document.getElementById('ub').innerText = "Plot #" + plot + " Reserved for " + name;
-                
-                // কনফেটি অ্যানিমেশন
-                confetti({
-                    particleCount: 150,
-                    spread: 70,
-                    origin: { y: 0.6 }
-                });
-            }).catch((error) => {
-                alert("Error: " + error.message);
+                window.location.href = "https://wa.me/8801576940717?text=Hello, I just ordered Plot #"+plot+". Here is my payment proof.";
             });
         }
     </script>
