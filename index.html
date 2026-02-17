@@ -9,43 +9,37 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
 </head>
 <body>
-    <div id="main-layout">
-        <div id="header">
-            <div class="top-header">
-                <span class="main-title">The Million Dollar Homepage 2.0</span>
-                <span class="price-tag">• $5 per block •</span>
-                <img src="https://milliondollarhomepage.com/images/soldout.gif" class="sold-out">
+    <div id="wrapper">
+        <div id="top-bar">
+            <div class="payment-methods">
+                <span class="pay-item" onclick="copyText('912221034')">Binance ID: <b>912221034</b> (Click to Copy)</span>
+                <span class="pay-item" onclick="copyText('TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6')">USDT (TRC20): <b>Click to Copy Address</b></span>
             </div>
-            
-            <div class="main-nav">
-                <a href="index.html">Homepage</a> | <a href="order.html">Buy Pixels</a> | <a href="#">FAQ</a> | <a href="#">Blog</a> | <a href="#">Pixel List</a> | <a href="#">Press</a> | <a href="#">Testimonials</a> | <a href="support.html">Contact me</a>
+            <div class="twitter-follow">
+                <a href="https://x.com/ARCHIVEKAWSAR" target="_blank">Follow /ARCHIVEKAWSAR</a>
             </div>
+        </div>
 
-            <div class="sub-nav">
-                <div class="twitter-box">
-                    <a href="https://x.com/ARCHIVEKAWSAR" target="_blank">
-                        <img src="https://abs.twimg.com/favicons/twitter.2.ico" width="16"> Follow /ARCHIVEKAWSAR
-                    </a>
-                </div>
-                <div class="links">
-                    <a href="index.html">Homepage</a> | <a href="#">FAQ</a> | <a href="#">Blog</a> | <a href="#">Press</a> | <a href="support.html">Contact me</a>
-                </div>
+        <div id="header">
+            <h1>The Million Dollar Homepage 2.0 <span class="price-tag">• $5 per block •</span></h1>
+            <div class="nav-links">
+                <a href="index.html">Homepage</a> | 
+                <a href="order.html">Buy block</a> | 
+                <a href="support.html">Contact me</a>
             </div>
         </div>
 
         <div id="content-area">
-            <div class="side-banner left"></div>
-            
-            <div id="canvas-wrapper">
+            <div class="side-border"></div>
+            <div id="canvas-container">
                 <canvas id="mainCanvas" width="1000" height="1000"></canvas>
-                <div id="legacy-tooltip"></div>
+                <div id="tooltip"></div>
             </div>
-            
-            <div class="side-banner right"></div>
+            <div class="side-border"></div>
         </div>
 
         <div id="footer">
-            <p>Name ARCHIVEKAWSAR | © 2026 Your Name. All rights reserved. I am not responsible for the content of external sites. Images featured on homepage are © of their respective owners.</p>
+            <p>© 2026 ARCHIVEKAWSAR. All rights reserved. I am not responsible for the content of external sites. Images featured on homepage are © of their respective owners.</p>
         </div>
     </div>
     <script src="script.js"></script>
