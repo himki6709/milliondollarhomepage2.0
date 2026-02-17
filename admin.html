@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CEO ADMIN | THE ONE HOMEPAGE</title>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+    <style>
+        body { font-family: sans-serif; background: #f4f4f4; color: #333; padding: 20px; display: none; }
+        .admin-header { background: #ff0000; color: #fff; padding: 15px; text-align: center; border-radius: 5px; margin-bottom: 20px; }
+        .card { background: #fff; padding: 20px; margin-bottom: 20px; border-radius: 10px; border-left: 8px solid #ff0000; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        h2 { margin-top: 0; font-size: 18px; color: #ff0000; }
+        input { padding: 12px; width: 280px; margin: 5px 10px 5px 0; border: 1px solid #ccc; border-radius: 4px; }
+        button { padding: 12px 25px; cursor: pointer; border-radius: 5px; border: none; font-weight: bold; transition: 0.3s; }
+        .btn-approve { background: #2ebd85; color: white; }
+        .btn-reject { background: #e74c3c; color: white; margin-left: 10px; }
+        button:hover { opacity: 0.8; }
+        .no-orders { text-align: center; padding: 50px; color: #888; }
+    </style>
+</head>
+<body>
+
+    <script>
+        // আপনার বন্ধুর দেওয়া পাসওয়ার্ড সিস্টেম
+        const accessPass = prompt("Admin Access Password:");
+        if(accessPass === "zoomlink34@gmail.com") { 
+            document.body.style.display = "block"; 
+        } else { 
+            alert("ভুল পাসওয়ার্ড!");
+            window.location.href = "index.html"; 
+        }
+    </script>
+
+    <div class="admin-header">
+        <h1>THE ONE HOMEPAGE - ADMIN PANEL</h1>
+    </div>
+
+    <h2 style="color:#000; border-bottom: 2px solid #ff0000; padding-bottom: 10px;">PENDING ORDERS</h2>
+    
+    <div id="order-list">
+        <div class="no-orders">Loading pending orders...</div>
+    </div>
+
+    <script>
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDJbVCF0AkLkCiCwFBc1Ki5PrKxFeYt8_E",
+            authDomain: "milliondollarhomepage2-71ba3.firebaseapp.com",
+            databaseURL: "https://milliondollarhomepage2-71ba3-default-rtdb.firebaseio.com",
+            projectId: "milliondollarhomepage2-71ba3",
+            storageBucket: "milliondollarhomepage2-71ba3.firebasestorage.app",
+            messagingSenderId: "895107568682",
+            appId: "1:895107568682:web:d48003f71701005f3d5f53"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        // পেন্ডিং অর্ডার লিস্ট লোড করা
+        function loadOrders() {
+            db.ref('orders').on('value', (snapshot) => {
+                const list = document.getElementById('order-list');
+                const data = snapshot.val();
+                list.innerHTML = "";
+
+                if (!data) {
+                    list.innerHTML = "<div class='no-orders'>কোন পেন্ডিং অর্ডার নেই।</div>";
+                    return;
+                }
+
+                Object.keys(data).forEach(id => {
+                    list.innerHTML += `
+                    <div class="card">
+                        <h2>BLOCK ORDER #${id}</h2>
+                        <p><strong>Customer Name:</strong> ${data[id].name}</p>
+                        <input type="text" id="img_${id}" placeholder="Logo Image URL (10x10 px)">
+                        <input type="text" id="web_${id}" placeholder="Redirect Website URL (https://...)">
+                        <br><br>
+                        <button class="btn-approve" onclick="approve('${id}', '${data[id].name}')">APPROVE & GO LIVE</button>
+                        <button class="btn-reject" onclick="reject('${id}')">REJECT ORDER</button>
+                    </div>`;
+                });
+            });
+        }
+
+        // অর্ডার এপ্রুভ করা (মেইন গ্রিডে পাবলিশ হবে)
+        function approve(id, name) {
+            const img = document.getElementById('img_'+id).value;
+            const web = document.getElementById('web_'+id).value;
+            
+            if(!img) return alert("অনুগ্রহ করে লোগো ইউআরএল দিন!");
+
+            db.ref('pixels/'+id).set({
+                name: name,
+                imageUrl: img,
+                link: web || "#",
+                plotID: id
+            }).then(() => {
+                // ইউজারকে জানানোর জন্য নোটিফিকেশন (ঐচ্ছিক)
+                db.ref('notifications/'+id).set({status: "Approved", message: "Your brand is now live on the homepage!"});
+                // পেন্ডিং লিস্ট থেকে রিমুভ করা
+                db.ref('orders/'+id).remove();
+                alert("Block #" + id + " এখন লাইভ!");
+            });
+        }
+
+        // অর্ডার রিজেক্ট/ডিলিট করা
+        function reject(id) {
+            if(confirm("আপনি কি নিশ্চিত যে এই অর্ডারটি ডিলিট করতে চান?")) {
+                db.ref('orders/'+id).remove();
+            }
+        }
+
+        // পেজ লোড হলে ফাংশন কল করা
+        window.onload = loadOrders;
+    </script>
+</body>
+</html>
