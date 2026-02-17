@@ -1,26 +1,27 @@
-:root {
-    --binance-yellow: #FCD535;
-    --binance-black: #0B0E11;
-}
+:root { --b-yellow: #FCD535; --b-black: #0B0E11; --b-grey: #1E2329; }
+body { background: #888; margin: 0; font-family: 'Segoe UI', Tahoma, sans-serif; text-align: center; }
+#wrapper { width: 1200px; margin: 0 auto; background: #fff; box-shadow: 0 0 50px rgba(0,0,0,0.5); }
 
-body { background: #E3E3E3; margin: 0; font-family: Arial, sans-serif; text-align: center; }
-#wrapper { width: 1250px; margin: 0 auto; background: #fff; border: 1px solid #999; }
+#top-bar { background: var(--b-black); color: #fff; padding: 12px; display: flex; justify-content: space-between; align-items: center; }
+.address-container { display: flex; gap: 15px; }
+.addr { border: 1px solid var(--b-yellow); padding: 5px 10px; font-size: 11px; color: var(--b-yellow); cursor: pointer; border-radius: 3px; }
+.tw-btn { background: #1DA1F2; color: #fff; padding: 6px 15px; text-decoration: none; border-radius: 20px; font-weight: bold; font-size: 13px; }
 
-#top-bar { background: var(--binance-black); color: #fff; padding: 10px 20px; display: flex; justify-content: space-between; font-size: 13px; }
-.pay-item { color: var(--binance-yellow); border: 1px dashed var(--binance-yellow); padding: 5px 10px; cursor: pointer; border-radius: 4px; margin-right: 15px; }
-.pay-item:hover { background: var(--binance-yellow); color: #000; }
-.twitter-follow a { color: #fff; text-decoration: none; font-weight: bold; }
+#header { padding: 20px; background: #fff; border-bottom: 2px solid var(--b-black); }
+.stats-row { font-weight: bold; color: #555; margin: 10px 0; font-size: 14px; }
+.nav { font-weight: bold; font-size: 18px; }
+.nav a { color: #0000FF; text-decoration: none; margin: 0 10px; }
 
-#header { padding: 20px 0; border-bottom: 2px solid var(--binance-black); }
-#header h1 { font-size: 30px; margin: 0; }
-.price-tag { color: #ff0000; font-weight: bold; }
-.nav-links { margin-top: 15px; font-weight: bold; font-size: 18px; }
-.nav-links a { color: #0000FF; text-decoration: underline; margin: 0 10px; }
+#content-main { background: #888; padding: 20px; display: flex; justify-content: center; }
+#canvas-wrapper { border: 5px solid #000; background: #fff; cursor: crosshair; }
 
-#content-area { display: flex; justify-content: center; background: #999; padding: 10px 0; }
-.side-border { width: 120px; height: 1000px; background: url('https://milliondollarhomepage.com/images/pixel-list-bg.gif') repeat-y; }
-#canvas-container { border: 2px solid #000; background: #fff; position: relative; cursor: pointer; }
+.info-section { display: flex; gap: 20px; padding: 30px; background: #f9f9f9; text-align: left; border-top: 1px solid #ddd; }
+.notice-box, .steps-box { flex: 1; border-left: 4px solid var(--b-yellow); padding-left: 20px; }
+.info-section h3 { font-size: 16px; margin: 15px 0 5px; color: #000; }
+.info-section p { font-size: 13px; color: #444; margin: 0; line-height: 1.6; }
 
-#tooltip { position: absolute; background: #FFFFE1; border: 1px solid #000; padding: 5px; font-size: 11px; display: none; z-index: 1000; pointer-events: none; }
+#download-area { padding: 20px; background: #f0f0f0; }
+.dl-btn { background: var(--b-black); color: var(--b-yellow); border: 2px solid var(--b-yellow); padding: 15px 30px; cursor: pointer; font-weight: bold; font-size: 16px; border-radius: 5px; }
 
-#footer { padding: 30px; font-size: 12px; color: #666; background: #fff; border-top: 1px solid #ddd; }
+#tooltip { position: absolute; background: #ffffe1; border: 1px solid #000; padding: 5px; font-size: 11px; display: none; z-index: 999; }
+#footer { padding: 20px; font-size: 11px; background: #fff; color: #777; }
