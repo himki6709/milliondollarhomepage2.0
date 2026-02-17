@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Page Not Found | Redirecting...</title>
+    <style>
+        body { 
+            background: #fff; 
+            font-family: Arial, sans-serif; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh; 
+            margin: 0; 
+            text-align: center;
+        }
+        .container { border: 2px solid #ff0000; padding: 40px; }
+        h1 { color: #ff0000; font-size: 50px; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>404</h1>
+        <p>OPPS! PAGE NOT FOUND.</p>
+        <p>Redirecting to <b>The One Homepage</b>...</p>
+    </div>
+
+    <script>
+        // ৩ সেকেন্ড পর অটোমেটিক হোমপেজে পাঠিয়ে দেবে
+        setTimeout(function(){
+            window.location.href = "index.html";
+        }, 3000);
+    </script>
+</body>
+</html>
