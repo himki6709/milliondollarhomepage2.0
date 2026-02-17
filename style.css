@@ -1,70 +1,23 @@
-body {
-    background: #fff;
-    font-family: Arial, Helvetica, sans-serif;
-    margin: 0;
-    padding: 15px;
-    text-align: center;
-}
+body { background: #E3E3E3; margin: 0; font-family: Arial, sans-serif; text-align: center; }
+#main-layout { width: 1250px; margin: 0 auto; background: #fff; border: 1px solid #999; }
 
-#wrapper {
-    width: 1005px;
-    margin: 0 auto;
-}
+#header { background: #D6D6D6; padding: 10px 0; border-bottom: 2px solid #000; }
+.main-title { font-size: 35px; font-weight: bold; color: #CC9900; text-shadow: 1px 1px #000; }
+.price-tag { font-size: 24px; color: #fff; margin-left: 20px; font-weight: bold; }
+.sold-out { vertical-align: middle; margin-left: 20px; }
 
-#header h1 {
-    font-size: 45px;
-    color: #ff0000;
-    margin: 10px 0 5px 0;
-    letter-spacing: -1.5px;
-    text-transform: uppercase;
-}
+.main-nav { background: #FFCC33; padding: 10px; border-top: 1px solid #000; border-bottom: 1px solid #000; font-weight: bold; font-size: 16px; }
+.main-nav a { text-decoration: none; color: #000; margin: 0 8px; }
 
-.stats-box {
-    border: 1px solid #000;
-    padding: 6px;
-    font-weight: bold;
-    background: #f1f1f1;
-    margin-bottom: 12px;
-}
+.sub-nav { display: flex; justify-content: space-between; padding: 5px 20px; background: #EEE; font-size: 13px; border-bottom: 1px solid #999; }
+.twitter-box a { color: #000; text-decoration: none; font-weight: bold; display: flex; align-items: center; gap: 5px; }
 
-.navbar {
-    margin-bottom: 15px;
-    font-size: 13px;
-}
+#content-area { display: flex; justify-content: center; background: #999; padding: 10px 0; }
+.side-banner { width: 120px; height: 1000px; background-image: url('https://milliondollarhomepage.com/images/pixel-list-bg.gif'); background-repeat: repeat-y; }
 
-.navbar a {
-    color: #0000FF;
-    text-decoration: none;
-    font-weight: bold;
-}
+#canvas-wrapper { border: 2px solid #000; background: #fff; position: relative; cursor: pointer; } /* ক্যানভাসে হাত চিহ্ন হবে */
+#mainCanvas { display: block; }
 
-#map-container {
-    width: 1000px;
-    height: 1000px;
-    border: 2px solid #000;
-    position: relative;
-    background: #fff;
-    cursor: crosshair;
-    margin: 0 auto;
-}
+#legacy-tooltip { position: absolute; background: #FFFFE1; border: 1px solid #000; padding: 5px; font-size: 11px; display: none; z-index: 100; pointer-events: none; }
 
-#tooltip {
-    position: absolute;
-    background: #ffffe1;
-    border: 1px solid #000;
-    padding: 4px 8px;
-    font-size: 11px;
-    display: none;
-    z-index: 100;
-    box-shadow: 1px 1px 3px rgba(0,0,0,0.2);
-    pointer-events: none;
-}
-
-#footer {
-    margin-top: 30px;
-    font-size: 11px;
-    color: #555;
-    border-top: 1px solid #ccc;
-    padding-top: 15px;
-    line-height: 1.6;
-}
+#footer { padding: 25px; font-size: 12px; color: #444; background: #fff; border-top: 1px solid #ccc; }
