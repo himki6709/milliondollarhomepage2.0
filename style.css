@@ -1,0 +1,165 @@
+/* মেইন ভেরিয়েবল এবং বেসিক সেটিংস */
+:root {
+    --primary-red: #ff0000;
+    --dark-red: #cc0000;
+    --bg-white: #ffffff;
+    --light-gray: #f9f9f9;
+    --border-color: #ddd;
+    --text-black: #000;
+}
+
+body {
+    background-color: var(--bg-white);
+    font-family: 'Segoe UI', Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    color: var(--text-black);
+}
+
+/* হেডার এরিয়া */
+.header-area {
+    padding: 40px 20px;
+    background: #fff;
+    border-bottom: 3px solid var(--text-black);
+}
+
+.logo-text {
+    font-size: clamp(32px, 5vw, 54px);
+    font-weight: 900;
+    color: var(--primary-red);
+    letter-spacing: -2px;
+    margin: 0;
+}
+
+.tagline {
+    font-size: 16px;
+    font-weight: bold;
+    color: #555;
+    margin-top: 10px;
+}
+
+/* পেমেন্ট কার্ড সেকশন (রেসপনসিভ গ্রিড) */
+.payment-container {
+    background: var(--light-gray);
+    padding: 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 15px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.pay-card {
+    background: #fff;
+    border: 1px solid var(--border-color);
+    padding: 15px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: all 0.2s ease;
+    box-shadow: 3px 3px 0 #ddd;
+    border-radius: 4px;
+}
+
+.pay-card:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 5px 5px 0 var(--primary-red);
+}
+
+.pay-card b {
+    display: block;
+    color: #333;
+    margin-bottom: 5px;
+    font-size: 13px;
+}
+
+/* গ্রিড ম্যাপ কন্টেইনার */
+.main-map-container {
+    max-width: 1000px;
+    width: 95%;
+    height: auto;
+    aspect-ratio: 1 / 1; /* স্কয়ার শেপ বজায় রাখবে */
+    margin: 30px auto;
+    border: 4px solid var(--text-black);
+    position: relative;
+    background: #eee;
+    overflow: auto; /* মোবাইলে স্ক্রল করার জন্য */
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+canvas {
+    display: block;
+    cursor: crosshair;
+}
+
+/* টুলটিপ ডিজাইন */
+#tooltip {
+    position: absolute;
+    background: rgba(0, 0, 0, 0.9);
+    color: #fff;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    display: none;
+    pointer-events: none;
+    z-index: 1000;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}
+
+/* স্ট্যাটাস টেবিল */
+.stats-table {
+    width: 95%;
+    max-width: 1000px;
+    margin: 20px auto;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+.stats-table td {
+    border: 1px solid var(--border-color);
+    padding: 15px;
+    background: #fff;
+}
+
+/* অর্ডার প্যানেল (পপআপ) */
+#order-panel {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #fff;
+    border: 6px solid var(--primary-red);
+    padding: 30px;
+    display: none;
+    z-index: 10001;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 0 100px rgba(0,0,0,0.5);
+    border-radius: 10px;
+}
+
+.btn-wa {
+    background: #25D366;
+    color: #fff;
+    padding: 15px;
+    text-decoration: none;
+    display: block;
+    font-weight: bold;
+    margin-top: 20px;
+    border-radius: 5px;
+    transition: 0.3s;
+}
+
+.btn-wa:hover {
+    background: #128C7E;
+}
+
+/* মোবাইল রেসপনসিভনেস */
+@media (max-width: 768px) {
+    .header-area { padding: 20px 10px; }
+    .logo-text { font-size: 28px; }
+    .stats-table td {
+        display: block;
+        width: 100%;
+        box-sizing: border-box;
+    }
+}
