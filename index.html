@@ -1,180 +1,84 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=1100">
-    <title>THE ONE HOMEPAGE | 1,000,000 PIXELS</title>
-    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+// Firebase Configuration
+const firebaseConfig = {
+    apiKey: "AIzaSyDJbVCF0AkLkCiCwFBc1Ki5PrKxFeYt8_E",
+    databaseURL: "https://milliondollarhomepage2-71ba3-default-rtdb.firebaseio.com",
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+
+const cv = document.getElementById('mainCanvas');
+const ctx = cv.getContext('2d');
+const tooltip = document.getElementById('tooltip');
+const blockSize = 10; 
+
+let pixels = {};
+
+// Render Grid and Pixels
+function render() {
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(0, 0, 1000, 1000);
     
-    <style>
-        body { background: #fff; font-family: Arial, Helvetica, sans-serif; margin: 0; padding: 0; text-align: center; }
+    // Draw Grid (Light grey)
+    ctx.strokeStyle = "#eeeeee";
+    ctx.lineWidth = 0.5;
+    for(let i=0; i<=1000; i+=blockSize) {
+        ctx.beginPath();
+        ctx.moveTo(i, 0); ctx.lineTo(i, 1000);
+        ctx.moveTo(0, i); ctx.lineTo(1000, i);
+        ctx.stroke();
+    }
+
+    // Draw Registered Pixels
+    Object.values(pixels).forEach(p => {
+        const id = parseInt(p.plotID) - 1;
+        const x = (id % 100) * blockSize;
+        const y = Math.floor(id / 100) * blockSize;
         
-        /* Header & Navigation */
-        .header-area { padding: 20px 0; border-bottom: 2px solid #000; }
-        .logo-text { font-size: 48px; font-weight: bold; color: #ff0000; letter-spacing: -2px; }
-        .tagline { font-size: 18px; font-weight: bold; color: #000; margin-top: 5px; }
+        let img = new Image();
+        img.src = p.imageUrl;
+        img.onload = () => ctx.drawImage(img, x, y, blockSize, blockSize);
+    });
+}
 
-        /* Payment Gateway Section */
-        .payment-container { 
-            background: #f9f9f9; padding: 15px; border-bottom: 1px solid #ddd; 
-            display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; 
+// Listen to Firebase
+db.ref('pixels').on('value', s => {
+    pixels = s.val() || {};
+    render();
+});
+
+// Tooltip Logic
+cv.addEventListener('mousemove', (e) => {
+    const rect = cv.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const id = Math.floor(y/blockSize)*100 + Math.floor(x/blockSize) + 1;
+
+    let found = false;
+    Object.values(pixels).forEach(p => {
+        if(p.plotID == id) {
+            tooltip.style.display = 'block';
+            tooltip.style.left = (e.pageX + 10) + 'px';
+            tooltip.style.top = (e.pageY + 10) + 'px';
+            tooltip.innerHTML = `<b>${p.name}</b><br>Plot #${p.plotID}`;
+            found = true;
         }
-        .pay-card { 
-            background: #fff; border: 1px solid #ccc; padding: 10px; cursor: pointer; 
-            font-size: 11px; transition: 0.2s; box-shadow: 2px 2px 0 #ddd;
+    });
+    if(!found) tooltip.style.display = 'none';
+});
+
+// Click logic to open link or buy
+cv.addEventListener('click', (e) => {
+    const rect = cv.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const id = Math.floor(y/blockSize)*100 + Math.floor(x/blockSize) + 1;
+
+    let linked = false;
+    Object.values(pixels).forEach(p => {
+        if(p.plotID == id) {
+            window.open(p.link, '_blank');
+            linked = true;
         }
-        .pay-card:active { transform: translateY(2px); box-shadow: none; }
-        .pay-card b { display: block; color: #555; text-transform: uppercase; }
-
-        /* The Million Dollar Grid */
-        .main-map-container {
-            width: 1000px; height: 1000px;
-            margin: 30px auto;
-            border: 2px solid #000;
-            position: relative;
-            background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAF0lEQVQoU2NkYGD4z8DAwMgABXAGpBAAHzYDAfL7u8UAAAAASUVORK5CYII='); /* Grid Pattern */
-        }
-        canvas { cursor: crosshair; }
-
-        /* Order Info Sidebar/Popup */
-        #order-panel {
-            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            background: #fff; border: 5px solid #ff0000; padding: 25px;
-            display: none; z-index: 10000; width: 400px; box-shadow: 0 0 50px rgba(0,0,0,0.5);
-        }
-        .btn-wa { 
-            background: #25D366; color: #fff; padding: 15px; text-decoration: none; 
-            display: block; font-weight: bold; margin-top: 15px; border-radius: 5px;
-        }
-        
-        /* Stats Table */
-        .stats-table { width: 1000px; margin: 20px auto; border-collapse: collapse; font-size: 12px; }
-        .stats-table td { border: 1px solid #ccc; padding: 10px; background: #fff; }
-
-        /* Tooltip */
-        #tooltip {
-            position: absolute; background: #000; color: #fff; padding: 5px 10px;
-            font-size: 11px; display: none; pointer-events: none; z-index: 999;
-        }
-    </style>
-</head>
-<body>
-
-    <div class="header-area">
-        <div class="logo-text">THE ONE HOMEPAGE</div>
-        <div class="tagline">1,000,000 PIXELS • OWN A PIECE OF INTERNET HISTORY</div>
-    </div>
-
-    <div class="payment-container">
-        <div class="pay-card" onclick="copy('912221034')">
-            <b>BINANCE UID (KAWSAR6700)</b> 912221034 (Click to Copy)
-        </div>
-        <div class="pay-card" onclick="copy('TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6')">
-            <b>USDT TRC20</b> TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6 (Click to Copy)
-        </div>
-        <div class="pay-card" onclick="copy('0x443792A4884e8e855f954ccEF910778Aff1eb78E')">
-            <b>METAMASK (ETH/BNB)</b> 0x443792A4...Aff1eb78E (Click to Copy)
-        </div>
-    </div>
-
-    <div class="main-map-container">
-        <canvas id="mainCanvas" width="1000" height="1000"></canvas>
-        <div id="tooltip"></div>
-    </div>
-
-    <table class="stats-table">
-        <tr>
-            <td><strong>TOTAL BLOCKS:</strong> 10,000</td>
-            <td><strong>BLOCK SIZE:</strong> 10x10 px</td>
-            <td><strong>PRICE:</strong> $500 - $1,000</td>
-            <td><strong>MIN ORDER:</strong> 10 Blocks</td>
-        </tr>
-    </table>
-
-    <div id="order-panel">
-        <h2 id="p-id">BLOCK #0000</h2>
-        <p id="p-price">Price: $500</p>
-        <div style="background: #fff3cd; padding: 10px; font-size: 12px; text-align: left; border: 1px solid #ffeeba;">
-            <strong>নির্দেশনা:</strong><br>
-            ১. পেমেন্ট স্ক্রিনশট এবং ট্রানজেকশন আইডি দিন।<br>
-            ২. আপনার লোগো (১০x১০ পিক্সেল রেশিও) দিন।<br>
-            ৩. ৭২ ঘণ্টার মধ্যে আপনার লোগো লাইভ হয়ে যাবে।
-        </div>
-        <a href="#" id="wa-link" class="btn-wa" target="_blank">CONFIRM ON WHATSAPP</a>
-        <p onclick="closePanel()" style="cursor:pointer; text-decoration:underline; font-size:12px; margin-top:10px;">Close Window</p>
-    </div>
-
-    <div style="margin: 50px 0; color: #888; font-size: 11px;">
-        Copyright © 2026 The One Homepage. Owned by KAWSAR.
-    </div>
-
-    <script>
-        // Firebase Configuration (Using your provided info)
-        const firebaseConfig = {
-            apiKey: "AIzaSyDJbVCF0AkLkCiCwFBc1Ki5PrKxFeYt8_E",
-            authDomain: "milliondollarhomepage2-71ba3.firebaseapp.com",
-            databaseURL: "https://milliondollarhomepage2-71ba3-default-rtdb.firebaseio.com",
-            projectId: "milliondollarhomepage2-71ba3",
-            storageBucket: "milliondollarhomepage2-71ba3.firebasestorage.app",
-            messagingSenderId: "895107568682",
-            appId: "1:895107568682:web:d48003f71701005f3d5f53"
-        };
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.database();
-
-        const canvas = document.getElementById('mainCanvas');
-        const ctx = canvas.getContext('2d');
-        const tooltip = document.getElementById('tooltip');
-        const blockSize = 10;
-        const totalBlocks = 10000;
-
-        // ম্যাপ রেন্ডার (Grid)
-        function drawGrid() {
-            ctx.clearRect(0,0,1000,1000);
-            ctx.strokeStyle = "#eee";
-            ctx.lineWidth = 0.5;
-            for(let i=0; i<=1000; i+=blockSize) {
-                ctx.moveTo(i, 0); ctx.lineTo(i, 1000);
-                ctx.moveTo(0, i); ctx.lineTo(1000, i);
-            }
-            ctx.stroke();
-        }
-        drawGrid();
-
-        // ইন্টারঅ্যাকশন
-        canvas.addEventListener('mousemove', (e) => {
-            const rect = canvas.getBoundingClientRect();
-            const x = Math.floor((e.clientX - rect.left) / blockSize);
-            const y = Math.floor((e.clientY - rect.top) / blockSize);
-            const blockID = (y * 100) + x + 1;
-
-            if(blockID <= 10000) {
-                tooltip.style.display = 'block';
-                tooltip.style.left = (e.pageX + 10) + 'px';
-                tooltip.style.top = (e.pageY + 10) + 'px';
-                tooltip.innerText = `Block #${blockID} | Price: $500`;
-            }
-        });
-
-        canvas.addEventListener('click', (e) => {
-            const rect = canvas.getBoundingClientRect();
-            const x = Math.floor((e.clientX - rect.left) / blockSize);
-            const y = Math.floor((e.clientY - rect.top) / blockSize);
-            const blockID = (y * 100) + x + 1;
-
-            document.getElementById('p-id').innerText = "BLOCK #" + blockID;
-            const waMsg = `Hello Kawsar, I want to order Block #${blockID} for $500. I have my Payment Proof and Logo ready.`;
-            document.getElementById('wa-link').href = `https://wa.me/8801576940717?text=${encodeURIComponent(waMsg)}`;
-            document.getElementById('order-panel').style.display = 'block';
-        });
-
-        function closePanel() { document.getElementById('order-panel').style.display = 'none'; }
-
-        function copy(text) {
-            navigator.clipboard.writeText(text);
-            alert("Copied to Clipboard!");
-        }
-    </script>
-</body>
-</html>
+    });
+    if(!linked) window.location.href = "order.html";
+});
