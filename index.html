@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>THE LITTLE HOUSE | KAWSAR TM</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
         :root { --gold: #9E7E45; --white: #ffffff; }
@@ -13,48 +13,45 @@
 
         /* Navigation */
         .top-nav { position: fixed; top: 0; width: 100%; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; z-index: 1000; background: rgba(0,0,0,0.95); border-bottom: 1px solid #222; box-sizing: border-box; }
-        .nav-left { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
-        .nav-btn { background: none; border: 1px solid #444; color: #fff; padding: 10px 18px; font-size: 10px; letter-spacing: 2px; cursor: pointer; text-transform: uppercase; transition: 0.3s; }
-        .nav-btn:hover { background: #fff; color: #000; border-color: #fff; }
-        .pay-gateway-btn { border-color: var(--gold) !important; color: var(--gold) !important; font-weight: bold; }
-
         .logo { font-size: 18px; letter-spacing: 3px; font-weight: bold; text-transform: uppercase; }
-        .logo span { font-size: 11px; color: var(--gold); vertical-align: middle; margin-left: 5px; }
+        .logo span { font-size: 11px; color: var(--gold); }
+        .nav-btn { background: none; border: 1px solid #444; color: #fff; padding: 10px 18px; font-size: 10px; letter-spacing: 2px; cursor: pointer; text-transform: uppercase; transition: 0.3s; }
+        .buy-plot-btn { border-color: var(--gold) !important; color: #000 !important; background: var(--gold) !important; font-weight: bold; }
 
-        /* Header Animation (Rainbow Shift) */
-        .header-area { text-align: center; padding-top: 130px; margin-bottom: 40px; }
+        /* Header */
+        .header-area { text-align: center; padding-top: 130px; margin-bottom: 30px; }
         .section-name { 
-            font-size: clamp(35px, 8vw, 80px); 
-            letter-spacing: 10px; text-transform: uppercase; font-weight: 900; 
+            font-size: clamp(35px, 8vw, 80px); letter-spacing: 10px; font-weight: 900; 
             background: linear-gradient(90deg, #FFD700, #FFB800, #FF8C00, #FF4500, #FF0055, #D400FF, #7A00FF, #0070FF, #00C3FF, #00FFCC); 
             background-size: 300% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; 
-            animation: fullColorShift 8s linear infinite; margin-bottom: 0px; 
+            animation: fullColorShift 8s linear infinite; text-transform: uppercase;
         }
         @keyframes fullColorShift { 0% { background-position: 0% center; } 100% { background-position: 300% center; } }
-        .sub-slogan { font-size: 12px; letter-spacing: 5px; color: var(--gold); text-transform: uppercase; opacity: 0.8; margin-top: 10px; }
+        .sub-slogan { font-size: 14px; letter-spacing: 5px; color: var(--gold); margin-top: 10px; }
 
-        /* Plot Canvas Container */
-        .map-wrapper { width: 90%; max-width: 1200px; margin: 0 auto; border: 1px solid var(--gold); background: #050505; position: relative; overflow: hidden; height: 500px; }
-        canvas { cursor: crosshair; }
+        /* Canvas */
+        .map-wrapper { width: 95%; max-width: 1200px; margin: 0 auto; border: 1px solid #222; background: #050505; height: 600px; overflow: auto; position: relative; }
+        canvas { background-image: linear-gradient(#111 1px, transparent 1px), linear-gradient(90deg, #111 1px, transparent 1px); background-size: 20px 20px; }
 
-        /* Stats Bar */
-        .stats-bar { display: flex; justify-content: center; gap: 20px; margin-top: 30px; }
-        .stat-box { border: 1px solid #222; padding: 15px 30px; background: #111; }
-        .stat-box h3 { margin: 0; color: var(--gold); font-size: 24px; }
-        .stat-box small { font-size: 10px; letter-spacing: 2px; color: #666; }
+        /* Support & Social Icons */
+        .icon-box { position: fixed; bottom: 30px; z-index: 5000; display: flex; align-items: center; justify-content: center; width: 50px; height: 50px; border-radius: 50%; cursor: pointer; transition: 0.3s; }
+        .support-icon { left: 30px; background: var(--gold); color: #fff; }
+        .twitter-icon { right: 30px; background: #1DA1F2; color: #fff; }
+        .icon-box:hover { transform: scale(1.1); }
 
-        /* Modals (Millionaire Style) */
+        /* Footer */
+        .footer-container { text-align: center; padding: 60px 20px; border-top: 1px solid #222; margin-top: 50px; }
+        .footer-text { color: #555; font-size: 11px; letter-spacing: 1.5px; line-height: 1.8; max-width: 800px; margin: 0 auto; text-transform: uppercase; }
+
+        /* Modals */
         .modal { position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.98); display:none; align-items:center; justify-content:center; z-index:9000; padding: 15px; }
-        .card { background: #fff; color:#000; padding:40px; width:100%; max-width:500px; text-align:center; border-radius: 2px; }
-        .premium-btn { background: #000; color: #fff; width: 100%; padding: 18px; border: none; font-weight: bold; letter-spacing: 3px; cursor: pointer; text-transform: uppercase; margin-top: 15px; }
-        .pay-item { text-align: left; padding: 15px; background: #f7f7f7; margin-bottom: 12px; cursor: pointer; border: 1px solid #eee; }
-        .pay-label { display: block; color: #888; font-size: 10px; text-transform: uppercase; font-weight: bold; }
-        .pay-address { font-family: monospace; font-size: 12px; word-break: break-all; color: #222; }
+        .card { background: #fff; color:#000; padding:40px; width:100%; max-width:500px; text-align:center; border-radius: 4px; }
+        .premium-btn { background: #000; color: #fff; width: 100%; padding: 18px; border: none; font-weight: bold; letter-spacing: 2px; cursor: pointer; text-transform: uppercase; margin-top: 10px; }
+        .info-list { text-align: left; background: #f9f9f9; padding: 20px; margin: 20px 0; border-left: 4px solid var(--gold); font-size: 13px; line-height: 1.6; }
+        
+        input { width: 100%; padding: 15px; margin: 10px 0; border: 1px solid #ddd; box-sizing: border-box; text-align: center; }
 
-        @media (max-width: 768px) {
-            .top-nav { flex-direction: column; gap: 10px; height: auto; padding: 10px; }
-            .header-area { padding-top: 180px; }
-        }
+        @media (max-width: 768px) { .top-nav { padding: 10px; } .header-area { padding-top: 160px; } }
     </style>
 </head>
 <body>
@@ -62,91 +59,83 @@
     <div class="top-nav">
         <div class="logo">THE LITTLE HOUSE <span>KAWSAR <small>TM</small></span></div>
         <div class="nav-left">
-            <button class="nav-btn pay-gateway-btn" onclick="openModal('pay-modal')">PAYMENT GATEWAY</button>
-            <button class="nav-btn" onclick="openModal('order-modal')">ORDER PLOTS</button>
+            <button class="nav-btn" onclick="openModal('pay-modal')">PAYMENT GATEWAY</button>
+            <button class="nav-btn buy-plot-btn" onclick="openModal('order-modal')">BUY PLOTS</button>
         </div>
     </div>
 
     <div class="header-area">
         <h1 class="section-name">THE LITTLE HOUSE</h1>
-        <div class="sub-slogan">SECURE YOUR LEGACY ON THE INTERNET</div>
+        <div class="sub-slogan">Own a piece of internet history!</div>
     </div>
 
-    <div class="map-wrapper" id="canvas-container">
-        <canvas id="mainCanvas"></canvas>
+    <div class="map-wrapper">
+        <canvas id="mainCanvas" width="4000" height="2500"></canvas>
     </div>
 
-    <div class="stats-bar">
-        <div class="stat-box"><h3>$100</h3><small>PRICE PER PLOT</small></div>
-        <div class="stat-box"><h3>100,000</h3><small>TOTAL PLOTS</small></div>
+    <div class="icon-box support-icon" onclick="openModal('support-modal')"><i class="fas fa-headset"></i></div>
+    <div class="icon-box twitter-icon" onclick="window.open('https://twitter.com/your_profile', '_blank')"><i class="fab fa-twitter"></i></div>
+
+    <div class="footer-container">
+        <p class="footer-text">
+            <b>THE LITTLE HOUSE | KAWSAR TM</b> © 2026. All rights reserved.<br>
+            ইন্টারনেট ইতিহাসের এক অনন্য অংশ হিসেবে নিজের জায়গা দখল করুন। প্রতিটি প্লট সীমিত মালিকানার মাধ্যমে ডিজিটাল সংস্কৃতি সংরক্ষণের একটি প্রয়াস।<br>
+            সমস্ত ব্র্যান্ড লোগো তাদের নিজ নিজ মালিকদের ট্রেডমার্ক।
+        </p>
     </div>
 
     <div id="order-modal" class="modal">
         <div class="card">
-            <h2 style="letter-spacing:4px; font-size: 14px; color: var(--gold);">PLOT ACQUISITION</h2>
-            <input type="text" id="brand-name" placeholder="YOUR BRAND / NAME" style="width:100%; padding:15px; margin:20px 0; border:1px solid #ddd; text-align:center;">
-            <input type="number" id="plot-qty" placeholder="QUANTITY OF PLOTS" style="width:100%; padding:15px; margin-bottom:20px; border:1px solid #ddd; text-align:center;">
-            <button class="premium-btn" onclick="submitOrder()">PLACE ORDER</button>
-            <p onclick="closeModals()" style="cursor:pointer; font-size:10px; margin-top:20px; text-decoration: underline;">CLOSE</p>
+            <h2 style="letter-spacing:3px; font-size: 14px; color: var(--gold);">PLOT ACQUISITION</h2>
+            <p style="font-size: 12px; margin-bottom: 20px;">Price: $10 / Plot (Min. 10 Plots)</p>
+            <input type="text" id="brand-name" placeholder="YOUR BRAND NAME">
+            <input type="number" id="plot-qty" placeholder="QUANTITY (MIN 10)" min="10">
+            <button class="premium-btn" onclick="submitOrder()">SUBMIT ORDER</button>
+            <button class="premium-btn" style="background:#555" onclick="closeModals()">BACK TO CANVAS</button>
+        </div>
+    </div>
+
+    <div id="support-modal" class="modal">
+        <div class="card">
+            <h2 style="letter-spacing: 3px; color: var(--gold);">CUSTOMER SUPPORT</h2>
+            <div class="info-list">
+                <b>প্রয়োজনীয় তথ্যসমূহ:</b><br>
+                ১. পেমেন্টের স্ক্রিনশট (বাইনান্স/মেটামাস্ক)।<br>
+                ২. হাই-রেজোলিউশন ব্র্যান্ড লোগো (PNG/JPG)।<br>
+                ৩. আপনার ওয়েবসাইটের লিঙ্ক (যদি থাকে)।<br>
+                ৪. আপনার পছন্দের ব্র্যান্ড নাম।
+            </div>
+            <button class="premium-btn" onclick="window.open('https://wa.me/8801576940717', '_blank')">CHAT CUSTOMER SUPPORT</button>
+            <button class="premium-btn" style="background:#555" onclick="closeModals()">BACK TO CANVAS</button>
         </div>
     </div>
 
     <div id="pay-modal" class="modal">
         <div class="card">
-            <h2 style="letter-spacing: 4px; margin-bottom: 25px; font-size: 16px;">PAYMENT GATEWAY</h2>
-            
-            <div class="pay-item" onclick="copy('0x443792A4884e8e855f954ccEF910778Aff1eb78E')">
-                <span class="pay-label">Web3 Wallet (ETH/BNB/POLYGON)</span>
-                <span class="pay-address">0x443792A4884e8e855f954ccEF910778Aff1eb78E</span>
+            <h2 style="letter-spacing: 3px; margin-bottom: 20px;">PAYMENT GATEWAY</h2>
+            <div style="text-align: left; background: #f4f4f4; padding: 15px; margin-bottom: 10px; cursor: pointer;" onclick="copy('0x443792A4884e8e855f954ccEF910778Aff1eb78E')">
+                <small style="color: #888;">METAMASK / TRUST WALLET</small><br>
+                <code style="font-size: 11px;">0x443792A4884e8e855f954ccEF910778Aff1eb78E</code>
             </div>
-
-            <div class="pay-item" onclick="copy('912221034')">
-                <span class="pay-label">Binance UID</span>
-                <span class="pay-address">912221034</span>
-            </div>
-
-            <div class="pay-item" onclick="copy('TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6')">
-                <span class="pay-label">USDT (TRC20 Address)</span>
-                <span class="pay-address">TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6</span>
-            </div>
-
             <button class="premium-btn" onclick="closeModals()">CLOSE</button>
         </div>
     </div>
 
     <script>
-        // Canvas Setup (1 লক্ষ প্লট গ্রিড)
         const canvas = document.getElementById('mainCanvas');
         const ctx = canvas.getContext('2d');
-        canvas.width = 2000; // Large internal resolution
-        canvas.height = 2000;
 
-        function drawGrid() {
-            ctx.strokeStyle = '#222';
-            ctx.lineWidth = 0.5;
-            const size = 20; // Size of each small square visual
-            for(let x=0; x<canvas.width; x+=size) {
-                for(let y=0; y<canvas.height; y+=size) {
-                    ctx.strokeRect(x, y, size, size);
-                }
-            }
-        }
-        drawGrid();
-
-        // Functions
         function openModal(id) { document.getElementById(id).style.display = 'flex'; }
         function closeModals() { document.querySelectorAll('.modal').forEach(m => m.style.display = 'none'); }
-        function copy(t) { navigator.clipboard.writeText(t); alert("Address Copied!"); }
+        function copy(t) { navigator.clipboard.writeText(t); alert("Copied!"); }
 
         function submitOrder() {
-            const name = document.getElementById('brand-name').value;
             const qty = document.getElementById('plot-qty').value;
-            if(!name || !qty) return alert("Fill all details");
-
-            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
-            alert(`Order Successful for ${qty} plots!\nPlease complete payment to the addresses.`);
+            if(qty < 10) return alert("Minimum order 10 plots required.");
+            confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+            alert("Order Submitted! Please contact support for activation.");
             closeModals();
         }
     </script>
 </body>
-</html> 
+</html>
