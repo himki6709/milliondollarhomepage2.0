@@ -2,239 +2,202 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=1024">
-    <title>THE MILLION DOLLAR HOMEPAGE 2.0 | ELITE ACQUISITION</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>THE MILLION DOLLAR HOMEPAGE 2.0</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 
     <style>
-        :root { --gold: #FCD535; --black: #0B0E11; --dark-grey: #1E2329; --ash: #848e9c; }
+        :root { --gold: #FCD535; --black: #0B0E11; --dark: #1E2329; --ash: #848e9c; }
         
-        body { margin: 0; background: #888; font-family: 'Segoe UI', Arial, sans-serif; color: #fff; text-align: center; }
-        #main-wrapper { width: 1250px; margin: 0 auto; background: var(--black); box-shadow: 0 0 50px rgba(0,0,0,0.8); }
-
-        /* Top Navigation & Payment */
-        .top-nav { background: #000; padding: 15px; border-bottom: 1px solid #333; display: flex; justify-content: space-between; align-items: center; }
-        .payment-pill { border: 1px solid var(--gold); padding: 8px 15px; color: var(--gold); font-size: 11px; border-radius: 4px; cursor: pointer; transition: 0.3s; }
-        .payment-pill:hover { background: var(--gold); color: #000; }
-        .tw-follow { background: #1DA1F2; color: #fff; text-decoration: none; padding: 8px 15px; border-radius: 20px; font-weight: bold; font-size: 13px; }
-
-        /* Portal Sections */
-        .portal-container { display: flex; gap: 20px; padding: 25px; background: var(--dark-grey); text-align: left; }
-        .portal-card { flex: 1; background: rgba(255,255,255,0.05); padding: 20px; border-left: 4px solid var(--gold); border-radius: 5px; }
-        .portal-card h3 { color: var(--gold); margin-top: 0; font-size: 16px; text-transform: uppercase; }
-        .portal-card ul { padding-left: 20px; font-size: 13px; color: #ccc; }
-        .portal-card li { margin-bottom: 8px; }
-
-        /* Stats & Header */
-        .header-section { padding: 40px 20px; background: #fff; color: #000; }
-        .header-section h1 { font-size: 40px; margin: 0; font-weight: 900; letter-spacing: -1px; }
-        .stats-bar { display: flex; justify-content: center; gap: 30px; margin: 20px 0; font-weight: bold; font-size: 15px; color: #555; }
-        .stat-item span { color: #d93025; }
-
-        /* Canvas Area */
-        #canvas-view { background: #888; padding: 30px 0; display: flex; justify-content: center; }
-        .canvas-border { border: 5px solid #000; background: #fff; position: relative; cursor: crosshair; }
-        #mainCanvas { display: block; image-rendering: pixelated; }
-
-        /* Acquisition Form */
-        .order-section { padding: 50px; background: var(--dark-grey); border-top: 1px solid #333; }
-        .order-box { width: 450px; margin: 0 auto; text-align: left; background: #000; padding: 30px; border-radius: 10px; border: 1px solid var(--gold); }
-        .order-box h2 { color: var(--gold); text-align: center; margin-bottom: 25px; }
-        label { display: block; font-size: 12px; color: var(--ash); margin-bottom: 5px; }
-        input { width: 93%; padding: 12px; background: #1e2329; border: 1px solid #444; color: #fff; border-radius: 5px; margin-bottom: 20px; font-size: 16px; }
-        .total-price { font-size: 24px; color: var(--gold); font-weight: bold; text-align: center; margin-bottom: 20px; }
-        .buy-btn { width: 100%; padding: 15px; background: var(--gold); border: none; font-weight: bold; font-size: 18px; cursor: pointer; border-radius: 5px; }
+        body { margin: 0; background: #222; font-family: 'Segoe UI', sans-serif; overflow-x: hidden; touch-action: none; }
         
-        .dl-section { padding: 20px; background: #000; }
-        .dl-btn { background: transparent; color: var(--ash); border: 1px solid #444; padding: 10px 20px; cursor: pointer; border-radius: 5px; }
+        /* Fixed Header Area */
+        #header-area { background: #fff; padding: 20px 10px; border-bottom: 2px solid var(--black); position: relative; z-index: 100; text-align: center; }
+        .stats-row { display: flex; justify-content: center; gap: 20px; font-weight: bold; font-size: 14px; color: #555; margin-bottom: 15px; }
+        
+        /* New Order Section (Moved Up) */
+        .order-container { background: var(--dark); padding: 20px; border-radius: 10px; display: inline-block; width: 90%; max-width: 500px; color: #fff; margin-bottom: 20px; }
+        .order-container input { width: 45%; padding: 10px; margin: 5px; border-radius: 5px; border: none; }
+        .buy-btn { background: var(--gold); color: #000; padding: 10px 25px; border: none; font-weight: bold; cursor: pointer; border-radius: 5px; margin-top: 10px; width: 95%; }
 
-        #tooltip { position: absolute; background: #ffffe1; color: #000; padding: 5px; border: 1px solid #000; font-size: 11px; display: none; pointer-events: none; z-index: 999; }
-        footer { padding: 30px; font-size: 12px; color: #555; background: #fff; }
+        /* Payment Gateway Button */
+        .pay-gate { position: relative; display: inline-block; margin: 10px; }
+        .pay-trigger { background: var(--black); color: var(--gold); padding: 10px 20px; border: 2px solid var(--gold); border-radius: 5px; cursor: pointer; font-weight: bold; }
+        .pay-menu { display: none; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); background: #fff; border: 1px solid #ccc; box-shadow: 0 4px 15px rgba(0,0,0,0.3); width: 280px; border-radius: 8px; z-index: 1000; padding: 10px; }
+        .pay-menu.active { display: block; }
+        .pay-item { color: #333; font-size: 12px; padding: 10px; border-bottom: 1px solid #eee; cursor: pointer; word-break: break-all; text-align: left; }
+        .pay-item:hover { background: #f9f9f9; }
+        .pay-item b { color: #000; display: block; margin-bottom: 3px; }
+
+        /* Canvas Mapping */
+        #canvas-viewport { width: 100vw; height: 60vh; background: #888; overflow: hidden; position: relative; cursor: grab; }
+        #canvas-container { position: absolute; transform-origin: 0 0; }
+        canvas { background: #fff; display: block; image-rendering: pixelated; box-shadow: 0 0 20px rgba(0,0,0,0.5); }
+
+        /* Social & Info */
+        .info-portals { display: flex; flex-wrap: wrap; gap: 10px; padding: 20px; background: #f4f4f4; justify-content: center; }
+        .portal-card { background: #fff; color: #333; padding: 15px; border-left: 4px solid var(--gold); width: 300px; text-align: left; font-size: 13px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        
+        #tooltip { position: fixed; background: rgba(0,0,0,0.8); color: #fff; padding: 5px 10px; border-radius: 4px; font-size: 12px; display: none; pointer-events: none; z-index: 2000; }
+        
+        @media (max-width: 768px) {
+            .order-container input { width: 90%; }
+            #canvas-viewport { height: 50vh; }
+        }
     </style>
 </head>
 <body>
 
-<div id="main-wrapper">
-    <div class="top-nav">
-        <div style="display: flex; gap: 10px;">
-            <div class="payment-pill" onclick="copy('912221034')">BINANCE ID: 912221034</div>
-            <div class="payment-pill" onclick="copy('TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6')">USDT (TRC20): TTapBkTq...FmR8Ws6</div>
-            <div class="payment-pill" onclick="copy('0x443792A4884e8e855f954ccEF910778Aff1eb78E')">METAMASK: 0x443792...eb78E</div>
-        </div>
-        <a href="https://x.com/ARCHIVEKAWSAR" target="_blank" class="tw-follow">
-            <i class="fab fa-twitter"></i> Follow /ARCHIVEKAWSAR
-        </a>
+<div id="header-area">
+    <h1 style="margin:0 0 10px 0; font-size: 24px;">THE MILLION DOLLAR HOMEPAGE 2.0</h1>
+    
+    <div class="stats-row">
+        <span>TOTAL: 1,000,000</span>
+        <span style="color:red;">CLAIMED: <span id="sold-count">0</span></span>
     </div>
 
-    <div class="portal-container">
-        <div class="portal-card">
-            <h3><i class="fas fa-info-circle"></i> Submission Protocol</h3>
-            <ul>
-                <li>Complete payment to any address shown above.</li>
-                <li>Submit your Transaction ID / Screenshot.</li>
-                <li>Provide High-Quality Logo (min. 5x5 px).</li>
-                <li>Provide Target Link and Brand Display Name.</li>
-                <li>Verification time: 2-4 hours (Priority on Thu-Sat).</li>
-            </ul>
-        </div>
-        <div class="portal-card">
-            <h3><i class="fas fa-gem"></i> Elite Benefits</h3>
-            <ul>
-                <li>Lifetime digital heritage preservation.</li>
-                <li>No annual renewal or maintenance fees.</li>
-                <li>Instant 4K synchronization across the globe.</li>
-                <li>Dofollow backlink for SEO value.</li>
-                <li>Permanent listing in the Millionaire's Archive.</li>
-            </ul>
-        </div>
+    <div class="order-container">
+        <input type="text" id="brand-name" placeholder="Brand Name">
+        <input type="number" id="plot-qty" value="20" min="20" placeholder="Qty">
+        <div style="margin: 10px 0; font-size: 18px; color: var(--gold);">Total: $<span id="total-val">100</span></div>
+        <button class="buy-btn" onclick="processOrder()">SUBMIT ACQUISITION</button>
     </div>
 
-    <div class="header-section">
-        <h1>THE MILLION DOLLAR HOMEPAGE 2.0</h1>
-        <div class="stats-bar">
-            <div class="stat-item">TOTAL PLOTS: 40,000</div>
-            <div class="stat-item">CLAIMED: <span id="sold-count">0</span></div>
-            <div class="stat-item">VACANT: <span id="rem-count">40,000</span></div>
+    <div>
+        <div class="pay-gate">
+            <button class="pay-trigger" onclick="togglePay()">PAYMENT GATEWAY <i class="fas fa-chevron-down"></i></button>
+            <div class="pay-menu" id="payMenu">
+                <div class="pay-item" onclick="copy('912221034')"><b>BINANCE ID (Tap to Copy)</b> 912221034</div>
+                <div class="pay-item" onclick="copy('TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6')"><b>USDT TRC20 (Tap to Copy)</b> TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6</div>
+                <div class="pay-item" onclick="copy('0x443792A4884e8e855f954ccEF910778Aff1eb78E')"><b>METAMASK (Tap to Copy)</b> 0x443792A4884e8e855f954ccEF910778Aff1eb78E</div>
+            </div>
         </div>
-        <div style="font-weight: bold; color: #000;">
-            <a href="#order-form" style="color: blue; margin-right: 15px;">Buy block</a> | 
-            <a href="https://wa.me/8801576940717" target="_blank" style="color: blue;">Contact me</a>
-        </div>
+        <a href="https://x.com/ARCHIVEKAWSAR" target="_blank" class="pay-trigger" style="text-decoration:none; background:#1DA1F2; border-color:#1DA1F2; color:white;">FOLLOW X</a>
     </div>
+</div>
 
-    <div id="canvas-view">
-        <div class="canvas-border" id="capture-area">
-            <canvas id="mainCanvas" width="1000" height="1000"></canvas>
-            <div id="tooltip"></div>
-        </div>
+<div id="canvas-viewport">
+    <div id="canvas-container">
+        <canvas id="mainCanvas" width="5000" height="1000"></canvas>
     </div>
+    <div id="tooltip"></div>
+</div>
 
-    <div class="order-section" id="order-form">
-        <div class="order-box">
-            <h2>ACQUISITION DRAWER</h2>
-            <label>BRAND NAME / DISPLAY NAME</label>
-            <input type="text" id="brand-name" placeholder="Enter brand name">
-            
-            <label>NUMBER OF PLOTS (MINIMUM 20)</label>
-            <input type="number" id="plot-qty" value="20" min="20" oninput="calculate()">
-            
-            <div class="total-price">TOTAL: $<span id="total-val">100</span></div>
-            
-            <button class="buy-btn" onclick="processOrder()">SUBMIT ACQUISITION</button>
-            <p style="font-size: 11px; color: #666; text-align: center; margin-top: 15px;">
-                * 1 Plot = 5x5 Pixels | $5 per Plot
-            </p>
-        </div>
+<div class="info-portals">
+    <div class="portal-card">
+        <h4 style="margin:0 0 10px 0; color:var(--black)">SUBMISSION PROTOCOL</h4>
+        • Complete Payment<br>• Send Screenshot to Support<br>• Provide Logo (5x5 px scale)<br>• Sync Time: 2-4 Hours
     </div>
-
-    <div class="dl-section">
-        <button class="dl-btn" onclick="downloadHD()"><i class="fas fa-camera"></i> DOWNLOAD 4K MAP ARCHIVE</button>
+    <div class="portal-card">
+        <h4 style="margin:0 0 10px 0; color:var(--black)">ELITE BENEFITS</h4>
+        • Lifetime Digital Heritage<br>• Permanent SEO Backlink<br>• Global 4K Synchronization<br>• Zero Maintenance Fees
     </div>
-
-    <footer>
-        <p>© 2026 ARCHIVEKAWSAR. All rights reserved. One-Time Acquisition | Lifetime Preservation.</p>
-    </footer>
 </div>
 
 <script>
     // Firebase Config
     const firebaseConfig = {
         apiKey: "AIzaSyDJbVCF0AkLkCiCwFBc1Ki5PrKxFeYt8_E",
-        authDomain: "milliondollarhomepage2-71ba3.firebaseapp.com",
         databaseURL: "https://milliondollarhomepage2-71ba3-default-rtdb.firebaseio.com",
-        projectId: "milliondollarhomepage2-71ba3",
-        storageBucket: "milliondollarhomepage2-71ba3.firebasestorage.app",
-        messagingSenderId: "895107568682",
-        appId: "1:895107568682:web:d48003f71701005f3d5f53"
     };
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
     const cv = document.getElementById('mainCanvas'), ctx = cv.getContext('2d');
+    const viewport = document.getElementById('canvas-viewport');
+    const container = document.getElementById('canvas-container');
     const tooltip = document.getElementById('tooltip');
-    const blockSize = 5; // ৫ পিক্সেল সাইজ
-    let pixels = {};
 
+    let scale = 0.5, posX = 0, posY = 0;
+    const blockSize = 5;
+
+    // UI Logic
+    function togglePay() { document.getElementById('payMenu').classList.toggle('active'); }
     function copy(t) { navigator.clipboard.writeText(t); alert("Copied!"); }
+    document.getElementById('plot-qty').oninput = function() {
+        if(this.value < 20) this.value = 20;
+        document.getElementById('total-val').innerText = this.value * 5;
+    };
 
-    function calculate() {
-        let qty = document.getElementById('plot-qty').value;
-        if(qty < 20) { document.getElementById('plot-qty').value = 20; qty = 20; }
-        document.getElementById('total-val').innerText = qty * 5;
-    }
-
+    // Render Logic
     function render() {
-        ctx.fillStyle = "#ffffff"; ctx.fillRect(0, 0, 1000, 1000);
-        ctx.strokeStyle = "#F0F0F0"; ctx.lineWidth = 0.5;
-        for(let i=0; i<=1000; i+=blockSize) {
-            ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, 1000); ctx.stroke();
-            ctx.beginPath(); ctx.moveTo(0, i); ctx.lineTo(1000, i); ctx.stroke();
-        }
-        const pArray = Object.values(pixels);
-        document.getElementById('sold-count').innerText = pArray.length;
-        document.getElementById('rem-count').innerText = 40000 - pArray.length;
-
-        pArray.forEach(p => {
-            const id = parseInt(p.plotID) - 1;
-            const x = (id % 200) * blockSize, y = Math.floor(id / 200) * blockSize;
-            let img = new Image(); img.crossOrigin = "anonymous"; img.src = p.imageUrl;
-            img.onload = () => ctx.drawImage(img, x, y, blockSize, blockSize);
+        ctx.fillStyle = "#fff"; ctx.fillRect(0,0,5000,1000);
+        db.ref('pixels').once('value', s => {
+            const data = s.val() || {};
+            document.getElementById('sold-count').innerText = Object.keys(data).length;
+            Object.values(data).forEach(p => {
+                const id = parseInt(p.plotID) - 1;
+                const x = (id % 1000) * blockSize, y = Math.floor(id / 1000) * blockSize;
+                let img = new Image(); img.src = p.imageUrl;
+                img.onload = () => ctx.drawImage(img, x, y, blockSize, blockSize);
+            });
         });
     }
+    render();
 
-    db.ref('pixels').on('value', s => { pixels = s.val() || {}; render(); });
-
-    cv.addEventListener('mousemove', (e) => {
-        const rect = cv.getBoundingClientRect();
-        const x = e.clientX - rect.left, y = e.clientY - rect.top;
-        const id = Math.floor(y/blockSize)*200 + Math.floor(x/blockSize) + 1;
-        let found = false;
-        Object.values(pixels).forEach(p => {
-            if(p.plotID == id) {
-                tooltip.style.display = 'block';
-                tooltip.style.left = (e.pageX + 10) + 'px'; tooltip.style.top = (e.pageY + 10) + 'px';
-                tooltip.innerHTML = `<b>${p.name}</b><br>Plot #${p.plotID}`;
-                found = true;
-            }
-        });
-        if(!found) tooltip.style.display = 'none';
+    // Pan & Zoom System (Desktop + Mobile)
+    let isDragging = false, startX, startY;
+    viewport.addEventListener('mousedown', e => { isDragging = true; startX = e.clientX - posX; startY = e.clientY - posY; viewport.style.cursor = 'grabbing'; });
+    window.addEventListener('mouseup', () => { isDragging = false; viewport.style.cursor = 'grab'; });
+    window.addEventListener('mousemove', e => {
+        if(!isDragging) return;
+        posX = e.clientX - startX; posY = e.clientY - startY;
+        updateTransform();
     });
 
-    cv.addEventListener('click', (e) => {
-        const rect = cv.getBoundingClientRect();
-        const x = e.clientX - rect.left, y = e.clientY - rect.top;
-        const id = Math.floor(y/blockSize)*200 + Math.floor(x/blockSize) + 1;
-        Object.values(pixels).forEach(p => {
-            if(p.plotID == id && p.link) window.open(p.link, '_blank');
-        });
+    viewport.addEventListener('wheel', e => {
+        e.preventDefault();
+        const delta = e.deltaY > 0 ? 0.9 : 1.1;
+        const newScale = scale * delta;
+        if(newScale > 0.2 && newScale < 5) { // জুম লিমিট
+            scale = newScale;
+            updateTransform();
+        }
     });
+
+    // Touch support (Mobile Zoom/Pan)
+    let initialDist = null;
+    viewport.addEventListener('touchstart', e => {
+        if(e.touches.length === 1) {
+            isDragging = true; 
+            startX = e.touches[0].clientX - posX; 
+            startY = e.touches[0].clientY - posY;
+        } else if(e.touches.length === 2) {
+            initialDist = Math.hypot(e.touches[0].pageX - e.touches[1].pageX, e.touches[0].pageY - e.touches[1].pageY);
+        }
+    });
+    viewport.addEventListener('touchmove', e => {
+        if(e.touches.length === 1 && isDragging) {
+            posX = e.touches[0].clientX - startX; 
+            posY = e.touches[0].clientY - startY;
+        } else if(e.touches.length === 2) {
+            let dist = Math.hypot(e.touches[0].pageX - e.touches[1].pageX, e.touches[0].pageY - e.touches[1].pageY);
+            let delta = dist / initialDist;
+            let newScale = scale * delta;
+            if(newScale > 0.2 && newScale < 5) scale = newScale;
+            initialDist = dist;
+        }
+        updateTransform();
+    });
+
+    function updateTransform() {
+        container.style.transform = `translate(${posX}px, ${posY}px) scale(${scale})`;
+    }
 
     function processOrder() {
         const name = document.getElementById('brand-name').value;
         const qty = document.getElementById('plot-qty').value;
-        if(!name || qty < 20) return alert("Enter Brand Name & Min 20 Plots!");
+        if(!name) return alert("Enter Brand Name!");
         
-        confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
-        
+        confetti();
         setTimeout(() => {
-            const msg = encodeURIComponent(`Hello! I want to acquire plots.\nBrand: ${name}\nQty: ${qty}\nTotal: $${qty*5}`);
-            window.location.href = "https://wa.me/8801576940717?text=" + msg;
+            const msg = encodeURIComponent(`I completed payment.\nBrand: ${name}\nPlots: ${qty}\nTotal: $${qty*5}`);
+            window.open("https://wa.me/8801576940717?text=" + msg, "_blank");
         }, 1500);
-    }
-
-    function downloadHD() {
-        const area = document.getElementById('capture-area');
-        html2canvas(area, { scale: 4 }).then(canvas => {
-            const link = document.createElement('a');
-            link.download = 'MillionDollar_2.0_Archive.png';
-            link.href = canvas.toDataURL();
-            link.click();
-        });
     }
 </script>
 
