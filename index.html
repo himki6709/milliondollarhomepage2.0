@@ -13,88 +13,88 @@
     <style>
         :root { --gold: #FCD535; --black: #0B0E11; --dark: #1E2329; --ash: #848e9c; }
         
-        body { margin: 0; background: #222; font-family: 'Segoe UI', sans-serif; text-align: center; color: #fff; }
-        #main-wrapper { width: 1200px; margin: 0 auto; background: #fff; color: #000; box-shadow: 0 0 50px rgba(0,0,0,0.5); }
+        body { margin: 0; background: #222; font-family: 'Segoe UI', sans-serif; text-align: center; color: #000; overflow-x: hidden; }
+        #main-wrapper { width: 1200px; margin: 0 auto; background: #fff; position: relative; box-shadow: 0 0 50px rgba(0,0,0,0.5); min-height: 100vh; }
 
-        /* Header Area */
-        #header-area { padding: 30px 20px; border-bottom: 2px solid var(--black); }
-        .stats-row { display: flex; justify-content: center; gap: 30px; font-weight: bold; font-size: 16px; color: #555; margin-bottom: 20px; }
+        /* Header & Navigation */
+        #header-area { padding: 40px 20px; border-bottom: 2px solid var(--black); background: #fff; position: relative; }
+        .twitter-corner { position: absolute; top: 20px; right: 20px; font-size: 26px; color: #1DA1F2; text-decoration: none; transition: 0.3s; }
+        .twitter-corner:hover { transform: scale(1.1); }
         
-        /* Order Form Area */
-        .order-container { background: var(--dark); padding: 25px; border-radius: 10px; display: inline-block; width: 500px; color: #fff; margin-bottom: 25px; border: 1px solid var(--gold); }
-        .order-container input { width: 45%; padding: 12px; margin: 5px; border-radius: 5px; border: 1px solid #444; background: #2b3139; color: #fff; }
-        .buy-btn { background: var(--gold); color: #000; padding: 12px; border: none; font-weight: bold; cursor: pointer; border-radius: 5px; width: 96%; font-size: 18px; margin-top: 10px; }
+        .stats-row { display: flex; justify-content: center; gap: 30px; font-weight: bold; font-size: 16px; color: #555; margin: 20px 0; }
+        
+        /* Portal Grid */
+        .portal-grid { display: flex; justify-content: center; gap: 20px; margin-bottom: 30px; }
+        .portal-btn { background: var(--dark); color: #fff; padding: 15px 30px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: 0.3s; border: 1px solid var(--gold); font-weight: 600; }
+        .portal-btn:hover { background: #000; transform: translateY(-2px); }
+        .portal-btn i { color: var(--gold); font-size: 20px; }
 
-        /* Payment Dropdown */
-        .pay-gate { position: relative; display: inline-block; margin-bottom: 20px; }
-        .pay-trigger { background: var(--black); color: var(--gold); padding: 12px 25px; border: 2px solid var(--gold); border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 14px; }
-        .pay-menu { display: none; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); background: #fff; border: 1px solid #ccc; box-shadow: 0 4px 15px rgba(0,0,0,0.3); width: 350px; border-radius: 8px; z-index: 1000; padding: 10px; margin-top: 5px; }
-        .pay-menu.active { display: block; }
-        .pay-item { color: #333; font-size: 12px; padding: 12px; border-bottom: 1px solid #eee; cursor: pointer; text-align: left; }
-        .pay-item:hover { background: #f9f9f9; }
-        .pay-item b { color: #000; display: block; margin-bottom: 3px; }
+        /* Payment & Main Buttons */
+        .action-bar { margin: 20px 0; }
+        .main-btn { background: var(--black); color: var(--gold); padding: 12px 25px; border: 2px solid var(--gold); border-radius: 5px; cursor: pointer; font-weight: bold; margin: 0 10px; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; }
+        .main-btn:hover { background: #333; }
+
+        /* Modals */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 2000; justify-content: center; align-items: center; }
+        .modal-content { background: #fff; padding: 35px; border-radius: 12px; width: 450px; text-align: left; position: relative; border-top: 6px solid var(--gold); box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
+        .close-modal { position: absolute; top: 15px; right: 20px; font-size: 24px; cursor: pointer; color: #999; }
+        .close-modal:hover { color: #000; }
+        .modal-content h3 { margin-top: 0; color: var(--black); border-bottom: 2px solid #f0f0f0; padding-bottom: 12px; margin-bottom: 20px; }
+        
+        /* Order Form */
+        .order-form label { display: block; font-size: 11px; font-weight: bold; color: #666; margin-bottom: 5px; text-transform: uppercase; }
+        .order-form input { width: 93%; padding: 14px; margin-bottom: 20px; border: 1px solid #ddd; border-radius: 6px; font-size: 16px; background: #fdfdfd; }
+        .submit-btn { width: 100%; padding: 16px; background: var(--gold); color: #000; border: none; font-weight: 800; border-radius: 6px; cursor: pointer; font-size: 18px; transition: 0.3s; }
+        .submit-btn:hover { background: #e2be28; }
 
         /* Canvas Mapping */
-        #canvas-section { background: #888; padding: 40px 0; display: flex; justify-content: center; }
-        .canvas-border { border: 5px solid #000; background: #fff; line-height: 0; position: relative; }
+        #canvas-section { background: #888; padding: 50px 0; display: flex; justify-content: center; }
+        .canvas-border { border: 8px solid #000; background: #fff; position: relative; box-shadow: 0 20px 50px rgba(0,0,0,0.4); }
         canvas { display: block; image-rendering: pixelated; }
 
-        /* Portal Info */
-        .info-portals { display: flex; gap: 20px; padding: 30px; background: #f4f4f4; justify-content: center; border-top: 1px solid #ddd; }
-        .portal-card { background: #fff; color: #333; padding: 20px; border-left: 5px solid var(--gold); width: 400px; text-align: left; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
-        .portal-card h4 { margin: 0 0 10px 0; color: #000; text-transform: uppercase; }
+        /* Floating WhatsApp (Black & White) */
+        .wa-float { position: fixed; bottom: 35px; right: 35px; background: #000; color: #fff; width: 65px; height: 65px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 38px; box-shadow: 0 5px 20px rgba(0,0,0,0.3); border: 2px solid #fff; text-decoration: none; z-index: 3000; transition: 0.4s; }
+        .wa-float:hover { transform: scale(1.1) rotate(10deg); background: #333; }
 
-        #tooltip { position: absolute; background: rgba(0,0,0,0.85); color: #fff; padding: 8px 12px; border-radius: 4px; font-size: 12px; display: none; pointer-events: none; z-index: 999; }
-        footer { padding: 30px; background: #fff; color: #777; font-size: 12px; }
+        #tooltip { position: absolute; background: rgba(0,0,0,0.9); color: #fff; padding: 10px 15px; border-radius: 5px; font-size: 13px; display: none; pointer-events: none; z-index: 999; border: 1px solid var(--gold); }
+        footer { padding: 50px; color: #999; font-size: 13px; background: #fff; }
     </style>
 </head>
 <body>
 
 <div id="main-wrapper">
+    <a href="https://x.com/ARCHIVEKAWSAR" target="_blank" class="twitter-corner">
+        <i class="fab fa-twitter"></i>
+    </a>
+
     <div id="header-area">
-        <h1 style="margin:0 0 15px 0;">THE MILLION DOLLAR HOMEPAGE 2.0</h1>
+        <h1 style="font-size: 36px; letter-spacing: -1.5px; margin-bottom: 5px;">THE MILLION DOLLAR HOMEPAGE 2.0</h1>
+        <p style="color: #888; margin: 0; font-size: 14px;">PRESERVING DIGITAL HISTORY, ONE PLOT AT A TIME.</p>
         
         <div class="stats-row">
             <span>TOTAL PLOTS: 100,000</span>
-            <span style="color:red;">CLAIMED: <span id="sold-count">0</span></span>
-            <span style="color:green;">VACANT: <span id="rem-count">100,000</span></span>
+            <span style="color:#d93025;">CLAIMED: <span id="sold-count">0</span></span>
+            <span style="color: #28a745;">VACANT: <span id="rem-count">100,000</span></span>
         </div>
 
-        <div class="order-container">
-            <input type="text" id="brand-name" placeholder="Enter Brand Name">
-            <input type="number" id="plot-qty" value="20" min="20" placeholder="Qty">
-            <div style="margin: 10px 0; font-size: 22px; color: var(--gold); font-weight: bold;">
-                Total: $<span id="total-val">100</span>
+        <div class="portal-grid">
+            <div class="portal-btn" onclick="openModal('protocolModal')">
+                <i class="fas fa-file-contract"></i> Protocol
             </div>
-            <button class="buy-btn" onclick="processOrder()">SUBMIT ACQUISITION</button>
-        </div>
-
-        <br>
-        <div class="pay-gate">
-            <button class="pay-trigger" onclick="togglePay()">PAYMENT GATEWAY <i class="fas fa-chevron-down"></i></button>
-            <div class="pay-menu" id="payMenu">
-                <div class="pay-item" onclick="copy('912221034')"><b>BINANCE ID (Click to Copy)</b> 912221034</div>
-                <div class="pay-item" onclick="copy('TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6')"><b>USDT TRC20 (Click to Copy)</b> TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6</div>
-                <div class="pay-item" onclick="copy('0x443792A4884e8e855f954ccEF910778Aff1eb78E')"><b>METAMASK ETH/BNB (Click to Copy)</b> 0x443792A4884e8e855f954ccEF910778Aff1eb78E</div>
+            <div class="portal-btn" onclick="openModal('benefitModal')">
+                <i class="fas fa-gem"></i> Benefits
             </div>
         </div>
-        <a href="https://x.com/ARCHIVEKAWSAR" target="_blank" class="pay-trigger" style="text-decoration:none; background:#1DA1F2; border-color:#1DA1F2; color:white; margin-left: 10px;">FOLLOW ON X</a>
-    </div>
 
-    <div class="info-portals">
-        <div class="portal-card">
-            <h4><i class="fas fa-tasks"></i> Protocol</h4>
-            • Complete payment via Gateway<br>
-            • Save screenshot of transaction<br>
-            • Submit assets (Logo 5x5 px & Link)<br>
-            • Verification: 2-4 Hours
+        <div class="action-bar">
+            <button class="main-btn" onclick="openModal('orderModal')"><i class="fas fa-shopping-cart"></i> BUY PLOT</button>
+            <button class="main-btn" onclick="togglePay()"><i class="fas fa-wallet"></i> PAYMENT GATEWAY</button>
         </div>
-        <div class="portal-card">
-            <h4><i class="fas fa-shield-alt"></i> Benefits</h4>
-            • Lifetime Digital Heritage<br>
-            • One-time payment (No renewal fees)<br>
-            • Permanent Do-follow Backlink<br>
-            • High-speed 4K global sync
+
+        <div id="payMenu" style="display:none; margin-top:15px; background:#fdfdfd; padding:20px; border-radius:10px; display:inline-block; border:1px solid #eee; text-align:left; box-shadow: 0 5px 15px rgba(0,0,0,0.05);">
+            <div style="cursor:pointer; margin-bottom:12px; font-size:13px;" onclick="copy('912221034')"><b>Binance ID:</b> 912221034 <i class="far fa-copy" style="margin-left:5px; color:var(--gold);"></i></div>
+            <div style="cursor:pointer; margin-bottom:12px; font-size:13px;" onclick="copy('TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6')"><b>USDT (TRC20):</b> TTapBkTq...FmR8Ws6 <i class="far fa-copy" style="margin-left:5px; color:var(--gold);"></i></div>
+            <div style="cursor:pointer; font-size:13px;" onclick="copy('0x443792A4884e8e855f954ccEF910778Aff1eb78E')"><b>MetaMask:</b> 0x443792...eb78E <i class="far fa-copy" style="margin-left:5px; color:var(--gold);"></i></div>
         </div>
     </div>
 
@@ -105,21 +105,63 @@
         </div>
     </div>
 
+    <div id="protocolModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal('protocolModal')">×</span>
+            <h3><i class="fas fa-tasks"></i> Acquisition Protocol</h3>
+            <p>• Select payment method from Gateway.</p>
+            <p>• Complete transaction and take a screenshot.</p>
+            <p>• Prepare your High-Quality Brand Asset (5x5 scale).</p>
+            <p>• Click the WhatsApp icon to submit details.</p>
+            <p>• Live sync completed within 2-4 hours post-verification.</p>
+        </div>
+    </div>
+
+    <div id="benefitModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal('benefitModal')">×</span>
+            <h3><i class="fas fa-gem"></i> Elite Benefits</h3>
+            <p>• <b>Lifetime Legacy:</b> Your brand remains forever.</p>
+            <p>• <b>SEO Growth:</b> Permanent Do-follow backlink.</p>
+            <p>• <b>Ownership:</b> No annual renewal or hosting fees.</p>
+            <p>• <b>Global Sync:</b> Instant visibility in 4K resolution.</p>
+        </div>
+    </div>
+
+    <div id="orderModal" class="modal">
+        <div class="modal-content order-form">
+            <span class="close-modal" onclick="closeModal('orderModal')">×</span>
+            <h3><i class="fas fa-cart-plus"></i> Reserve Your Plot</h3>
+            <label>Brand / Display Name</label>
+            <input type="text" id="brand-name" placeholder="e.g. Google, K-Archive">
+            
+            <label>Plot Quantity (Minimum 100)</label>
+            <input type="number" id="plot-qty" value="100" min="100" oninput="updateTotal()">
+            
+            <div style="text-align:center; padding:15px; background:#f9f9f9; border-radius:8px; margin-bottom:20px;">
+                <span style="display:block; font-size:12px; color:#999; margin-bottom:5px;">Estimated Investment</span>
+                <span style="font-size:28px; font-weight:900; color:#000;">$<span id="total-val">500</span></span>
+            </div>
+            
+            <button class="submit-btn" onclick="processOrder()">SUBMIT ACQUISITION</button>
+            <p style="text-align:center; font-size:11px; color:#999; margin-top:10px;">* $5 per Plot (5x5 Pixels)</p>
+        </div>
+    </div>
+
+    <a href="https://wa.me/8801576940717" target="_blank" class="wa-float">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
     <footer>
-        <p>© 2026 ARCHIVEKAWSAR. All rights reserved. One-Time Acquisition | Lifetime Preservation.</p>
+        <p>© 2026 ARCHIVEKAWSAR. All rights reserved. One-Time Acquisition | Lifetime Heritage.</p>
     </footer>
 </div>
 
 <script>
-    // Firebase Config
+    // Firebase Setup
     const firebaseConfig = {
         apiKey: "AIzaSyDJbVCF0AkLkCiCwFBc1Ki5PrKxFeYt8_E",
-        authDomain: "milliondollarhomepage2-71ba3.firebaseapp.com",
         databaseURL: "https://milliondollarhomepage2-71ba3-default-rtdb.firebaseio.com",
-        projectId: "milliondollarhomepage2-71ba3",
-        storageBucket: "milliondollarhomepage2-71ba3.firebasestorage.app",
-        messagingSenderId: "895107568682",
-        appId: "1:895107568682:web:d48003f71701005f3d5f53"
     };
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
@@ -129,14 +171,22 @@
     const blockSize = 5; 
     let pixels = {};
 
-    function togglePay() { document.getElementById('payMenu').classList.toggle('active'); }
-    function copy(t) { navigator.clipboard.writeText(t); alert("Address Copied!"); }
+    // UI Logic
+    function openModal(id) { document.getElementById(id).style.display = 'flex'; }
+    function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+    function togglePay() { 
+        const menu = document.getElementById('payMenu');
+        menu.style.display = menu.style.display === 'none' ? 'inline-block' : 'none';
+    }
+    function copy(t) { navigator.clipboard.writeText(t); alert("Address Copied to Clipboard!"); }
+    
+    function updateTotal() {
+        let q = document.getElementById('plot-qty').value;
+        if(q < 100) q = 100; // সর্বনিম্ন ১০০ সেট করা হয়েছে
+        document.getElementById('total-val').innerText = q * 5; // $৫ প্রতি প্লট
+    }
 
-    document.getElementById('plot-qty').oninput = function() {
-        if(this.value < 20) this.value = 20;
-        document.getElementById('total-val').innerText = this.value * 5;
-    };
-
+    // Canvas Render Engine
     function render() {
         ctx.fillStyle = "#ffffff"; ctx.fillRect(0, 0, 1000, 1250);
         ctx.strokeStyle = "#F0F0F0"; ctx.lineWidth = 0.5;
@@ -144,11 +194,11 @@
         for(let i=0; i<=1000; i+=blockSize) { ctx.beginPath(); ctx.moveTo(i,0); ctx.lineTo(i,1250); ctx.stroke(); }
         for(let i=0; i<=1250; i+=blockSize) { ctx.beginPath(); ctx.moveTo(0,i); ctx.lineTo(1000,i); ctx.stroke(); }
 
-        const entries = Object.values(pixels);
-        document.getElementById('sold-count').innerText = entries.length;
-        document.getElementById('rem-count').innerText = 100000 - entries.length;
+        const pArray = Object.values(pixels);
+        document.getElementById('sold-count').innerText = pArray.length.toLocaleString();
+        document.getElementById('rem-count').innerText = (100000 - pArray.length).toLocaleString();
 
-        entries.forEach(p => {
+        pArray.forEach(p => {
             const id = parseInt(p.plotID) - 1;
             const x = (id % 200) * blockSize, y = Math.floor(id / 200) * blockSize;
             let img = new Image(); img.crossOrigin = "anonymous"; img.src = p.imageUrl;
@@ -158,6 +208,7 @@
 
     db.ref('pixels').on('value', s => { pixels = s.val() || {}; render(); });
 
+    // Interaction Logic
     cv.addEventListener('mousemove', (e) => {
         const rect = cv.getBoundingClientRect();
         const x = e.clientX - rect.left, y = e.clientY - rect.top;
@@ -167,7 +218,7 @@
             if(p.plotID == id) {
                 tooltip.style.display = 'block';
                 tooltip.style.left = (e.pageX + 15) + 'px'; tooltip.style.top = (e.pageY + 15) + 'px';
-                tooltip.innerHTML = `<strong>${p.name}</strong><br>Plot #${p.plotID}`;
+                tooltip.innerHTML = `<strong>${p.name}</strong><br>Plot ID: #${p.plotID}`;
                 found = true;
             }
         });
@@ -186,15 +237,19 @@
     function processOrder() {
         const name = document.getElementById('brand-name').value;
         const qty = document.getElementById('plot-qty').value;
-        if(!name) return alert("Please enter your Brand Name!");
+        if(!name || qty < 100) return alert("Please enter Brand Name and minimum 100 plots!");
         
-        confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+        confetti({ particleCount: 200, spread: 80, origin: { y: 0.6 } });
         
         setTimeout(() => {
-            const msg = encodeURIComponent(`Hello! I want to acquire plots.\nBrand: ${name}\nQty: ${qty}\nTotal: $${qty*5}`);
+            const msg = encodeURIComponent(`Plot Acquisition Request:\nBrand: ${name}\nQuantity: ${qty}\nTotal Investment: $${qty*5}`);
             window.open("https://wa.me/8801576940717?text=" + msg, "_blank");
+            closeModal('orderModal');
         }, 1500);
     }
+
+    // Modal behavior
+    window.onclick = (e) => { if(e.target.className === 'modal') e.target.style.display = 'none'; };
 </script>
 
 </body>
