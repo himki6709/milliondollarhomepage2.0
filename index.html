@@ -3,139 +3,188 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>THE LITTLE HOUSE | KAWSAR TM</title>
+    <title>12 YEARS LEGACY | THE LITTLE HOUSE</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+
     <style>
-        :root { --gold: #9E7E45; --white: #ffffff; }
+        :root { --gold: #9E7E45; --white: #ffffff; --black: #000; }
         body { margin: 0; background: #000; color: #fff; font-family: 'Times New Roman', serif; overflow-x: hidden; }
 
         /* Navigation */
         .top-nav { position: fixed; top: 0; width: 100%; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; z-index: 1000; background: rgba(0,0,0,0.95); border-bottom: 1px solid #222; box-sizing: border-box; }
         .logo { font-size: 18px; letter-spacing: 3px; font-weight: bold; text-transform: uppercase; }
-        .logo span { font-size: 11px; color: var(--gold); }
-        .nav-btn { background: none; border: 1px solid #444; color: #fff; padding: 10px 18px; font-size: 10px; letter-spacing: 2px; cursor: pointer; text-transform: uppercase; transition: 0.3s; }
-        .buy-plot-btn { border-color: var(--gold) !important; color: #000 !important; background: var(--gold) !important; font-weight: bold; }
-
-        /* Header */
-        .header-area { text-align: center; padding-top: 130px; margin-bottom: 30px; }
-        .section-name { 
-            font-size: clamp(35px, 8vw, 80px); letter-spacing: 10px; font-weight: 900; 
-            background: linear-gradient(90deg, #FFD700, #FFB800, #FF8C00, #FF4500, #FF0055, #D400FF, #7A00FF, #0070FF, #00C3FF, #00FFCC); 
-            background-size: 300% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; 
-            animation: fullColorShift 8s linear infinite; text-transform: uppercase;
-        }
-        @keyframes fullColorShift { 0% { background-position: 0% center; } 100% { background-position: 300% center; } }
-        .sub-slogan { font-size: 14px; letter-spacing: 5px; color: var(--gold); margin-top: 10px; }
-
-        /* Canvas */
-        .map-wrapper { width: 95%; max-width: 1200px; margin: 0 auto; border: 1px solid #222; background: #050505; height: 600px; overflow: auto; position: relative; }
-        canvas { background-image: linear-gradient(#111 1px, transparent 1px), linear-gradient(90deg, #111 1px, transparent 1px); background-size: 20px 20px; }
-
-        /* Support & Social Icons */
-        .icon-box { position: fixed; bottom: 30px; z-index: 5000; display: flex; align-items: center; justify-content: center; width: 50px; height: 50px; border-radius: 50%; cursor: pointer; transition: 0.3s; }
-        .support-icon { left: 30px; background: var(--gold); color: #fff; }
-        .twitter-icon { right: 30px; background: #1DA1F2; color: #fff; }
-        .icon-box:hover { transform: scale(1.1); }
-
-        /* Footer */
-        .footer-container { text-align: center; padding: 60px 20px; border-top: 1px solid #222; margin-top: 50px; }
-        .footer-text { color: #555; font-size: 11px; letter-spacing: 1.5px; line-height: 1.8; max-width: 800px; margin: 0 auto; text-transform: uppercase; }
-
-        /* Modals */
-        .modal { position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.98); display:none; align-items:center; justify-content:center; z-index:9000; padding: 15px; }
-        .card { background: #fff; color:#000; padding:40px; width:100%; max-width:500px; text-align:center; border-radius: 4px; }
-        .premium-btn { background: #000; color: #fff; width: 100%; padding: 18px; border: none; font-weight: bold; letter-spacing: 2px; cursor: pointer; text-transform: uppercase; margin-top: 10px; }
-        .info-list { text-align: left; background: #f9f9f9; padding: 20px; margin: 20px 0; border-left: 4px solid var(--gold); font-size: 13px; line-height: 1.6; }
+        .logo span { font-size: 11px; color: var(--gold); display: block; }
         
-        input { width: 100%; padding: 15px; margin: 10px 0; border: 1px solid #ddd; box-sizing: border-box; text-align: center; }
+        .nav-right { display: flex; gap: 10px; }
+        .nav-btn { background: none; border: 1px solid #444; color: #fff; padding: 10px 15px; font-size: 10px; letter-spacing: 2px; cursor: pointer; text-transform: uppercase; transition: 0.3s; }
+        .buy-btn { background: var(--gold) !important; color: #000 !important; font-weight: bold; border: none; }
 
-        @media (max-width: 768px) { .top-nav { padding: 10px; } .header-area { padding-top: 160px; } }
+        /* Header Area */
+        .header-area { text-align: center; padding-top: 120px; margin-bottom: 40px; }
+        .main-title { 
+            font-size: clamp(30px, 8vw, 60px); letter-spacing: 5px; font-weight: 900;
+            background: linear-gradient(90deg, #FFD700, #FF0055, #D400FF, #00C3FF, #00FFCC);
+            background-size: 300% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            animation: colorShift 8s linear infinite; text-transform: uppercase;
+        }
+        @keyframes colorShift { to { background-position: 300% center; } }
+
+        /* Grid Container */
+        .canvas-wrapper { 
+            width: 95%; max-width: 1300px; margin: 0 auto; 
+            background: #050505; border: 1px solid #222; 
+            padding: 10px; overflow: auto; height: 70vh;
+            display: grid;
+            grid-template-columns: repeat(60, 20px); /* ৬০ কলাম */
+            gap: 1px; /* ১ পিক্সেল গ্যাপ */
+            justify-content: center;
+        }
+
+        /* Pixel/Plot Styles */
+        .plot {
+            width: 20px;
+            height: 20px;
+            background: #111;
+            cursor: pointer;
+            position: relative;
+            transition: 0.2s;
+        }
+        .plot:hover { transform: scale(1.3); z-index: 10; border: 1px solid #fff; }
+
+        /* Tooltip */
+        .tooltip {
+            position: fixed; background: #fff; color: #000; padding: 8px 12px;
+            font-size: 11px; pointer-events: none; display: none; z-index: 5000;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3); border-radius: 2px;
+        }
+
+        /* Modal */
+        .modal { position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.98); display:none; align-items:center; justify-content:center; z-index:9999; }
+        .card { background: #fff; color:#000; padding:40px; width:90%; max-width:400px; text-align:center; }
+        input, select { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; }
+        .color-preview { height: 40px; width: 100%; border: 1px solid #000; margin: 10px 0; }
     </style>
 </head>
 <body>
 
     <div class="top-nav">
-        <div class="logo">THE LITTLE HOUSE <span>KAWSAR <small>TM</small></span></div>
-        <div class="nav-left">
-            <button class="nav-btn" onclick="openModal('pay-modal')">PAYMENT GATEWAY</button>
-            <button class="nav-btn buy-plot-btn" onclick="openModal('order-modal')">BUY PLOTS</button>
+        <div class="logo">12 YEARS LEGACY <span>KAWSAR <small>TM</small></span></div>
+        <div class="nav-right">
+            <button class="nav-btn" onclick="location.href='dashboard.html'">TRACK</button>
+            <button class="nav-btn buy-btn" onclick="openModal()">RESERVE PLOT</button>
         </div>
     </div>
 
     <div class="header-area">
-        <h1 class="section-name">THE LITTLE HOUSE</h1>
-        <div class="sub-slogan">Own a piece of internet history!</div>
+        <h1 class="main-title">4,380 Days of History</h1>
+        <p style="color: var(--gold); letter-spacing: 3px; font-size: 12px;">DESCENDING PRICE SYSTEM: $4380 TO $1</p>
     </div>
 
-    <div class="map-wrapper">
-        <canvas id="mainCanvas" width="4000" height="2500"></canvas>
-    </div>
-
-    <div class="icon-box support-icon" onclick="openModal('support-modal')"><i class="fas fa-headset"></i></div>
-    <div class="icon-box twitter-icon" onclick="window.open('https://twitter.com/your_profile', '_blank')"><i class="fab fa-twitter"></i></div>
-
-    <div class="footer-container">
-        <p class="footer-text">
-            <b>THE LITTLE HOUSE | KAWSAR TM</b> © 2026. All rights reserved.<br>
-            ইন্টারনেট ইতিহাসের এক অনন্য অংশ হিসেবে নিজের জায়গা দখল করুন। প্রতিটি প্লট সীমিত মালিকানার মাধ্যমে ডিজিটাল সংস্কৃতি সংরক্ষণের একটি প্রয়াস।<br>
-            সমস্ত ব্র্যান্ড লোগো তাদের নিজ নিজ মালিকদের ট্রেডমার্ক।
-        </p>
-    </div>
-
-    <div id="order-modal" class="modal">
-        <div class="card">
-            <h2 style="letter-spacing:3px; font-size: 14px; color: var(--gold);">PLOT ACQUISITION</h2>
-            <p style="font-size: 12px; margin-bottom: 20px;">Price: $10 / Plot (Min. 10 Plots)</p>
-            <input type="text" id="brand-name" placeholder="YOUR BRAND NAME">
-            <input type="number" id="plot-qty" placeholder="QUANTITY (MIN 10)" min="10">
-            <button class="premium-btn" onclick="submitOrder()">SUBMIT ORDER</button>
-            <button class="premium-btn" style="background:#555" onclick="closeModals()">BACK TO CANVAS</button>
+    <div class="canvas-wrapper" id="gridContainer">
         </div>
-    </div>
 
-    <div id="support-modal" class="modal">
-        <div class="card">
-            <h2 style="letter-spacing: 3px; color: var(--gold);">CUSTOMER SUPPORT</h2>
-            <div class="info-list">
-                <b>প্রয়োজনীয় তথ্যসমূহ:</b><br>
-                ১. পেমেন্টের স্ক্রিনশট (বাইনান্স/মেটামাস্ক)।<br>
-                ২. হাই-রেজোলিউশন ব্র্যান্ড লোগো (PNG/JPG)।<br>
-                ৩. আপনার ওয়েবসাইটের লিঙ্ক (যদি থাকে)।<br>
-                ৪. আপনার পছন্দের ব্র্যান্ড নাম।
-            </div>
-            <button class="premium-btn" onclick="window.open('https://wa.me/8801576940717', '_blank')">CHAT CUSTOMER SUPPORT</button>
-            <button class="premium-btn" style="background:#555" onclick="closeModals()">BACK TO CANVAS</button>
-        </div>
-    </div>
+    <div class="tooltip" id="plotTooltip"></div>
 
-    <div id="pay-modal" class="modal">
+    <div id="buy-modal" class="modal">
         <div class="card">
-            <h2 style="letter-spacing: 3px; margin-bottom: 20px;">PAYMENT GATEWAY</h2>
-            <div style="text-align: left; background: #f4f4f4; padding: 15px; margin-bottom: 10px; cursor: pointer;" onclick="copy('0x443792A4884e8e855f954ccEF910778Aff1eb78E')">
-                <small style="color: #888;">METAMASK / TRUST WALLET</small><br>
-                <code style="font-size: 11px;">0x443792A4884e8e855f954ccEF910778Aff1eb78E</code>
-            </div>
-            <button class="premium-btn" onclick="closeModals()">CLOSE</button>
+            <h2 style="font-size: 16px; letter-spacing: 2px;">ACQUIRE PLOT</h2>
+            <p id="selectedPlotInfo" style="font-size: 12px; color: #666;"></p>
+            <input type="text" id="brandName" placeholder="BRAND NAME">
+            <label style="font-size: 10px; display: block; text-align: left;">PICK YOUR RGB SHADE:</label>
+            <input type="color" id="plotColor" value="#9E7E45" onchange="updatePreview(this.value)">
+            <div class="color-preview" id="cp"></div>
+            <button class="nav-btn buy-btn" style="width:100%; margin-top:10px;" onclick="submitRequest()">SEND REQUEST</button>
+            <button class="nav-btn" style="width:100%; margin-top:5px; color:#000;" onclick="closeModal()">CANCEL</button>
         </div>
     </div>
 
     <script>
-        const canvas = document.getElementById('mainCanvas');
-        const ctx = canvas.getContext('2d');
+        // Firebase Config
+        const firebaseConfig = {
+            apiKey: "AIzaSyDJbVCF0AkLkCiCwFBc1Ki5PrKxFeYt8_E",
+            authDomain: "milliondollarhomepage2-71ba3.firebaseapp.com",
+            databaseURL: "https://milliondollarhomepage2-71ba3-default-rtdb.firebaseio.com",
+            projectId: "milliondollarhomepage2-71ba3",
+            storageBucket: "milliondollarhomepage2-71ba3.firebasestorage.app",
+            messagingSenderId: "895107568682",
+            appId: "1:895107568682:web:d48003f71701005f3d5f53"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
 
-        function openModal(id) { document.getElementById(id).style.display = 'flex'; }
-        function closeModals() { document.querySelectorAll('.modal').forEach(m => m.style.display = 'none'); }
-        function copy(t) { navigator.clipboard.writeText(t); alert("Copied!"); }
+        const totalPlots = 4380;
+        const grid = document.getElementById('gridContainer');
+        const tooltip = document.getElementById('plotTooltip');
+        let currentSelectedID = null;
 
-        function submitOrder() {
-            const qty = document.getElementById('plot-qty').value;
-            if(qty < 10) return alert("Minimum order 10 plots required.");
-            confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
-            alert("Order Submitted! Please contact support for activation.");
-            closeModals();
+        // Generate Plots
+        for (let i = 1; i <= totalPlots; i++) {
+            const plot = document.createElement('div');
+            plot.className = 'plot';
+            plot.id = 'plot-' + i;
+            const price = totalPlots - (i - 1);
+            
+            plot.onmouseover = (e) => {
+                tooltip.style.display = 'block';
+                tooltip.innerHTML = `<strong>Plot #${i}</strong><br>Price: $${price}<br>Status: Vacant`;
+                tooltip.style.left = (e.clientX + 15) + 'px';
+                tooltip.style.top = (e.clientY + 15) + 'px';
+            };
+            plot.onmouseout = () => tooltip.style.display = 'none';
+            plot.onclick = () => openModal(i, price);
+            
+            grid.appendChild(plot);
         }
+
+        function openModal(id, price) {
+            if(!id) return;
+            currentSelectedID = id;
+            document.getElementById('buy-modal').style.display = 'flex';
+            document.getElementById('selectedPlotInfo').innerText = `Plot #${id} | Current Price: $${price}`;
+            updatePreview("#9E7E45");
+        }
+
+        function closeModal() { document.getElementById('buy-modal').style.display = 'none'; }
+        function updatePreview(c) { document.getElementById('cp').style.background = c; }
+
+        function submitRequest() {
+            const name = document.getElementById('brandName').value;
+            const color = document.getElementById('plotColor').value;
+            if(!name) return alert("Enter Brand Name");
+
+            db.ref('orders/' + currentSelectedID).set({
+                plotID: currentSelectedID,
+                name: name,
+                color: color,
+                status: 'pending'
+            }).then(() => {
+                confetti({ particleCount: 100, spread: 70 });
+                alert("Order Sent! Contact Support with Plot ID #" + currentSelectedID);
+                closeModal();
+            });
+        }
+
+        // Live Load Data
+        db.ref('pixels').on('value', snap => {
+            const data = snap.val();
+            if(!data) return;
+            Object.values(data).forEach(p => {
+                const el = document.getElementById('plot-' + p.plotID);
+                if(el) {
+                    el.style.background = p.color;
+                    el.onmouseover = (e) => {
+                        tooltip.style.display = 'block';
+                        tooltip.innerHTML = `<strong>${p.name}</strong><br>Plot #${p.plotID}<br>Owned Heritage`;
+                        tooltip.style.left = (e.clientX + 15) + 'px';
+                        tooltip.style.top = (e.clientY + 15) + 'px';
+                    };
+                }
+            });
+        });
     </script>
 </body>
 </html>
