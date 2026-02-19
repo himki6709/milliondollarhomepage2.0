@@ -1,14 +1,13 @@
-// Firebase Setup
-const firebaseConfig = { databaseURL: "https://milliondollarhomepage2-71ba3-default-rtdb.firebaseio.com" };
-firebase.initializeApp(firebaseConfig);
+// Firebase Init
+firebase.initializeApp({ databaseURL: "https://milliondollarhomepage2-71ba3-default-rtdb.firebaseio.com" });
 const db = firebase.database();
 
 const grid = document.getElementById('capture-area');
-const totalPlots = 4380;
+const totalPlots = 2555;
 const perRow = 12;
 const totalRows = Math.ceil(totalPlots / perRow);
 
-// Smooth Custom Cursor logic
+// Custom Cursor
 const dot = document.getElementById('cursor-dot');
 const outline = document.getElementById('cursor-outline');
 document.addEventListener('mousemove', (e) => {
@@ -16,30 +15,28 @@ document.addEventListener('mousemove', (e) => {
     outline.style.left = e.clientX + 'px'; outline.style.top = e.clientY + 'px';
 });
 
-// Generate Plots
-function loadPlots() {
+// Load 2555 Plots
+function generateGrid() {
     for (let i = 1; i <= totalPlots; i++) {
         const plot = document.createElement('div');
         plot.className = 'plot';
         plot.id = 'plot-' + i;
         
-        // Row based color logic (Smooth spectrum)
         const rowNum = Math.floor((i - 1) / perRow);
         const hue = (rowNum * 360 / totalRows);
-        const color = `hsl(${hue}, 70%, 50%)`;
+        const color = `hsl(${hue}, 80%, 50%)`;
 
         plot.innerHTML = `<span class="p-id">#${i}</span><span class="p-price">$${i}</span>`;
 
-        // Interactive hover effect
         plot.onmouseover = () => {
-            plot.style.boxShadow = `0 0 40px ${color}`;
             plot.style.borderColor = color;
+            plot.style.boxShadow = `0 0 35px ${color}`;
             plot.querySelector('.p-price').style.color = "#fff";
         };
         plot.onmouseout = () => {
-            plot.style.boxShadow = "none";
             plot.style.borderColor = "#1a1a1a";
-            plot.querySelector('.p-price').style.color = "#888";
+            plot.style.boxShadow = "none";
+            plot.querySelector('.p-price').style.color = "#777";
         };
         
         plot.onclick = () => toggleDrawer();
@@ -53,21 +50,21 @@ function searchPlot() {
     if(target) {
         target.scrollIntoView({ behavior: 'smooth', block: 'center' });
         target.style.borderColor = "#fff";
-        target.style.transform = "scale(1.3)";
+        target.style.transform = "scale(1.2)";
         confetti({ particleCount: 150 });
     }
 }
 
-function toggleDrawer() { document.getElementById('drawer').classList.toggle('open'); }
-function copy(t) { navigator.clipboard.writeText(t); alert("Copied to clipboard"); }
+function toggleDrawer() { document.getElementById('payment-drawer') ? document.getElementById('payment-drawer').classList.toggle('open') : document.getElementById('drawer').classList.toggle('open'); }
+function copy(t) { navigator.clipboard.writeText(t); alert("Address Copied!"); }
 
 function downloadHDMap() {
     html2canvas(grid, { scale: 1, backgroundColor: "#000" }).then(canvas => {
         const link = document.createElement('a');
-        link.download = 'K12_Archive_HD.png';
+        link.download = 'K12_Archive_Map.png';
         link.href = canvas.toDataURL();
         link.click();
     });
 }
 
-loadPlots();
+generateGrid();
