@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>12 YEARS LEGACY | THE SOVEREIGN ESTATE</title>
+    <title>K12 | THE SOVEREIGN ESTATE</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
@@ -13,55 +13,75 @@
 </head>
 <body>
 
+    <div id="cursor-dot"></div>
+    <div id="cursor-outline"></div>
+
     <header class="header">
-        <div class="logo">12 YEARS LEGACY <span class="owner-tag">OWNED BY KAWSAR</span></div>
+        <div class="header-left">
+            <div class="brand-logo">K12</div>
+            <div class="social-icons">
+                <a href="https://wa.me/8801576940717" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                <a href="https://x.com/ARCHIVEKAWSAR" title="Twitter"><i class="fab fa-twitter"></i></a>
+            </div>
+        </div>
         
-        <div class="nav-actions">
-            <input type="number" id="plotIDSearch" class="search-input" placeholder="Search Plot (1-4380)">
-            <button onclick="searchPlot()" class="btn-icon"><i class="fa fa-search"></i></button>
-            <button onclick="downloadHDMap()" class="btn-outline">DOWNLOAD MAP</button>
-            <button onclick="toggleDrawer()" class="btn-gold">ACQUISITION</button>
+        <div class="nav-right">
+            <input type="number" id="plotIDSearch" class="search-input" placeholder="SEARCH PLOT ID">
+            <button onclick="searchPlot()" class="btn-minimal">FIND</button>
+            <button onclick="downloadHDMap()" class="btn-minimal">MAP HD</button>
+            <button onclick="toggleDrawer()" class="btn-dark">ACQUISITION</button>
         </div>
     </header>
 
-    <main class="canvas-section">
-        <h1 class="shimmer-title">THE GRAND ARCHIVE</h1>
-        <p class="subtitle">PRESERVING DIGITAL HISTORY | $1 ➔ $4,380</p>
+    <main class="content-wrapper">
+        <div class="hero-text">
+            <h1>12 YEARS LEGACY</h1>
+            <p>ESTATE VALUE: $1 ➔ $4,380</p>
+        </div>
         
-        <div class="grid-wrapper" id="capture-area">
+        <div class="grid-container" id="capture-area">
             </div>
     </main>
 
     <div id="drawer" class="drawer">
-        <h2 class="drawer-header">SECURE ACQUISITION</h2>
-        
-        <div class="pay-card" onclick="copy('912221034')">
-            <strong>BINANCE UID (KAWSAR6700)</strong>
-            <code>912221034</code> <i class="fa fa-copy"></i>
-        </div>
-        <div class="pay-card" onclick="copy('TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6')">
-            <strong>USDT TRC20</strong>
-            <code>TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6</code> <i class="fa fa-copy"></i>
-        </div>
-        <div class="pay-card" onclick="copy('0x443792A4884e8e855f954ccEF910778Aff1eb78E')">
-            <strong>METAMASK (ETH/BNB)</strong>
-            <code>0x443792A4884e8e855f954ccEF910778Aff1eb78E</code> <i class="fa fa-copy"></i>
-        </div>
+        <div class="drawer-content">
+            <h2 class="minimal-header">SECURE ACQUISITION</h2>
+            
+            <div class="payment-section">
+                <div class="pay-item" onclick="copy('912221034')">
+                    <span>BINANCE UID (KAWSAR6700)</span>
+                    <code>912221034</code>
+                </div>
+                <div class="pay-item" onclick="copy('TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6')">
+                    <span>USDT TRC20</span>
+                    <code>TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6</code>
+                </div>
+                <div class="pay-item" onclick="copy('0x443792A4884e8e855f954ccEF910778Aff1eb78E')">
+                    <span>METAMASK (ETH/BNB)</span>
+                    <code>0x443792A4884e8e855f954ccEF910778Aff1eb78E</code>
+                </div>
+            </div>
 
-        <div class="protocol-box">
-            <p>• <strong>Renewal Policy:</strong> One-time lifetime renewal fee of $365 is mandatory.</p>
-            <p>• <strong>Service Window:</strong> Concierge active 24h: Thursday, Friday, Saturday.</p>
-            <hr>
-            <p style="font-weight:bold; color:var(--gold); margin-top:10px;">STEPS:</p>
-            <p>1. Payment ➔ 2. Prepare Assets ➔ 3. Submit via Support Logo</p>
+            <div class="acquisition-steps">
+                <h3>ACQUISITION STEPS</h3>
+                <p><b>01</b> Complete payment via the Acquisition Drawer.</p>
+                <p><b>02</b> Prepare 4K Photo, Display Name, and Target URL.</p>
+                <p><b>03</b> Submit assets to WhatsApp Support for verification.</p>
+                <p><b>04</b> Live sync completed within 72 hours post-approval.</p>
+            </div>
+
+            <div class="policy-footer">
+                <p>• Renewal Policy: One-time lifetime renewal fee of $365.</p>
+                <p>• Service Window: Concierge active 24h (Thu, Fri, Sat).</p>
+            </div>
+            
+            <button onclick="toggleDrawer()" class="btn-close">CLOSE</button>
         </div>
-        <button onclick="toggleDrawer()" class="close-btn">CLOSE</button>
     </div>
 
-    <div class="support-footer">
-        <a href="https://wa.me/8801576940717" class="icon-link"><i class="fab fa-whatsapp"></i></a>
-        <a href="https://x.com/ARCHIVEKAWSAR" class="icon-link"><i class="fab fa-twitter"></i></a>
-    </div>
+    <footer class="footer">
+        <p>OWNED BY KAWSAR | © 2026 K12 ARCHIVE</p>
+    </footer>
 
     <script src="script.js"></script>
 </body>
