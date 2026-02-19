@@ -1,27 +1,53 @@
-:root { --b-yellow: #FCD535; --b-black: #0B0E11; --b-grey: #1E2329; }
-body { background: #888; margin: 0; font-family: 'Segoe UI', Tahoma, sans-serif; text-align: center; }
-#wrapper { width: 1200px; margin: 0 auto; background: #fff; box-shadow: 0 0 50px rgba(0,0,0,0.5); }
+:root { --gold: #FCD535; --black: #000; --white: #fff; }
 
-#top-bar { background: var(--b-black); color: #fff; padding: 12px; display: flex; justify-content: space-between; align-items: center; }
-.address-container { display: flex; gap: 15px; }
-.addr { border: 1px solid var(--b-yellow); padding: 5px 10px; font-size: 11px; color: var(--b-yellow); cursor: pointer; border-radius: 3px; }
-.tw-btn { background: #1DA1F2; color: #fff; padding: 6px 15px; text-decoration: none; border-radius: 20px; font-weight: bold; font-size: 13px; }
+body { 
+    margin: 0; background: var(--black); color: var(--white); 
+    font-family: 'Times New Roman', serif; overflow-x: hidden; 
+}
 
-#header { padding: 20px; background: #fff; border-bottom: 2px solid var(--b-black); }
-.stats-row { font-weight: bold; color: #555; margin: 10px 0; font-size: 14px; }
-.nav { font-weight: bold; font-size: 18px; }
-.nav a { color: #0000FF; text-decoration: none; margin: 0 10px; }
+/* Shimmer Title Effect */
+.shimmer-title {
+    font-size: clamp(35px, 8vw, 75px); font-weight: 900; letter-spacing: 12px;
+    background: linear-gradient(90deg, #FFD700, #FF0055, #D400FF, #00C3FF, #00FFCC, #FFD700);
+    background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    animation: shimmer 4s linear infinite; text-align: center;
+}
+@keyframes shimmer { to { background-position: 200% center; } }
 
-#content-main { background: #888; padding: 20px; display: flex; justify-content: center; }
-#canvas-wrapper { border: 5px solid #000; background: #fff; cursor: crosshair; }
+.header {
+    position: fixed; top: 0; width: 100%; padding: 25px 5%;
+    background: rgba(0,0,0,0.98); display: flex; justify-content: space-between;
+    align-items: center; border-bottom: 1px solid #222; z-index: 2000; box-sizing: border-box;
+}
 
-.info-section { display: flex; gap: 20px; padding: 30px; background: #f9f9f9; text-align: left; border-top: 1px solid #ddd; }
-.notice-box, .steps-box { flex: 1; border-left: 4px solid var(--b-yellow); padding-left: 20px; }
-.info-section h3 { font-size: 16px; margin: 15px 0 5px; color: #000; }
-.info-section p { font-size: 13px; color: #444; margin: 0; line-height: 1.6; }
+.grid-wrapper {
+    display: grid; grid-template-columns: repeat(15, 100px); /* ১৫টি প্লট প্রতি লাইনে */
+    gap: 4px; justify-content: center; margin: 50px auto; width: fit-content;
+    padding: 20px; background: #080808;
+}
 
-#download-area { padding: 20px; background: #f0f0f0; }
-.dl-btn { background: var(--b-black); color: var(--b-yellow); border: 2px solid var(--b-yellow); padding: 15px 30px; cursor: pointer; font-weight: bold; font-size: 16px; border-radius: 5px; }
+/* Plot Design */
+.plot {
+    width: 100px; height: 100px; background: #111;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    cursor: pointer; transition: 0.4s; border: 1px solid rgba(255,255,255,0.05);
+    position: relative;
+}
+.plot span.id-label { font-size: 10px; color: rgba(255,255,255,0.2); }
+.plot span.price-label { font-size: 14px; font-weight: bold; color: #fff; margin-top: 5px; }
 
-#tooltip { position: absolute; background: #ffffe1; border: 1px solid #000; padding: 5px; font-size: 11px; display: none; z-index: 999; }
-#footer { padding: 20px; font-size: 11px; background: #fff; color: #777; }
+.plot:hover { transform: scale(1.15); z-index: 100; box-shadow: 0 0 30px currentColor; }
+
+/* Support & Drawer */
+.support-footer { position: fixed; bottom: 30px; width: 100%; display: flex; justify-content: center; gap: 50px; pointer-events: none; }
+.icon-link { pointer-events: auto; font-size: 35px; color: #fff; opacity: 0.5; transition: 0.3s; }
+.icon-link:hover { opacity: 1; color: var(--gold); }
+
+.drawer { position: fixed; top: 0; right: -450px; width: 420px; height: 100%; background: #fff; color: #000; padding: 40px; transition: 0.6s; z-index: 5000; overflow-y: auto; }
+.drawer.open { right: 0; }
+.pay-card { background: #f4f4f4; padding: 15px; margin: 15px 0; border-radius: 8px; cursor: pointer; border: 1px solid #ddd; }
+
+/* Buttons */
+.btn-gold { background: var(--gold); border: none; padding: 12px 25px; font-weight: bold; cursor: pointer; }
+.btn-outline { background: none; border: 1px solid var(--gold); color: var(--gold); padding: 12px 25px; cursor: pointer; margin-right: 10px; }
+.search-input { padding: 12px; background: #111; border: 1px solid #333; color: #fff; width: 180px; }
