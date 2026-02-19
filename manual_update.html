@@ -1,49 +1,171 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>MASTER PANEL | THE ONE HOMEPAGE</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MASTER CONTROL | K ARCHIVE</title>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+    
     <style>
-        body { font-family: 'Segoe UI', sans-serif; background: #f4f4f4; color: #333; padding: 20px; display: none; }
-        .grid { max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        .card { background: #fff; padding: 25px; border-radius: 12px; border: 1px solid #ddd; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
-        h2 { color: #ff0000; margin-top: 0; font-size: 20px; border-bottom: 2px solid #ff0000; padding-bottom: 10px; }
-        input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
-        .btn { width: 100%; padding: 15px; background: #ff0000; color: #fff; font-weight: bold; border: none; cursor: pointer; border-radius: 5px; font-size: 16px; transition: 0.3s; }
-        .btn:hover { background: #cc0000; }
-        .live-list { height: 400px; overflow-y: auto; background: #fff; border-radius: 8px; border: 1px solid #ddd; }
-        .item { padding: 12px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; font-size: 14px; }
-        .btn-del { background: #ff4444; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; }
+        :root { --gold: #9E7E45; --black: #050505; --white: #ffffff; --grey: #1a1a1a; --red: #ff4444; }
+        
+        body { 
+            font-family: 'Times New Roman', serif; 
+            background: var(--black); 
+            color: var(--white); 
+            margin: 0; 
+            padding: 40px; 
+            display: none; /* Password protection */
+        }
+
+        .master-container { 
+            max-width: 1100px; 
+            margin: 0 auto; 
+            display: grid; 
+            grid-template-columns: 1fr 1.2fr; 
+            gap: 40px; 
+        }
+
+        .header-main {
+            grid-column: 1 / -1;
+            border-bottom: 1px solid var(--grey);
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        h1 { letter-spacing: 7px; font-size: 22px; text-transform: uppercase; margin: 0; }
+        .badge { background: var(--gold); color: #000; padding: 4px 12px; font-size: 10px; font-weight: bold; letter-spacing: 2px; }
+
+        .card { 
+            background: #0a0a0a; 
+            padding: 30px; 
+            border: 1px solid var(--grey); 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        h2 { font-size: 14px; color: var(--gold); letter-spacing: 3px; text-transform: uppercase; margin-top: 0; margin-bottom: 25px; }
+
+        label { font-size: 10px; color: #555; letter-spacing: 1px; text-transform: uppercase; display: block; margin-bottom: 5px; }
+        
+        input { 
+            background: #000; 
+            border: 1px solid var(--grey); 
+            color: #fff; 
+            padding: 12px; 
+            width: 100%; 
+            margin-bottom: 20px; 
+            box-sizing: border-box; 
+            font-size: 13px;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        input:focus { border-color: var(--gold); }
+
+        .btn-publish { 
+            width: 100%; 
+            padding: 18px; 
+            background: var(--white); 
+            color: #000; 
+            font-weight: bold; 
+            border: none; 
+            cursor: pointer; 
+            letter-spacing: 4px; 
+            font-size: 11px; 
+            text-transform: uppercase;
+        }
+
+        .btn-publish:hover { background: var(--gold); color: #fff; }
+
+        /* Records List */
+        .live-list-wrapper {
+            background: #080808;
+            border: 1px solid var(--grey);
+            height: 550px;
+            overflow-y: auto;
+        }
+
+        .record-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            border-bottom: 1px solid #111;
+            transition: 0.3s;
+        }
+
+        .record-item:hover { background: #111; }
+
+        .record-info { display: flex; align-items: center; gap: 15px; }
+        .record-id { color: var(--gold); font-weight: bold; font-size: 14px; min-width: 40px; }
+        .record-name { font-size: 13px; letter-spacing: 1px; }
+
+        .btn-delete {
+            background: none;
+            border: 1px solid #300;
+            color: var(--red);
+            padding: 6px 12px;
+            font-size: 9px;
+            cursor: pointer;
+            letter-spacing: 1px;
+            transition: 0.3s;
+        }
+
+        .btn-delete:hover { background: var(--red); color: #fff; }
+
+        /* Custom Scrollbar */
+        .live-list-wrapper::-webkit-scrollbar { width: 5px; }
+        .live-list-wrapper::-webkit-scrollbar-track { background: #000; }
+        .live-list-wrapper::-webkit-scrollbar-thumb { background: var(--grey); }
     </style>
 </head>
 <body>
 
     <script>
-        // মাস্টার পাসওয়ার্ড প্রোটেকশন
-        if(prompt("Enter Master Admin Password:") === "zoomlink34@gmail.com") {
+        // Master Security Access
+        if(prompt("ENTER MASTER SECURITY KEY:") === "zoomlink34@gmail.com") {
             document.body.style.display = "block";
         } else {
-            alert("Access Denied!");
+            alert("ACCESS DENIED!");
             window.location.href = "index.html";
         }
     </script>
 
-    <div class="grid">
+    <div class="header-main">
+        <div>
+            <h1>Master Estate Panel</h1>
+            <p style="font-size: 10px; color: #444; letter-spacing: 2px; margin-top: 5px;">K ARCHIVE | ADMINISTRATIVE OVERRIDE</p>
+        </div>
+        <div class="badge">SYSTEM ONLINE</div>
+    </div>
+
+    <div class="master-container">
         <div class="card">
-            <h2>DIRECT PUBLISH</h2>
-            <p style="font-size: 12px; color: #666;">অর্ডার ছাড়াই সরাসরি গ্রিডে পিক্সেল যুক্ত করুন।</p>
-            <input type="number" id="mPlot" placeholder="Plot ID (1-10000)">
-            <input type="text" id="mBrand" placeholder="Brand Name">
-            <input type="text" id="mImg" placeholder="Logo URL (Image Link)">
-            <input type="text" id="mWeb" placeholder="Website URL (https://...)">
-            <button class="btn" onclick="directPublish()">GO LIVE NOW</button>
+            <h2>Direct Acquisition</h2>
+            
+            <label>Plot Identification (#)</label>
+            <input type="number" id="mPlot" placeholder="e.g. 101">
+
+            <label>Legal Brand Name</label>
+            <input type="text" id="mBrand" placeholder="e.g. ROLLS ROYCE">
+
+            <label>Asset URL (PNG/JPG)</label>
+            <input type="text" id="mImg" placeholder="https://image-link.com/logo.png">
+
+            <label>Destination Protocol (URL)</label>
+            <input type="text" id="mWeb" placeholder="https://brand-website.com">
+
+            <button class="btn-publish" onclick="directPublish()">Execute Injection</button>
         </div>
 
         <div class="card">
-            <h2>LIVE PIXELS LIST</h2>
-            <div id="liveRecords" class="live-list">
-                <p style="padding:20px; color:#999;">Loading records...</p>
+            <h2>Archive Registry</h2>
+            <div id="liveRecords" class="live-list-wrapper">
+                <p style="padding:20px; color:#333; font-size: 12px; letter-spacing: 2px;">SYNCHRONIZING RECORDS...</p>
             </div>
         </div>
     </div>
@@ -62,53 +184,58 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        // সরাসরি পাবলিশ ফাংশন
+        // Direct Publish Override
         function directPublish() {
             const plotID = document.getElementById('mPlot').value;
             const name = document.getElementById('mBrand').value;
             const img = document.getElementById('mImg').value;
             const web = document.getElementById('mWeb').value;
 
-            if(!plotID || !name || !img) return alert("সবগুলো তথ্য সঠিকভাবে দিন!");
+            if(!plotID || !name || !img) return alert("All critical fields must be populated.");
 
             db.ref('pixels/' + plotID).set({
                 name: name,
                 imageUrl: img,
                 link: web || "#",
-                plotID: plotID
+                plotID: plotID,
+                status: "MASTER_OVERRIDE",
+                timestamp: firebase.database.ServerValue.TIMESTAMP
             }).then(() => {
-                alert("Plot #" + plotID + " সফলভাবে লাইভ করা হয়েছে!");
-                // ফর্ম ক্লিয়ার করা
-                document.getElementById('mPlot').value = "";
-                document.getElementById('mBrand').value = "";
-                document.getElementById('mImg').value = "";
-                document.getElementById('mWeb').value = "";
+                alert("Plot #" + plotID + " has been successfully integrated into the Archive.");
+                // Clear Form
+                document.querySelectorAll('input').forEach(input => input.value = "");
             });
         }
 
-        // লাইভ ডাটা লিস্ট লোড করা
+        // Real-time Registry Sync
         db.ref('pixels').on('value', (snapshot) => {
             const list = document.getElementById('liveRecords');
             const data = snapshot.val();
             list.innerHTML = "";
 
             if(!data) {
-                list.innerHTML = "<p style='padding:20px; color:#999;'>কোন পিক্সেল এখনো লাইভ নেই।</p>";
+                list.innerHTML = "<p style='padding:30px; color:#222; font-size:10px; letter-spacing:2px;'>REGISTRY IS CURRENTLY EMPTY.</p>";
                 return;
             }
 
-            Object.keys(data).forEach(id => {
+            // Sort by Plot ID
+            const sortedKeys = Object.keys(data).sort((a, b) => a - b);
+
+            sortedKeys.forEach(id => {
                 list.innerHTML += `
-                <div class="item">
-                    <span><strong>#${id}</strong> - ${data[id].name}</span>
-                    <button class="btn-del" onclick="deletePixel('${id}')">DELETE</button>
+                <div class="record-item">
+                    <div class="record-info">
+                        <span class="record-id">#${id}</span>
+                        <span class="record-name">${data[id].name}</span>
+                    </div>
+                    <button class="btn-delete" onclick="deletePixel('${id}')">ERASE</button>
                 </div>`;
             });
         });
 
-        // পিক্সেল ডিলিট করার ফাংশন
+        // Registry Erasure
         function deletePixel(id) {
-            if(confirm("আপনি কি নিশ্চিত যে #" + id + " পিক্সেলটি ডিলিট করতে চান?")) {
+            if(confirm("Are you certain you wish to permanently erase Plot #" + id + " from the Archive?")) {
                 db.ref('pixels/' + id).remove();
             }
         }
