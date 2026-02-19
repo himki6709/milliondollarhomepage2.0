@@ -3,93 +3,138 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TRACK ORDER | THE ONE HOMEPAGE</title>
+    <title>STATUS TRACKER | K ARCHIVE</title>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+    
     <style>
+        :root { --gold: #9E7E45; --black: #050505; --white: #ffffff; --grey: #1a1a1a; }
+        
         body { 
-            background: #fff; 
-            color: #000; 
-            font-family: Arial, Helvetica, sans-serif; 
-            text-align: center; 
-            padding: 50px 20px; 
-            margin: 0;
-        }
-        .card { 
-            background: #f9f9f9; 
-            border: 2px solid #ff0000; 
-            padding: 40px; 
-            border-radius: 10px; 
-            display: inline-block; 
-            width: 100%; 
-            max-width: 350px; 
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
-        h2 { color: #ff0000; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px; }
-        input { 
-            width: 90%; 
-            padding: 15px; 
-            margin-bottom: 20px; 
-            border-radius: 5px; 
-            border: 1px solid #ccc; 
-            font-size: 16px; 
+            background: var(--white); 
+            color: var(--black); 
+            font-family: 'Times New Roman', serif; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh; 
+            margin: 0; 
             text-align: center;
         }
-        button { 
+
+        .tracker-card { 
+            width: 100%; 
+            max-width: 400px; 
+            padding: 60px 40px; 
+            border: 1px solid #eee; 
+            background: #fff;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+        }
+
+        h2 { 
+            letter-spacing: 5px; 
+            font-size: 18px; 
+            text-transform: uppercase; 
+            margin-bottom: 10px; 
+        }
+
+        p.subtitle { 
+            font-size: 10px; 
+            color: #888; 
+            letter-spacing: 2px; 
+            margin-bottom: 30px; 
+            text-transform: uppercase;
+        }
+
+        input { 
             width: 100%; 
             padding: 15px; 
-            background: #ff0000; 
-            color: #fff; 
-            border: none; 
-            font-weight: bold; 
-            cursor: pointer; 
-            border-radius: 5px; 
-            font-size: 16px;
+            border: 1px solid #eee; 
+            background: #fafafa;
+            box-sizing: border-box; 
+            font-family: serif; 
+            font-size: 14px;
+            text-align: center;
+            margin-bottom: 20px;
+            outline: none;
             transition: 0.3s;
         }
-        button:hover { background: #cc0000; }
-        
+
+        input:focus { border-color: var(--gold); background: #fff; }
+
+        .btn-track { 
+            width: 100%; 
+            padding: 15px; 
+            background: var(--black); 
+            color: var(--white); 
+            border: none; 
+            font-weight: bold; 
+            letter-spacing: 3px; 
+            cursor: pointer; 
+            font-size: 11px;
+            transition: 0.3s;
+        }
+
+        .btn-track:hover { opacity: 0.8; }
+
         #resBox { 
-            margin-top: 25px; 
-            padding: 20px; 
-            background: #fff; 
+            margin-top: 40px; 
+            padding-top: 30px; 
+            border-top: 1px solid #f5f5f5; 
             display: none; 
-            border-radius: 5px; 
-            border: 1px dashed #ff0000;
+            animation: fadeIn 0.5s ease;
         }
-        #s { color: #2ebd85; font-size: 20px; margin: 0; }
-        #m { color: #555; font-size: 14px; margin-top: 10px; line-height: 1.5; }
-        
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        #statusText { 
+            font-size: 14px; 
+            letter-spacing: 4px; 
+            font-weight: bold; 
+            margin: 0; 
+            text-transform: uppercase;
+        }
+
+        #msgText { 
+            font-size: 12px; 
+            color: #666; 
+            margin-top: 15px; 
+            line-height: 1.8; 
+        }
+
         .back-link { 
-            display: block; 
-            margin-top: 25px; 
-            color: #888; 
+            display: inline-block; 
+            margin-top: 40px; 
+            color: #aaa; 
             text-decoration: none; 
-            font-size: 13px; 
+            font-size: 10px; 
+            letter-spacing: 2px; 
+            border-bottom: 1px solid transparent;
+            transition: 0.3s;
         }
-        .back-link:hover { text-decoration: underline; }
+
+        .back-link:hover { color: #000; border-bottom: 1px solid #000; }
     </style>
 </head>
 <body>
 
-    <div class="card">
-        <h2>TRACK STATUS</h2>
-        <p style="font-size: 12px; color: #666; margin-bottom: 20px;">আপনার ব্লক নম্বর (Plot ID) দিয়ে বর্তমান অবস্থা জানুন।</p>
+    <div class="tracker-card">
+        <h2>Estate Tracker</h2>
+        <p class="subtitle">Verification Protocol</p>
         
-        <input type="number" id="plotID" placeholder="Enter Plot ID (1-10000)">
-        <button onclick="checkStatus()">CHECK NOW</button>
+        <input type="number" id="plotID" placeholder="ENTER PLOT ID (#)">
+        <button class="btn-track" onclick="checkStatus()">VERIFY STATUS</button>
 
         <div id="resBox">
-            <h3 id="s">APPROVED</h3>
-            <p id="m">আপনার ব্র্যান্ডটি এখন হোমপেজে লাইভ রয়েছে।</p>
+            <p id="statusText"></p>
+            <p id="msgText"></p>
         </div>
 
-        <a href="index.html" class="back-link">← Back to Homepage</a>
+        <a href="index.html" class="back-link">RETURN TO CANVAS</a>
     </div>
 
-    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
-    
     <script>
-        // আপনার দেওয়া Firebase কনফিগারেশন
+        // Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyDJbVCF0AkLkCiCwFBc1Ki5PrKxFeYt8_E",
             authDomain: "milliondollarhomepage2-71ba3.firebaseapp.com",
@@ -105,24 +150,45 @@
         function checkStatus() {
             const id = document.getElementById('plotID').value;
             const resBox = document.getElementById('resBox');
-            const sText = document.getElementById('s');
-            const mText = document.getElementById('m');
+            const sText = document.getElementById('statusText');
+            const mText = document.getElementById('msgText');
 
-            if(!id) return alert("অনুগ্রহ করে একটি আইডি দিন!");
+            if(!id) {
+                alert("Please provide a valid Plot ID.");
+                return;
+            }
 
-            // ডাটাবেস থেকে নোটিফিকেশন চেক করা
+            // ডাটাবেস চেক
             db.ref('notifications/' + id).once('value', (snapshot) => {
                 const data = snapshot.val();
                 resBox.style.display = 'block';
 
                 if(data) {
                     sText.innerText = data.status;
-                    sText.style.color = data.status === "Approved" ? "#2ebd85" : "#ffbb33";
+                    sText.style.color = data.status === "Approved" ? "#2ebd85" : "#9E7E45";
                     mText.innerText = data.message;
                 } else {
-                    sText.innerText = "PENDING";
-                    sText.style.color = "#888";
-                    mText.innerText = "আপনার অর্ডারটি এখনো প্রক্রিয়াধীন আছে। পেমেন্ট প্রুফ সঠিক থাকলে ৭২ ঘণ্টার মধ্যে লাইভ হয়ে যাবে।";
+                    // যদি নোটিফিকেশন না থাকে, তাহলে চেক করুন অর্ডারটি কি ডাটাবেসে আছে কি না
+                    db.ref('orders/' + id).once('value', (orderSnap) => {
+                        if(orderSnap.exists()){
+                            sText.innerText = "PENDING";
+                            sText.style.color = "#888";
+                            mText.innerText = "Your acquisition request is currently under review by our estate managers. Expected live time: 24-72 hours.";
+                        } else {
+                            // যদি অর্ডারও না থাকে, তাহলে চেক করুন এটি অলরেডি লাইভ কি না
+                            db.ref('pixels/' + id).once('value', (pixelSnap) => {
+                                if(pixelSnap.exists()){
+                                    sText.innerText = "ACTIVE";
+                                    sText.style.color = "#2ebd85";
+                                    mText.innerText = "Your brand is successfully archived and live on the main canvas.";
+                                } else {
+                                    sText.innerText = "NOT FOUND";
+                                    sText.style.color = "#ff4444";
+                                    mText.innerText = "This Plot ID has no active records. Please ensure you have completed the acquisition process.";
+                                }
+                            });
+                        }
+                    });
                 }
             });
         }
