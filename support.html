@@ -3,75 +3,162 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SUPPORT | THE ONE HOMEPAGE</title>
+    <title>ESTATE SUPPORT | K ARCHIVE</title>
     <style>
+        :root { --gold: #9E7E45; --black: #050505; --white: #ffffff; --grey: #1a1a1a; }
+        
         body { 
-            background: #fff; 
-            color: #000; 
-            font-family: Arial, sans-serif; 
-            padding: 50px 20px; 
+            background: var(--white); 
+            color: var(--black); 
+            font-family: 'Times New Roman', serif; 
+            padding: 80px 20px; 
             text-align: center; 
             margin: 0;
+            line-height: 1.6;
         }
-        .support-container { 
-            background: #f9f9f9; 
-            border: 2px solid #ff0000; 
-            padding: 40px; 
-            border-radius: 20px; 
-            display: inline-block; 
-            max-width: 500px; 
-            text-align: left; 
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+
+        .support-wrapper { 
+            max-width: 550px; 
+            margin: 0 auto; 
+            background: #fff;
+            padding: 60px 40px;
+            border: 1px solid #eee;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.02);
         }
-        h1 { color: #ff0000; text-align: center; margin-top: 0; }
-        .info-list { padding: 0; list-style: none; }
-        .info-list li { 
-            margin: 15px 0; 
-            background: #fff; 
-            padding: 15px; 
-            border-radius: 8px; 
-            border-left: 5px solid #ff0000; 
-            box-shadow: 2px 2px 5px rgba(0,0,0,0.05);
+
+        h1 { 
+            letter-spacing: 8px; 
+            font-size: 24px; 
+            text-transform: uppercase; 
+            margin-bottom: 10px; 
+            font-weight: 400;
         }
-        .btn-contact { 
-            background: #25D366; 
-            color: #fff; 
-            padding: 18px 30px; 
-            border-radius: 50px; 
+
+        .subtitle {
+            font-size: 10px;
+            letter-spacing: 3px;
+            color: #888;
+            text-transform: uppercase;
+            margin-bottom: 40px;
+            display: block;
+        }
+
+        .protocol-list {
+            text-align: left;
+            padding: 0;
+            list-style: none;
+            margin-bottom: 40px;
+        }
+
+        .protocol-item {
+            margin-bottom: 25px;
+            border-bottom: 1px solid #f5f5f5;
+            padding-bottom: 15px;
+        }
+
+        .protocol-item strong {
+            display: block;
+            font-size: 12px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--black);
+            margin-bottom: 5px;
+        }
+
+        .protocol-item p {
+            margin: 0;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .whatsapp-btn { 
+            background: var(--black); 
+            color: var(--white); 
+            padding: 20px 40px; 
             text-decoration: none; 
             font-weight: bold; 
-            display: block; 
-            text-align: center; 
-            margin-top: 30px; 
-            font-size: 18px;
+            display: inline-block; 
+            letter-spacing: 3px;
+            font-size: 12px;
+            text-transform: uppercase;
+            transition: 0.4s;
+            border: 1px solid var(--black);
+        }
+
+        .whatsapp-btn:hover { 
+            background: var(--white); 
+            color: var(--black); 
+        }
+
+        .disclaimer { 
+            font-size: 10px; 
+            color: #aaa; 
+            margin-top: 40px; 
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .back-nav {
+            margin-top: 50px;
+        }
+
+        .back-nav a {
+            color: #888;
+            text-decoration: none;
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            border-bottom: 1px solid transparent;
             transition: 0.3s;
         }
-        .btn-contact:hover { background: #128C7E; transform: scale(1.02); }
-        .note { font-size: 12px; color: #666; text-align: center; margin-top: 20px; }
+
+        .back-nav a:hover {
+            color: #000;
+            border-bottom: 1px solid #000;
+        }
     </style>
 </head>
 <body>
 
-    <div class="support-container">
-        <h1>CREATOR SUPPORT</h1>
-        <p style="text-align:center; color:#555;">অ্যাক্টিভেশনের জন্য নিচের তথ্যগুলো হোয়াটসঅ্যাপে পাঠান:</p>
+    <div class="support-wrapper">
+        <h1>Estate Support</h1>
+        <span class="subtitle">Activation Protocol</span>
         
-        <ul class="info-list">
-            <li><strong>১. পেমেন্ট প্রুফ:</strong> পেমেন্টের স্ক্রিনশট এবং ট্রানজেকশন আইডি দিন।</li>
-            <li><strong>২. ব্র্যান্ডের নাম:</strong> আপনার কোম্পানির নাম বা ব্র্যান্ডের নাম।</li>
-            <li><strong>৩. পিক্সেল আইডি:</strong> আপনি যে ব্লক নম্বরটি (Plot ID) অর্ডার করেছেন।</li>
-            <li><strong>৪. লোগো এবং লিঙ্ক:</strong> আপনার ১০x১০ রেশিও লোগো এবং ওয়েবসাইট লিঙ্ক।</li>
-        </ul>
+        <p style="font-size: 14px; color: #555; margin-bottom: 40px;">
+            আপনার ব্র্যান্ডটি ক্যানভাসে অন্তর্ভুক্ত করতে নিচের তথ্যগুলো আমাদের ভেরিফিকেশন টিমের কাছে পাঠান।
+        </p>
+        
+        <div class="protocol-list">
+            <div class="protocol-item">
+                <strong>01. Proof of Acquisition</strong>
+                <p>পেমেন্টের স্ক্রিনশট এবং ট্রানজেকশন আইডি প্রদান করুন।</p>
+            </div>
+            
+            <div class="protocol-item">
+                <strong>02. Brand Identity</strong>
+                <p>আপনার ব্র্যান্ডের নাম অথবা কাস্টম ইউজারনেম।</p>
+            </div>
 
-        <a href="https://wa.me/8801576940717" class="btn-contact" target="_blank">
-            SEND TO WHATSAPP
+            <div class="protocol-item">
+                <strong>03. Estate Coordinates</strong>
+                <p>আপনি যে প্লট নম্বরটি (Plot ID #) বরাদ্দ করেছেন।</p>
+            </div>
+
+            <div class="protocol-item">
+                <strong>04. Digital Assets</strong>
+                <p>আপনার ব্র্যান্ড লোগো (PNG/JPG) এবং টার্গেট ওয়েবসাইট লিংক।</p>
+            </div>
+        </div>
+
+        <a href="https://wa.me/8801576940717" class="whatsapp-btn" target="_blank">
+            Contact Sovereign Support
         </a>
 
-        <p class="note">আমাদের সাপোর্ট টিম সাধারণত ২৪-৪৮ ঘণ্টার মধ্যে রেসপন্স করে থাকে।</p>
+        <p class="disclaimer">আমাদের ম্যানেজাররা ২৪-৪৮ ঘণ্টার মধ্যে আপনার রিকোয়েস্ট প্রসেস করবে।</p>
     </div>
 
-    <div style="margin-top: 30px;">
-        <a href="index.html" style="color:#888; text-decoration:none; font-size:14px;">← Back to Homepage</a>
+    <div class="back-nav">
+        <a href="index.html">← Return to Archive</a>
     </div>
 
 </body>
