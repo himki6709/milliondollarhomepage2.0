@@ -13,10 +13,7 @@
 
     <style>
         :root { 
-            --gold: #FCD535; 
-            --black: #000000; 
-            --white: #ffffff; 
-            --grey: #888888;
+            --gold: #FCD535; --black: #000000; --white: #ffffff; --grey: #1a1a1a;
         }
 
         body { 
@@ -24,124 +21,152 @@
             font-family: 'Times New Roman', serif; overflow-x: hidden;
         }
 
-        /* 1. Navigation (From File 2 Design) */
-        .nav-bar {
-            position: fixed; top: 0; width: 100%; height: 120px;
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 0 50px; background: rgba(0,0,0,0.9); z-index: 1000;
-            border-bottom: 1px solid #222; box-sizing: border-box;
+        /* 1. TOP NAVIGATION (Full Design from millionaire_canvas) */
+        .top-nav { 
+            position: fixed; top: 0; width: 100%; padding: 25px 50px; 
+            display: flex; justify-content: space-between; align-items: center; 
+            z-index: 1000; background: rgba(0,0,0,0.98); border-bottom: 1px solid #222; 
+            box-sizing: border-box;
         }
-        .logo { font-size: 24px; letter-spacing: 5px; font-weight: bold; }
-        .nav-right { display: flex; gap: 20px; align-items: center; }
+        .nav-left { display: flex; gap: 20px; align-items: center; }
+        .logo { font-size: 26px; letter-spacing: 5px; font-weight: bold; color: var(--white); }
+        .logo span { font-size: 10px; color: var(--gold); display: block; letter-spacing: 2px; }
 
-        /* 2. Acquisition Drawer (From File 2) */
+        .nav-btn { 
+            background: none; border: 1px solid #333; color: #fff; padding: 12px 25px; 
+            font-size: 11px; letter-spacing: 2px; cursor: pointer; text-transform: uppercase; 
+            transition: 0.3s; 
+        }
+        .nav-btn:hover { border-color: var(--gold); color: var(--gold); }
+        .buy-btn { background: var(--gold) !important; color: #000 !important; font-weight: bold; border: none; }
+
+        /* 2. ACQUISITION DRAWER (From Index.html Design) */
         #payment-drawer {
-            position: fixed; top: 0; right: -400px; width: 380px; height: 100%;
-            background: var(--white); color: var(--black); transition: 0.5s;
-            z-index: 2000; padding: 40px; box-sizing: border-box; overflow-y: auto;
+            position: fixed; top: 0; right: -450px; width: 420px; height: 100%;
+            background: var(--white); color: var(--black); transition: 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            z-index: 5000; padding: 50px; box-sizing: border-box; overflow-y: auto;
+            box-shadow: -10px 0 50px rgba(0,0,0,0.5);
         }
         #payment-drawer.open { right: 0; }
-        .drawer-pill { 
-            background: #f0f0f0; padding: 15px; margin: 10px 0; 
-            border-radius: 5px; cursor: pointer; font-size: 12px; font-weight: bold;
+        .drawer-title { font-size: 22px; letter-spacing: 4px; margin-bottom: 30px; border-bottom: 2px solid #000; padding-bottom: 10px; }
+        
+        .payment-pill { 
+            background: #f4f4f4; padding: 18px; margin: 15px 0; border-radius: 8px; 
+            cursor: pointer; font-size: 13px; font-weight: bold; border: 1px solid #ddd;
+            display: flex; justify-content: space-between; align-items: center;
         }
+        .payment-pill:hover { background: #eee; border-color: var(--gold); }
 
-        /* 3. Canvas & Grid (From File 1) */
-        .main-container { padding-top: 150px; text-align: center; }
+        /* 3. MAIN CONTENT & GRID (Massive Scale) */
+        .hero-section { text-align: center; padding-top: 180px; margin-bottom: 60px; }
         .shimmer-title {
-            font-size: clamp(30px, 8vw, 60px); letter-spacing: 8px; font-weight: 900;
+            font-size: clamp(40px, 10vw, 85px); font-weight: 900; letter-spacing: 15px;
             background: linear-gradient(90deg, #FFD700, #FF0055, #D400FF, #00C3FF, #00FFCC);
             background-size: 300% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            animation: colorShift 5s linear infinite;
+            animation: colorShift 5s linear infinite; margin: 0;
         }
         @keyframes colorShift { to { background-position: 300% center; } }
 
-        .grid-wrapper {
-            width: 95%; max-width: 1300px; margin: 40px auto;
+        /* Interactive Grid Canvas */
+        .canvas-area {
+            width: 98%; max-width: 1400px; margin: 0 auto; 
+            background: #080808; border: 1px solid #222; padding: 15px;
             display: grid; grid-template-columns: repeat(60, 20px);
-            gap: 1px; justify-content: center; padding: 10px;
-            background: #050505; border: 1px solid #333; height: 600px; overflow: auto;
+            gap: 1px; justify-content: center; height: 75vh; overflow: auto;
+            box-shadow: inset 0 0 50px #000; border-radius: 4px;
         }
         .plot {
-            width: 20px; height: 20px; background: #111;
-            transition: 0.3s; cursor: pointer; border-radius: 1px;
+            width: 20px; height: 20px; background: #111; 
+            cursor: pointer; transition: 0.2s; position: relative;
         }
-        .plot:hover { transform: scale(1.5); z-index: 10; outline: 1px solid #fff; }
+        .plot:hover { 
+            transform: scale(1.6); z-index: 100; 
+            box-shadow: 0 0 20px currentColor; outline: 1px solid #fff;
+        }
 
-        /* 4. Support Information (From File 3) */
-        .info-section {
-            max-width: 800px; margin: 50px auto; text-align: left;
-            padding: 30px; border-top: 1px solid #222;
+        /* 4. SUPPORT & PROTOCOL (From File 3) */
+        .protocol-section {
+            max-width: 900px; margin: 80px auto; padding: 40px;
+            border: 1px solid #222; background: #050505;
         }
-        .info-card { background: #111; padding: 20px; margin-bottom: 20px; border-left: 4px solid var(--gold); }
-        .step-num { color: var(--gold); font-weight: bold; margin-right: 10px; }
-
-        /* Buttons & Social */
-        .btn-gold { 
-            background: var(--gold); color: #000; padding: 12px 25px; 
-            border: none; font-weight: bold; cursor: pointer; letter-spacing: 2px;
-        }
-        .social-btn { color: #fff; font-size: 24px; text-decoration: none; transition: 0.3s; }
-        .social-btn:hover { color: var(--gold); }
+        .protocol-box { margin-bottom: 30px; padding-left: 20px; border-left: 3px solid var(--gold); }
+        .protocol-box h3 { color: var(--gold); font-size: 14px; letter-spacing: 3px; }
+        .protocol-box p { font-size: 15px; color: #aaa; line-height: 1.8; }
 
         /* Tooltip */
-        .tooltip {
-            position: fixed; background: #fff; color: #000; padding: 10px;
-            display: none; z-index: 5000; font-size: 11px; pointer-events: none;
+        .legacy-tooltip {
+            position: fixed; background: #fff; color: #000; padding: 12px;
+            font-size: 11px; font-weight: bold; pointer-events: none; 
+            display: none; z-index: 9999; border-radius: 2px; line-height: 1.5;
         }
+
+        footer { padding: 50px; border-top: 1px solid #222; text-align: center; color: #444; font-size: 10px; letter-spacing: 2px; }
     </style>
 </head>
 <body>
 
-    <div class="nav-bar">
-        <div class="logo">K ARCHIVE</div>
-        <div class="nav-right">
-            <a href="https://twitter.com" target="_blank" class="social-btn"><i class="fab fa-twitter"></i></a>
-            <button class="btn-gold" onclick="toggleDrawer()">ACQUISITION DRAWER</button>
+    <nav class="top-nav">
+        <div class="nav-left">
+            <div class="logo">K ARCHIVE <span>THE SOVEREIGN ESTATE</span></div>
         </div>
-    </div>
+        <div class="nav-right" style="display: flex; gap: 15px;">
+            <a href="https://twitter.com" class="social-btn" style="color:#fff; font-size: 20px;"><i class="fab fa-twitter"></i></a>
+            <button class="nav-btn buy-btn" onclick="toggleDrawer()">ACQUISITION DRAWER</button>
+        </div>
+    </nav>
 
     <div id="payment-drawer">
-        <h2 style="letter-spacing: 3px;">PAYMENT GATEWAY</h2>
-        <p style="font-size: 12px; color: #666;">Select a method to reserve your plot:</p>
-        <div class="drawer-pill" onclick="copyV('912221034')">BINANCE ID: 912221034</div>
-        <div class="drawer-pill" onclick="copyV('TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6')">USDT (TRC20): TTap...8Ws6</div>
-        <hr>
-        <p style="font-size: 13px; font-weight: bold;">01 Complete payment via the Acquisition Drawer.</p>
-        <p style="font-size: 13px;">02 Prepare 4K Photo, Display Name, and Target URL.</p>
-        <p style="font-size: 13px;">03 Submit assets to WhatsApp Support.</p>
-        <button class="btn-gold" style="width: 100%; margin-top: 20px;" onclick="location.href='https://wa.me/8801576940717'">CONTACT SUPPORT</button>
-        <button onclick="toggleDrawer()" style="background:none; border:none; margin-top:20px; cursor:pointer;">CLOSE</button>
+        <div class="drawer-title">ACQUISITION</div>
+        
+        <p style="font-size: 13px; font-weight: bold; margin-bottom: 5px;">01 Complete payment via the Acquisition Drawer.</p>
+        <div class="payment-pill" onclick="copyV('912221034')">BINANCE ID: 912221034 <i class="far fa-copy"></i></div>
+        <div class="payment-pill" onclick="copyV('TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6')">USDT (TRC20) <i class="far fa-copy"></i></div>
+        
+        <div style="margin-top: 40px;">
+            <p style="font-size: 13px; font-weight: bold;">02 Prepare 4K Photo, Display Name, and Target URL.</p>
+            <p style="font-size: 13px; font-weight: bold;">03 Submit assets to WhatsApp Support.</p>
+        </div>
+
+        <button class="nav-btn buy-btn" style="width:100%; margin-top:30px; padding:20px;" onclick="location.href='https://wa.me/8801576940717'">
+            <i class="fab fa-whatsapp"></i> INITIATE SESSION
+        </button>
+
+        <div style="margin-top: 50px; font-size: 11px; color: #666;">
+            <p>• Renewal Policy: One-time lifetime renewal fee of $365 mandatory.</p>
+            <p>• Data Modification: $7 administrative fee.</p>
+            <p>• Service Window: Concierge active Thursday - Saturday.</p>
+        </div>
+        
+        <button onclick="toggleDrawer()" style="background:none; border:none; margin-top:40px; cursor:pointer; font-weight:bold;">[ CLOSE ]</button>
     </div>
 
-    <div class="main-container">
+    <div class="hero-section">
         <h1 class="shimmer-title">12 YEARS LEGACY</h1>
-        <p style="letter-spacing: 5px; color: var(--grey);">4,380 BLOCKS OF DIGITAL HISTORY</p>
+        <p style="letter-spacing: 8px; color: #555; font-size: 12px; margin-top: 10px;">DESCENDING ESTATE VALUES: $4,380 TO $1</p>
+    </div>
 
-        <div class="grid-wrapper" id="gridContainer"></div>
+    <div class="canvas-area" id="gridContainer"></div>
 
-        <div class="info-section">
-            <div class="info-card">
-                <p><span class="step-num">• Renewal Policy:</span> One-time lifetime renewal fee of $365 is mandatory. No recurring costs ever.</p>
-            </div>
-            <div class="info-card">
-                <p><span class="step-num">• Data Modification:</span> $7 administrative fee for media, name or link updates.</p>
-            </div>
-            <div class="info-card">
-                <p><span class="step-num">• Service Window:</span> Concierge active 24h: Thursday, Friday, Saturday.</p>
-            </div>
+    <div class="protocol-section">
+        <div class="protocol-box">
+            <h3>SUPPORT SYSTEM</h3>
+            <p>Our concierge desk provides 24h assistance during the service window. Every plot is a permanent piece of the K Archive history.</p>
         </div>
-
-        <div style="margin-bottom: 50px; display: flex; justify-content: center; gap: 30px;">
-            <a href="https://wa.me/8801576940717" class="social-btn"><i class="fab fa-whatsapp"></i></a>
-            <a href="support.html" class="social-btn"><i class="fas fa-headset"></i></a>
+        <div style="display: flex; gap: 40px; justify-content: center; margin-top: 50px;">
+            <a href="https://wa.me/8801576940717" style="color:var(--gold); font-size: 30px;"><i class="fab fa-whatsapp"></i></a>
+            <a href="support.html" style="color:var(--gold); font-size: 30px;"><i class="fas fa-headset"></i></a>
+            <a href="https://twitter.com" style="color:var(--gold); font-size: 30px;"><i class="fab fa-twitter"></i></a>
         </div>
     </div>
 
-    <div class="tooltip" id="tooltip"></div>
+    <div class="legacy-tooltip" id="tooltip"></div>
+
+    <footer>
+        © 2026 K ARCHIVE | OWNED BY KAWSAR | ALL RIGHTS RESERVED.
+    </footer>
 
     <script>
-        // Firebase Config
+        // Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyDJbVCF0AkLkCiCwFBc1Ki5PrKxFeYt8_E",
             authDomain: "milliondollarhomepage2-71ba3.firebaseapp.com",
@@ -149,56 +174,51 @@
             projectId: "milliondollarhomepage2-71ba3",
             storageBucket: "milliondollarhomepage2-71ba3.firebasestorage.app",
             messagingSenderId: "895107568682",
-            appId: "1:895107568682:web:d48003f71701005f3d5f53",
-            measurementId: "G-RG50BVDLTX"
+            appId: "1:895107568682:web:d48003f71701005f3d5f53"
         };
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        const totalPlots = 4380;
         const grid = document.getElementById('gridContainer');
         const tooltip = document.getElementById('tooltip');
+        const totalPlots = 4380;
 
-        // RGB Spectrum Color Grading (10,000+ shades logic)
-        function getColor(i) {
+        // RGB Spectrum Grading Function
+        function getRGBColor(i) {
             const hue = (i * 360 / totalPlots);
-            return `hsl(${hue}, 80%, 50%)`;
+            return `hsl(${hue}, 100%, 55%)`;
         }
 
-        // Generate 4380 Plots
+        // Generate 4380 Plots with High Design
         for (let i = 1; i <= totalPlots; i++) {
             const plot = document.createElement('div');
             plot.className = 'plot';
-            const price = totalPlots - (i - 1); // Descending Price: $4380 to $1
-            
-            // মাউস হোভারে উজ্জ্বল কালার এফেক্ট (RGB Spectrum)
-            const dynamicColor = getColor(i);
-            
+            const price = totalPlots - (i - 1);
+            const color = getRGBColor(i);
+
             plot.onmouseover = (e) => {
-                plot.style.background = dynamicColor;
-                plot.style.boxShadow = `0 0 15px ${dynamicColor}`;
+                plot.style.background = color;
+                plot.style.color = color; // For shadow
                 tooltip.style.display = 'block';
-                tooltip.innerHTML = `<strong>PLOT #${i}</strong><br>PRICE: $${price}<br>STATUS: VACANT`;
-                tooltip.style.left = (e.clientX + 15) + 'px';
-                tooltip.style.top = (e.clientY + 15) + 'px';
+                tooltip.innerHTML = `<span style="color:#888">ESTATE #${i}</span><br><span style="font-size:16px">$${price}</span><br><span style="color:green">AVAILABLE</span>`;
+                tooltip.style.left = (e.clientX + 20) + 'px';
+                tooltip.style.top = (e.clientY + 20) + 'px';
             };
 
             plot.onmouseout = () => {
-                plot.style.boxShadow = 'none';
-                // যদি সোল্ড না হয় তবে কালো থাকবে
-                if(!plot.dataset.sold) plot.style.background = '#111';
+                plot.style.background = '#111';
+                tooltip.style.display = 'none';
             };
 
             plot.onclick = () => {
                 toggleDrawer();
-                alert(`You selected Plot #${i}. Price: $${price}. Please complete payment.`);
             };
 
             grid.appendChild(plot);
         }
 
         function toggleDrawer() { document.getElementById('payment-drawer').classList.toggle('open'); }
-        function copyV(text) { navigator.clipboard.writeText(text); alert("Copied: " + text); }
+        function copyV(t) { navigator.clipboard.writeText(t); alert("Address Copied!"); }
     </script>
 </body>
 </html>
