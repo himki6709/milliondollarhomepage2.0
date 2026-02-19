@@ -1,53 +1,72 @@
-:root { --gold: #FCD535; --black: #000; --white: #fff; }
-
-body { 
-    margin: 0; background: var(--black); color: var(--white); 
-    font-family: 'Times New Roman', serif; overflow-x: hidden; 
+:root {
+    --black: #000000;
+    --white: #ffffff;
+    --grey: #1a1a1a;
+    --soft-grey: #888888;
 }
 
-/* Shimmer Title Effect */
-.shimmer-title {
-    font-size: clamp(35px, 8vw, 75px); font-weight: 900; letter-spacing: 12px;
-    background: linear-gradient(90deg, #FFD700, #FF0055, #D400FF, #00C3FF, #00FFCC, #FFD700);
-    background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    animation: shimmer 4s linear infinite; text-align: center;
+body {
+    margin: 0; background: var(--black); color: var(--white);
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    overflow-x: hidden; cursor: none; /* Custom cursor used instead */
 }
-@keyframes shimmer { to { background-position: 200% center; } }
 
+/* Custom Cursor */
+#cursor-dot { position: fixed; width: 6px; height: 6px; background: var(--white); border-radius: 50%; pointer-events: none; z-index: 10000; transform: translate(-50%, -50%); }
+#cursor-outline { position: fixed; width: 30px; height: 30px; border: 1px solid var(--white); border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%, -50%); transition: 0.1s; }
+
+/* Header */
 .header {
-    position: fixed; top: 0; width: 100%; padding: 25px 5%;
-    background: rgba(0,0,0,0.98); display: flex; justify-content: space-between;
-    align-items: center; border-bottom: 1px solid #222; z-index: 2000; box-sizing: border-box;
+    position: fixed; top: 0; width: 100%; padding: 30px 60px;
+    background: rgba(0,0,0,0.9); display: flex; justify-content: space-between;
+    align-items: center; border-bottom: 1px solid #111; z-index: 5000; box-sizing: border-box;
 }
 
-.grid-wrapper {
-    display: grid; grid-template-columns: repeat(15, 100px); /* ১৫টি প্লট প্রতি লাইনে */
-    gap: 4px; justify-content: center; margin: 50px auto; width: fit-content;
-    padding: 20px; background: #080808;
+.brand-logo { font-size: 32px; font-weight: 300; letter-spacing: 8px; border-bottom: 1px solid #fff; }
+.header-left { display: flex; gap: 40px; align-items: center; }
+.social-icons a { color: #fff; font-size: 18px; text-decoration: none; opacity: 0.5; transition: 0.3s; }
+.social-icons a:hover { opacity: 1; }
+
+.hero-text { text-align: center; padding-top: 180px; margin-bottom: 80px; }
+.hero-text h1 { font-size: 60px; font-weight: 100; letter-spacing: 20px; color: #fff; }
+.hero-text p { letter-spacing: 5px; color: var(--soft-grey); font-size: 12px; }
+
+/* Grid Layout */
+.grid-container {
+    display: grid; grid-template-columns: repeat(12, 110px); /* ১২টি প্লট প্রতি লাইনে */
+    gap: 8px; justify-content: center; margin: 0 auto; padding-bottom: 100px;
 }
 
-/* Plot Design */
 .plot {
-    width: 100px; height: 100px; background: #111;
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    cursor: pointer; transition: 0.4s; border: 1px solid rgba(255,255,255,0.05);
-    position: relative;
+    width: 110px; height: 110px; background: #080808;
+    border: 1px solid #1a1a1a; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; transition: 0.5s cubic-bezier(0.19, 1, 0.22, 1);
 }
-.plot span.id-label { font-size: 10px; color: rgba(255,255,255,0.2); }
-.plot span.price-label { font-size: 14px; font-weight: bold; color: #fff; margin-top: 5px; }
 
-.plot:hover { transform: scale(1.15); z-index: 100; box-shadow: 0 0 30px currentColor; }
+.plot .p-id { font-size: 10px; color: #333; margin-bottom: 5px; }
+.plot .p-price { font-size: 14px; font-weight: 200; color: #888; }
 
-/* Support & Drawer */
-.support-footer { position: fixed; bottom: 30px; width: 100%; display: flex; justify-content: center; gap: 50px; pointer-events: none; }
-.icon-link { pointer-events: auto; font-size: 35px; color: #fff; opacity: 0.5; transition: 0.3s; }
-.icon-link:hover { opacity: 1; color: var(--gold); }
+.plot:hover { border-color: #fff; transform: scale(1.05); z-index: 10; color: #fff; }
 
-.drawer { position: fixed; top: 0; right: -450px; width: 420px; height: 100%; background: #fff; color: #000; padding: 40px; transition: 0.6s; z-index: 5000; overflow-y: auto; }
+/* Drawer */
+.drawer { position: fixed; top: 0; right: -500px; width: 450px; height: 100%; background: #fff; color: #000; transition: 0.6s; z-index: 6000; padding: 60px; box-sizing: border-box; }
 .drawer.open { right: 0; }
-.pay-card { background: #f4f4f4; padding: 15px; margin: 15px 0; border-radius: 8px; cursor: pointer; border: 1px solid #ddd; }
+.pay-item { padding: 20px; border-bottom: 1px solid #eee; cursor: pointer; }
+.pay-item:hover { background: #f9f9f9; }
+.pay-item span { font-size: 10px; color: #999; display: block; }
+.pay-item code { font-size: 14px; font-weight: bold; word-break: break-all; }
+
+/* Acquisition Steps */
+.acquisition-steps { margin-top: 40px; font-size: 13px; line-height: 1.8; }
+.acquisition-steps h3 { letter-spacing: 3px; border-bottom: 1px solid #000; display: inline-block; }
 
 /* Buttons */
-.btn-gold { background: var(--gold); border: none; padding: 12px 25px; font-weight: bold; cursor: pointer; }
-.btn-outline { background: none; border: 1px solid var(--gold); color: var(--gold); padding: 12px 25px; cursor: pointer; margin-right: 10px; }
-.search-input { padding: 12px; background: #111; border: 1px solid #333; color: #fff; width: 180px; }
+.btn-minimal { background: none; border: 1px solid #333; color: #fff; padding: 10px 20px; cursor: pointer; letter-spacing: 2px; font-size: 10px; margin-left: 10px; }
+.btn-dark { background: #fff; color: #000; border: none; padding: 10px 25px; font-weight: bold; cursor: pointer; letter-spacing: 2px; }
+.search-input { background: #000; border: 1px solid #222; padding: 10px; color: #fff; width: 150px; text-align: center; }
+
+@media (max-width: 768px) {
+    .grid-container { grid-template-columns: repeat(4, 80px); }
+    .plot { width: 80px; height: 80px; }
+    .drawer { width: 100%; right: -100%; }
+}
