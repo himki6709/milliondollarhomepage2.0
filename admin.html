@@ -1,47 +1,146 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>CEO ADMIN | THE ONE HOMEPAGE</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CEO ACCESS | K ARCHIVE CONTROL</title>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+    
     <style>
-        body { font-family: sans-serif; background: #f4f4f4; color: #333; padding: 20px; display: none; }
-        .admin-header { background: #ff0000; color: #fff; padding: 15px; text-align: center; border-radius: 5px; margin-bottom: 20px; }
-        .card { background: #fff; padding: 20px; margin-bottom: 20px; border-radius: 10px; border-left: 8px solid #ff0000; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        h2 { margin-top: 0; font-size: 18px; color: #ff0000; }
-        input { padding: 12px; width: 280px; margin: 5px 10px 5px 0; border: 1px solid #ccc; border-radius: 4px; }
-        button { padding: 12px 25px; cursor: pointer; border-radius: 5px; border: none; font-weight: bold; transition: 0.3s; }
-        .btn-approve { background: #2ebd85; color: white; }
-        .btn-reject { background: #e74c3c; color: white; margin-left: 10px; }
-        button:hover { opacity: 0.8; }
-        .no-orders { text-align: center; padding: 50px; color: #888; }
+        :root { --gold: #9E7E45; --black: #050505; --white: #ffffff; --grey: #1a1a1a; }
+        
+        body { 
+            font-family: 'Times New Roman', serif; 
+            background: var(--black); 
+            color: var(--white); 
+            margin: 0; 
+            padding: 40px; 
+            display: none; /* পাসওয়ার্ড ছাড়া হাইড থাকবে */
+        }
+
+        .admin-header { 
+            border-bottom: 1px solid var(--grey); 
+            padding-bottom: 20px; 
+            margin-bottom: 40px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+        }
+
+        .admin-header h1 { 
+            letter-spacing: 5px; 
+            font-size: 20px; 
+            margin: 0; 
+            text-transform: uppercase;
+        }
+
+        .status-badge {
+            background: var(--gold);
+            color: black;
+            padding: 5px 15px;
+            font-size: 10px;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+
+        .order-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 20px;
+        }
+
+        .card { 
+            background: #0a0a0a; 
+            padding: 25px; 
+            border: 1px solid var(--grey); 
+            transition: 0.3s;
+        }
+
+        .card:hover { border-color: var(--gold); }
+
+        .card h2 { 
+            font-size: 12px; 
+            color: var(--gold); 
+            letter-spacing: 3px; 
+            margin-top: 0; 
+            border-bottom: 1px solid #1a1a1a;
+            padding-bottom: 10px;
+        }
+
+        .info-row { font-size: 13px; margin: 10px 0; color: #888; }
+        .info-row b { color: var(--white); }
+
+        input { 
+            background: #000; 
+            border: 1px solid var(--grey); 
+            color: #fff; 
+            padding: 12px; 
+            width: 100%; 
+            margin-bottom: 10px; 
+            box-sizing: border-box; 
+            font-size: 11px;
+            letter-spacing: 1px;
+        }
+
+        input:focus { outline: none; border-color: var(--gold); }
+
+        .btn-group { display: flex; gap: 10px; margin-top: 15px; }
+
+        button { 
+            flex: 1; 
+            padding: 12px; 
+            cursor: pointer; 
+            font-size: 10px; 
+            font-weight: bold; 
+            letter-spacing: 2px; 
+            text-transform: uppercase; 
+            border: none;
+            transition: 0.3s;
+        }
+
+        .btn-approve { background: var(--white); color: #000; }
+        .btn-reject { background: transparent; color: #ff4444; border: 1px solid #330000; }
+        
+        button:hover { opacity: 0.7; }
+
+        .no-orders { 
+            grid-column: 1/-1; 
+            text-align: center; 
+            padding: 100px; 
+            border: 1px dashed var(--grey); 
+            color: #444; 
+            letter-spacing: 3px;
+        }
     </style>
 </head>
 <body>
 
     <script>
-        // আপনার বন্ধুর দেওয়া পাসওয়ার্ড সিস্টেম
-        const accessPass = prompt("Admin Access Password:");
+        // CEO Access Security
+        const accessPass = prompt("ENTER CEO ACCESS KEY:");
         if(accessPass === "zoomlink34@gmail.com") { 
             document.body.style.display = "block"; 
         } else { 
-            alert("ভুল পাসওয়ার্ড!");
+            alert("ACCESS DENIED!");
             window.location.href = "index.html"; 
         }
     </script>
 
     <div class="admin-header">
-        <h1>THE ONE HOMEPAGE - ADMIN PANEL</h1>
+        <div>
+            <h1>Archive Control Panel</h1>
+            <p style="font-size: 10px; color: #555; letter-spacing: 2px; margin-top: 5px;">KAWSAR | SOVEREIGN ESTATE MANAGER</p>
+        </div>
+        <div class="status-badge">SECURE SESSION</div>
     </div>
 
-    <h2 style="color:#000; border-bottom: 2px solid #ff0000; padding-bottom: 10px;">PENDING ORDERS</h2>
-    
-    <div id="order-list">
-        <div class="no-orders">Loading pending orders...</div>
+    <div class="order-grid" id="order-list">
+        <div class="no-orders">SYNCING WITH DATABASE...</div>
     </div>
 
     <script>
-        // Firebase Configuration
+        // Firebase Configuration (Using your provided keys)
         const firebaseConfig = {
             apiKey: "AIzaSyDJbVCF0AkLkCiCwFBc1Ki5PrKxFeYt8_E",
             authDomain: "milliondollarhomepage2-71ba3.firebaseapp.com",
@@ -54,63 +153,65 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        // পেন্ডিং অর্ডার লিস্ট লোড করা
-        function loadOrders() {
+        // Load Pending Acquisition Requests
+        function loadRequests() {
             db.ref('orders').on('value', (snapshot) => {
                 const list = document.getElementById('order-list');
                 const data = snapshot.val();
                 list.innerHTML = "";
 
                 if (!data) {
-                    list.innerHTML = "<div class='no-orders'>কোন পেন্ডিং অর্ডার নেই।</div>";
+                    list.innerHTML = "<div class='no-orders'>NO PENDING ACQUISITION REQUESTS.</div>";
                     return;
                 }
 
                 Object.keys(data).forEach(id => {
                     list.innerHTML += `
                     <div class="card">
-                        <h2>BLOCK ORDER #${id}</h2>
-                        <p><strong>Customer Name:</strong> ${data[id].name}</p>
-                        <input type="text" id="img_${id}" placeholder="Logo Image URL (10x10 px)">
-                        <input type="text" id="web_${id}" placeholder="Redirect Website URL (https://...)">
-                        <br><br>
-                        <button class="btn-approve" onclick="approve('${id}', '${data[id].name}')">APPROVE & GO LIVE</button>
-                        <button class="btn-reject" onclick="reject('${id}')">REJECT ORDER</button>
+                        <h2>ESTATE REQUEST #${id}</h2>
+                        <div class="info-row"><b>Brand:</b> ${data[id].name}</div>
+                        <div class="info-row"><b>Requested Plot:</b> #${data[id].plotID || id}</div>
+                        
+                        <input type="text" id="img_${id}" placeholder="LOGO IMAGE URL (PNG/JPG)">
+                        <input type="text" id="web_${id}" placeholder="TARGET WEBSITE (https://...)">
+                        
+                        <div class="btn-group">
+                            <button class="btn-approve" onclick="approve('${id}', '${data[id].name}')">Go Live</button>
+                            <button class="btn-reject" onclick="reject('${id}')">Discard</button>
+                        </div>
                     </div>`;
                 });
             });
         }
 
-        // অর্ডার এপ্রুভ করা (মেইন গ্রিডে পাবলিশ হবে)
-        function approve(id, name) {
+        // Approve and Push to Live Canvas
+        function approve(id, brandName) {
             const img = document.getElementById('img_'+id).value;
             const web = document.getElementById('web_'+id).value;
             
-            if(!img) return alert("অনুগ্রহ করে লোগো ইউআরএল দিন!");
+            if(!img) return alert("Please provide a Logo URL!");
 
             db.ref('pixels/'+id).set({
-                name: name,
+                name: brandName,
                 imageUrl: img,
                 link: web || "#",
-                plotID: id
+                plotID: id,
+                timestamp: firebase.database.ServerValue.TIMESTAMP
             }).then(() => {
-                // ইউজারকে জানানোর জন্য নোটিফিকেশন (ঐচ্ছিক)
-                db.ref('notifications/'+id).set({status: "Approved", message: "Your brand is now live on the homepage!"});
-                // পেন্ডিং লিস্ট থেকে রিমুভ করা
+                // Remove from pending orders
                 db.ref('orders/'+id).remove();
-                alert("Block #" + id + " এখন লাইভ!");
+                alert("Plot #" + id + " is now part of the Legacy Archive!");
             });
         }
 
-        // অর্ডার রিজেক্ট/ডিলিট করা
+        // Reject Request
         function reject(id) {
-            if(confirm("আপনি কি নিশ্চিত যে এই অর্ডারটি ডিলিট করতে চান?")) {
+            if(confirm("Confirm deletion of this request?")) {
                 db.ref('orders/'+id).remove();
             }
         }
 
-        // পেজ লোড হলে ফাংশন কল করা
-        window.onload = loadOrders;
+        window.onload = loadRequests;
     </script>
 </body>
 </html>
