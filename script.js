@@ -1,71 +1,70 @@
-const firebaseConfig = {
-    apiKey: "AIzaSyDJbVCF0AkLkCiCwFBc1Ki5PrKxFeYt8_E",
-    databaseURL: "https://milliondollarhomepage2-71ba3-default-rtdb.firebaseio.com"
-};
-firebase.initializeApp(firebaseConfig);
+// Firebase Init
+firebase.initializeApp({ databaseURL: "https://milliondollarhomepage2-71ba3-default-rtdb.firebaseio.com" });
 const db = firebase.database();
 
-const cv = document.getElementById('mainCanvas'), ctx = cv.getContext('2d');
-const tooltip = document.getElementById('tooltip');
-const blockSize = 10; 
-let pixels = {};
+const grid = document.getElementById('capture-area');
+const totalPlots = 4380;
+const plotsPerRow = 15;
+const totalRows = Math.ceil(totalPlots / plotsPerRow);
 
-function copyText(val) {
-    navigator.clipboard.writeText(val);
-    alert("Copied: " + val);
-}
+// ক্যানভাস জেনারেশন
+function generateGrid() {
+    for (let i = 1; i <= totalPlots; i++) {
+        const plot = document.createElement('div');
+        plot.className = 'plot';
+        plot.id = 'plot-' + i;
 
-function render() {
-    ctx.fillStyle = "#ffffff"; ctx.fillRect(0, 0, 1000, 1000);
-    ctx.strokeStyle = "#F0F0F0"; ctx.lineWidth = 0.5;
-    for(let i=0; i<=1000; i+=blockSize) {
-        ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, 1000); ctx.stroke();
-        ctx.beginPath(); ctx.moveTo(0, i); ctx.lineTo(1000, i); ctx.stroke();
+        // সারি অনুযায়ী রঙ নির্ধারণ (মসৃণ গ্রেডিয়েন্ট)
+        const rowNum = Math.floor((i - 1) / plotsPerRow);
+        const hue = (rowNum * 360 / totalRows); 
+        const rowColor = `hsl(${hue}, 85%, 50%)`;
+
+        // প্লটের ভেতরে তথ্য (ID এবং Price)
+        plot.innerHTML = `
+            <span class="id-label">#${i}</span>
+            <span class="price-label">$${i}</span>
+        `;
+
+        plot.onmouseover = () => {
+            plot.style.backgroundColor = rowColor;
+            plot.style.color = "#000";
+            plot.style.borderColor = "#fff";
+        };
+        plot.onmouseout = () => {
+            plot.style.backgroundColor = "#111";
+            plot.style.color = "#fff";
+            plot.style.borderColor = "rgba(255,255,255,0.05)";
+        };
+        
+        plot.onclick = () => toggleDrawer();
+        grid.appendChild(plot);
     }
-    const entries = Object.values(pixels);
-    document.getElementById('sold-count').innerText = entries.length;
-    document.getElementById('rem-count').innerText = 10000 - entries.length;
+}
 
-    entries.forEach(p => {
-        const id = parseInt(p.plotID) - 1;
-        const x = (id % 100) * blockSize, y = Math.floor(id / 100) * blockSize;
-        let img = new Image(); img.crossOrigin = "anonymous"; img.src = p.imageUrl;
-        img.onload = () => ctx.drawImage(img, x, y, blockSize, blockSize);
+// সার্চ ফাংশন
+function searchPlot() {
+    const id = document.getElementById('plotIDSearch').value;
+    const target = document.getElementById('plot-' + id);
+    if(target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        document.querySelectorAll('.plot').forEach(p => p.style.border = "1px solid rgba(255,255,255,0.05)");
+        target.style.border = "5px solid gold";
+        target.style.transform = "scale(1.4)";
+        confetti({ particleCount: 150, spread: 70 });
+    }
+}
+
+function toggleDrawer() { document.getElementById('drawer').classList.toggle('open'); }
+function copy(t) { navigator.clipboard.writeText(t); alert("Address Copied!"); }
+
+function downloadHDMap() {
+    alert("High-Resolution Map তৈরি হচ্ছে, দয়া করে অপেক্ষা করুন...");
+    html2canvas(grid, { scale: 1, backgroundColor: "#000" }).then(canvas => {
+        const link = document.createElement('a');
+        link.download = '12_Years_Legacy_Map.png';
+        link.href = canvas.toDataURL();
+        link.click();
     });
 }
 
-db.ref('pixels').on('value', s => { pixels = s.val() || {}; render(); });
-
-cv.addEventListener('mousemove', (e) => {
-    const rect = cv.getBoundingClientRect();
-    const x = e.clientX - rect.left, y = e.clientY - rect.top;
-    const id = Math.floor(y/blockSize)*100 + Math.floor(x/blockSize) + 1;
-    let found = false;
-    Object.values(pixels).forEach(p => {
-        if(p.plotID == id) {
-            tooltip.style.display = 'block';
-            tooltip.style.left = (e.pageX + 10) + 'px'; tooltip.style.top = (e.pageY + 10) + 'px';
-            tooltip.innerHTML = `<b>${p.name}</b><br>Plot #${p.plotID}`;
-            found = true;
-        }
-    });
-    if(!found) tooltip.style.display = 'none';
-});
-
-// ক্যানভাসে ক্লিক করলে লিংক ওপেন হবে (অর্ডার পেজে যাবে না)
-cv.addEventListener('click', (e) => {
-    const rect = cv.getBoundingClientRect();
-    const x = e.clientX - rect.left, y = e.clientY - rect.top;
-    const id = Math.floor(y/blockSize)*100 + Math.floor(x/blockSize) + 1;
-    Object.values(pixels).forEach(p => {
-        if(p.plotID == id && p.link) window.open(p.link, '_blank');
-    });
-});
-
-async function downloadHD() {
-    const canvas = document.getElementById('mainCanvas');
-    const link = document.createElement('a');
-    link.download = 'million-dollar-canvas-4k.png';
-    link.href = canvas.toDataURL("image/png", 1.0);
-    link.click();
-}
+generateGrid();
