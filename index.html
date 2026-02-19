@@ -3,28 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>K12 | THE SOVEREIGN ESTATE</title>
+    <title>K ARCHIVE | THE SOVEREIGN ESTATE</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
 </head>
 <body>
 
-    <div id="cursor-dot"></div>
     <div id="cursor-outline"></div>
 
     <header class="header">
         <div class="header-left">
-            <div class="brand-logo">K12</div>
+            <div class="rr-logo-container">
+                <span class="k-char k-front">K</span>
+                <span class="k-char k-back">K</span>
+            </div>
+            <div class="brand-subtitle">THE SOVEREIGN ESTATE</div>
         </div>
         
         <div class="nav-right">
-            <input type="number" id="plotIDSearch" class="search-input" placeholder="SEARCH PLOT ID">
-            <button onclick="searchPlot()" class="btn-minimal">FIND</button>
-            <button onclick="downloadHDMap()" class="btn-minimal">MAP HD</button>
             <button onclick="toggleDrawer()" class="btn-dark">ACQUISITION</button>
         </div>
     </header>
@@ -32,54 +28,58 @@
     <main class="content-wrapper">
         <div class="hero-text">
             <h1>12 YEARS LEGACY</h1>
-            <p>ESTATE VALUE: $1 ➔ $2,555</p>
+            <p>ESTATE VALUE: $1 ➔ $1,000</p>
         </div>
         
         <div class="grid-container" id="capture-area">
             </div>
 
         <div class="legacy-footer-text">
-            <p>K12 ARCHIVE © 2026 KAWSAR. All rights reserved. I am not responsible for the content of external sites linked within the plots.</p>
-            <p>Images featured on homepage are © of their respective owners. Preserving digital culture since 2014.</p>
+            <p>K ARCHIVE © 2026 KAWSAR. ALL RIGHTS RESERVED.</p>
         </div>
     </main>
 
-    <a href="https://wa.me/8801576940717" target="_blank" class="support-btn interactive">
-        <svg viewBox="0 0 24 24"><path d="M12.004 2C6.48 2 2 6.48 2 12C2 13.59 2.37 15.12 3.08 16.46L2 22L7.69 20.91C8.99 21.61 10.45 22 12.004 22C17.524 22 22.004 17.52 22.004 12C22.004 6.48 17.524 2 12.004 2ZM12.004 20.18C10.634 20.18 9.334 19.83 8.194 19.22L7.854 19.04L4.544 19.67L5.194 16.46L4.994 16.14C4.294 15.01 3.924 13.72 3.924 12.38C3.924 7.91 7.554 4.28 12.024 4.28C16.494 4.28 20.124 7.91 20.124 12.38C20.124 16.85 16.474 20.18 12.004 20.18Z"/></svg>
-    </a>
-
-    <a href="https://x.com/ARCHIVEKAWSAR" target="_blank" class="twitter-btn interactive">
-        <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-    </a>
-
     <div id="drawer" class="drawer">
-        <div class="drawer-content">
-            <h2 class="minimal-header">SECURE ACQUISITION</h2>
-            
-            <div class="payment-section">
-                <div class="pay-item" onclick="copy('912221034')">
-                    <span>BINANCE UID (KAWSAR6700)</span>
-                    <code>912221034</code>
-                </div>
-                <div class="pay-item" onclick="copy('TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6')">
-                    <span>USDT TRC20</span>
-                    <code>TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6</code>
-                </div>
-                <div class="pay-item" onclick="copy('0x443792A4884e8e855f954ccEF910778Aff1eb78E')">
-                    <span>METAMASK (ETH/BNB)</span>
-                    <code>0x4437...Aff1eb78E</code>
-                </div>
-            </div>
+        <h2 style="letter-spacing: 5px; font-size: 13px; margin-bottom: 30px; font-weight: bold;">SECURE ACQUISITION</h2>
+        
+        <div class="pay-item" onclick="copy('912221034')">
+            <h4>BINANCE UID (KAWSAR6700)</h4>
+            <p>912221034</p>
+        </div>
+        <div class="pay-item" onclick="copy('TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6')">
+            <h4>USDT TRC20</h4>
+            <p>TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6</p>
+        </div>
+        <div class="pay-item" onclick="copy('0x443792A4884e8e855f954ccEF910778Aff1eb78E')">
+            <h4>METAMASK (ETH/BNB)</h4>
+            <p>0x4437...Aff1eb78E</p>
+        </div>
 
-            <div class="acquisition-steps">
-                <h3>ACQUISITION STEPS</h3>
-                <p><b>01</b> Complete payment via the Acquisition Drawer.</p>
-                <p><b>02</b> Prepare 4K Photo, Display Name, and Target URL.</p>
-                <p><b>03</b> Submit assets to WhatsApp Support for verification.</p>
-                <p><b>04</b> Live sync completed within 72 hours post-approval.</p>
-            </div>
-            
-            <button onclick="toggleDrawer()" class="btn-close">CLOSE</button>
+        <hr style="border: 0.2px solid #eee; margin: 30px 0;">
+
+        <div class="buy-form">
+            <input type="text" id="brandName" placeholder="BRAND NAME / USERNAME">
+            <input type="number" id="plotNumber" placeholder="PLOT NUMBER (1-1000)">
+            <button onclick="submitRequest()" class="btn-buy">BUY PLOT</button>
+        </div>
+
+        <button onclick="toggleDrawer()" style="margin-top: 20px; border: none; background: none; cursor: pointer; border-bottom: 1px solid #000; font-size: 10px; letter-spacing: 2px;">CLOSE</button>
+    </div>
+
+    <div id="congratsModal" class="modal">
+        <div class="modal-content">
+            <h1 id="congratsTitle">CONGRATULATIONS!</h1>
+            <p id="brandDisplay"></p>
+            <p style="font-size: 11px; letter-spacing: 2px; color: #666;">REQUIRED PROTOCOL FOR CUSTOMER SUPPORT:</p>
+            <ul class="support-list">
+                <li>Plot ID & Section</li>
+                <li>Brand Asset (PNG/4K Photo)</li>
+                <li>Target URL</li>
+                <li>Proof of Payment Screenshot</li>
+            </ul>
+            <a href="https://wa.me/8801576940717" target="_blank" class="chat-now-btn">INITIATE SESSION</a>
+            <br>
+            <button onclick="closeModal()" class="back-btn">BACK TO CANVAS</button>
         </div>
     </div>
 
