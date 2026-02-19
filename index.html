@@ -4,232 +4,65 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>12 YEARS LEGACY | THE SOVEREIGN ESTATE</title>
-    
+    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
-
-    <style>
-        :root { --gold: #FCD535; --black: #000; --white: #fff; }
-        
-        body { margin: 0; background: var(--black); color: var(--white); font-family: 'Times New Roman', serif; overflow-x: hidden; }
-
-        /* Navigation Header */
-        .header { 
-            position: fixed; top: 0; width: 100%; padding: 25px 5%; 
-            background: rgba(0,0,0,0.98); border-bottom: 1px solid #222; 
-            z-index: 2000; display: flex; justify-content: space-between; 
-            align-items: center; box-sizing: border-box;
-        }
-
-        .logo { font-size: 28px; letter-spacing: 5px; font-weight: bold; }
-        .logo span { font-size: 11px; color: var(--gold); display: block; letter-spacing: 2px; }
-
-        .nav-actions { display: flex; gap: 15px; align-items: center; }
-        .search-input { 
-            padding: 12px; background: #111; border: 1px solid #333; 
-            color: #fff; width: 180px; border-radius: 4px; outline: none;
-        }
-
-        .btn-gold { 
-            background: var(--gold); color: #000; padding: 12px 25px; 
-            border: none; font-weight: bold; cursor: pointer; letter-spacing: 1px;
-            transition: 0.3s;
-        }
-
-        /* The Massive Canvas Display */
-        .canvas-section { padding-top: 180px; padding-bottom: 100px; text-align: center; }
-        
-        .grid-wrapper {
-            width: 98%; max-width: 2100px; margin: 0 auto; 
-            display: grid; grid-template-columns: repeat(20, 100px); /* প্রতিটি সারিতে ২০টি প্লট */
-            gap: 2px; background: #0a0a0a; padding: 10px; 
-            border: 1px solid #222; justify-content: center;
-        }
-
-        .plot { 
-            width: 100px; height: 100px; background: #111;
-            display: flex; align-items: center; justify-content: center; 
-            font-size: 12px; font-weight: bold; color: rgba(255,255,255,0.1); 
-            cursor: pointer; transition: 0.4s; position: relative; border-radius: 2px;
-        }
-        .plot:hover { transform: scale(1.15); z-index: 100; box-shadow: 0 0 30px currentColor; color: #fff; }
-        .highlight { border: 4px solid #fff !important; box-shadow: 0 0 50px var(--gold) !important; z-index: 500; transform: scale(1.3); }
-
-        /* Acquisition Drawer (From File 2) */
-        .drawer { 
-            position: fixed; top: 0; right: -450px; width: 420px; height: 100%; 
-            background: var(--white); color: #000; transition: 0.6s cubic-bezier(0.23, 1, 0.32, 1); 
-            z-index: 5000; padding: 50px; box-sizing: border-box; overflow-y: auto; 
-        }
-        .drawer.open { right: 0; box-shadow: -20px 0 60px rgba(0,0,0,0.8); }
-        .drawer h2 { font-size: 22px; letter-spacing: 4px; border-bottom: 2px solid #000; padding-bottom: 15px; margin-bottom: 30px; }
-        
-        .pay-card { background: #f4f4f4; padding: 20px; margin: 15px 0; border-radius: 8px; cursor: pointer; border: 1px solid #ddd; }
-        .pay-card:hover { border-color: var(--gold); }
-        .pay-card strong { display: block; font-size: 11px; color: #666; margin-bottom: 5px; }
-        .pay-card code { font-size: 14px; font-weight: bold; word-break: break-all; }
-
-        /* Protocol Info */
-        .protocol-info { margin-top: 40px; border-top: 1px solid #eee; padding-top: 20px; font-size: 14px; line-height: 1.6; }
-        .step { margin-bottom: 15px; display: flex; gap: 10px; }
-        .step b { color: var(--gold); background: #000; width: 25px; height: 25px; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-size: 12px; flex-shrink: 0; }
-
-        /* Support Links (Bottom Floating) */
-        .support-bar { 
-            position: fixed; bottom: 30px; width: 100%; 
-            display: flex; justify-content: space-between; padding: 0 60px; 
-            box-sizing: border-box; z-index: 1500; pointer-events: none; 
-        }
-        .s-link { 
-            pointer-events: auto; background: rgba(0,0,0,0.8); color: #fff; 
-            padding: 15px 25px; border-radius: 50px; text-decoration: none; 
-            border: 1px solid #333; font-size: 14px; transition: 0.3s;
-        }
-        .s-link:hover { background: var(--gold); color: #000; border-color: var(--gold); }
-
-        @media (max-width: 768px) {
-            .grid-wrapper { grid-template-columns: repeat(5, 100px); }
-            .drawer { width: 100%; right: -100%; }
-            .support-bar { flex-direction: column; gap: 10px; align-items: center; }
-        }
-    </style>
 </head>
 <body>
 
-    <div class="header">
-        <div class="logo">12 YEARS LEGACY <span>KAWSAR</span></div>
+    <header class="header">
+        <div class="logo">12 YEARS LEGACY <span class="owner-tag">OWNED BY KAWSAR</span></div>
         
         <div class="nav-actions">
             <input type="number" id="plotIDSearch" class="search-input" placeholder="Search Plot (1-4380)">
-            <button onclick="searchPlot()" class="btn-gold"><i class="fa fa-search"></i></button>
-            <button onclick="downloadHDMap()" class="btn-gold" style="background:none; border:1px solid var(--gold); color:var(--gold);">DOWNLOAD MAP</button>
+            <button onclick="searchPlot()" class="btn-icon"><i class="fa fa-search"></i></button>
+            <button onclick="downloadHDMap()" class="btn-outline">DOWNLOAD MAP</button>
             <button onclick="toggleDrawer()" class="btn-gold">ACQUISITION</button>
         </div>
-    </div>
+    </header>
 
-    <div class="canvas-section">
-        <h1 style="font-size: 50px; letter-spacing: 15px; margin-bottom: 10px;">THE GRAND ARCHIVE</h1>
-        <p style="color: #666; letter-spacing: 5px;">ESTATE VALUE: $1 ➔ $4,380</p>
+    <main class="canvas-section">
+        <h1 class="shimmer-title">THE GRAND ARCHIVE</h1>
+        <p class="subtitle">PRESERVING DIGITAL HISTORY | $1 ➔ $4,380</p>
         
         <div class="grid-wrapper" id="capture-area">
             </div>
-    </div>
+    </main>
 
     <div id="drawer" class="drawer">
-        <h2>SECURE ACQUISITION</h2>
+        <h2 class="drawer-header">SECURE ACQUISITION</h2>
         
         <div class="pay-card" onclick="copy('912221034')">
-            <strong>BINANCE UID (User: KAWSAR6700)</strong>
-            <code>912221034</code>
+            <strong>BINANCE UID (KAWSAR6700)</strong>
+            <code>912221034</code> <i class="fa fa-copy"></i>
         </div>
         <div class="pay-card" onclick="copy('TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6')">
             <strong>USDT TRC20</strong>
-            <code>TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6</code>
+            <code>TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6</code> <i class="fa fa-copy"></i>
         </div>
         <div class="pay-card" onclick="copy('0x443792A4884e8e855f954ccEF910778Aff1eb78E')">
             <strong>METAMASK (ETH/BNB)</strong>
-            <code>0x443792A4884e8e855f954ccEF910778Aff1eb78E</code>
+            <code>0x443792A4884e8e855f954ccEF910778Aff1eb78E</code> <i class="fa fa-copy"></i>
         </div>
 
-        <div class="protocol-info">
-            <div style="background: #000; color: #fff; padding: 15px; margin-bottom: 25px;">
-                <p>• <b>Renewal Policy:</b> One-time lifetime renewal fee of $365 is mandatory.</p>
-                <p>• <b>Service Window:</b> Concierge active 24h: Thursday, Friday, Saturday.</p>
-            </div>
-            
-            <p style="font-weight: bold; margin-bottom: 15px;">ACQUISITION STEPS</p>
-            <div class="step"><b>1</b> <p>Complete payment via the Acquisition Drawer.</p></div>
-            <div class="step"><b>2</b> <p>Prepare high quality Photo, Display Name, and Target URL.</p></div>
-            <div class="step"><b>3</b> <p>Submit assets to WhatsApp Support for verification.</p></div>
-            <div class="step"><b>4</b> <p>Live sync completed within 72 hours post-approval.</p></div>
+        <div class="protocol-box">
+            <p>• <strong>Renewal Policy:</strong> One-time lifetime renewal fee of $365 is mandatory.</p>
+            <p>• <strong>Service Window:</strong> Concierge active 24h: Thursday, Friday, Saturday.</p>
+            <hr>
+            <p style="font-weight:bold; color:var(--gold); margin-top:10px;">STEPS:</p>
+            <p>1. Payment ➔ 2. Prepare Assets ➔ 3. Submit via Support Logo</p>
         </div>
-
-        <button onclick="toggleDrawer()" style="width:100%; padding:20px; background:#000; color:#fff; border:none; cursor:pointer; font-weight:bold; margin-top:30px;">CLOSE DRAWER</button>
+        <button onclick="toggleDrawer()" class="close-btn">CLOSE</button>
     </div>
 
-    <div class="support-bar">
-        <a href="https://wa.me/8801576940717" class="s-link"><i class="fab fa-whatsapp"></i> +8801576940717</a>
-        <a href="https://x.com/ARCHIVEKAWSAR" class="s-link"><i class="fab fa-twitter"></i> @ARCHIVEKAWSAR</a>
+    <div class="support-footer">
+        <a href="https://wa.me/8801576940717" class="icon-link"><i class="fab fa-whatsapp"></i></a>
+        <a href="https://x.com/ARCHIVEKAWSAR" class="icon-link"><i class="fab fa-twitter"></i></a>
     </div>
 
-    <script>
-        // Firebase Config
-        firebase.initializeApp({
-            databaseURL: "https://milliondollarhomepage2-71ba3-default-rtdb.firebaseio.com"
-        });
-        const db = firebase.database();
-
-        const grid = document.getElementById('capture-area');
-        const totalPlots = 4380;
-        const columns = 20;
-        const totalRows = Math.ceil(totalPlots / columns);
-
-        // কালার লজিক: প্রতি সারির (Row) জন্য আলাদা এবং সামঞ্জস্যপূর্ণ রঙ
-        for (let i = 1; i <= totalPlots; i++) {
-            const plot = document.createElement('div');
-            plot.className = 'plot';
-            plot.id = 'plot-' + i;
-            plot.innerHTML = i;
-
-            // সারি অনুযায়ী রঙ নির্ধারণ (HSL Spectrum)
-            const currentRow = Math.floor((i - 1) / columns);
-            const hue = (currentRow * 360 / totalRows); // প্রতিটি সারির রঙ সামান্য বদলাবে
-            const rowColor = `hsl(${hue}, 80%, 50%)`;
-
-            plot.style.borderColor = `rgba(255,255,255,0.05)`;
-            
-            plot.onmouseover = (e) => {
-                plot.style.backgroundColor = rowColor;
-                plot.style.color = "#fff";
-                plot.style.boxShadow = `0 0 20px ${rowColor}`;
-            };
-            plot.onmouseout = () => {
-                plot.style.backgroundColor = "#111";
-                plot.style.color = "rgba(255,255,255,0.1)";
-                plot.style.boxShadow = "none";
-            };
-            
-            plot.onclick = () => toggleDrawer();
-            grid.appendChild(plot);
-        }
-
-        // সার্চ ফাংশন
-        function searchPlot() {
-            const id = document.getElementById('plotIDSearch').value;
-            const target = document.getElementById('plot-' + id);
-            if(target) {
-                target.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                document.querySelectorAll('.plot').forEach(p => p.classList.remove('highlight'));
-                target.classList.add('highlight');
-                confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
-            } else {
-                alert("Plot #" + id + " not found!");
-            }
-        }
-
-        function toggleDrawer() { document.getElementById('drawer').classList.toggle('open'); }
-        function copy(t) { navigator.clipboard.writeText(t); alert("Copied to Clipboard!"); }
-
-        // High-Res ডাউনলোড ফাংশন
-        function downloadHDMap() {
-            const btn = event.target;
-            btn.innerText = "PROCESSING...";
-            html2canvas(grid, { 
-                scale: 2, 
-                backgroundColor: "#000",
-                useCORS: true 
-            }).then(canvas => {
-                const link = document.createElement('a');
-                link.download = '12_Years_Legacy_Map.png';
-                link.href = canvas.toDataURL();
-                link.click();
-                btn.innerText = "DOWNLOAD MAP";
-            });
-        }
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
