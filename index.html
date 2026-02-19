@@ -3,104 +3,142 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>12 YEARS LEGACY | THE LITTLE HOUSE</title>
+    <title>12 YEARS LEGACY | THE SOVEREIGN ESTATE</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
 
     <style>
-        :root { --gold: #9E7E45; --white: #ffffff; --black: #000; }
-        body { margin: 0; background: #000; color: #fff; font-family: 'Times New Roman', serif; overflow-x: hidden; }
+        :root { 
+            --gold: #FCD535; 
+            --black: #000000; 
+            --white: #ffffff; 
+            --grey: #888888;
+        }
 
-        /* Navigation */
-        .top-nav { position: fixed; top: 0; width: 100%; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; z-index: 1000; background: rgba(0,0,0,0.95); border-bottom: 1px solid #222; box-sizing: border-box; }
-        .logo { font-size: 18px; letter-spacing: 3px; font-weight: bold; text-transform: uppercase; }
-        .logo span { font-size: 11px; color: var(--gold); display: block; }
-        
-        .nav-right { display: flex; gap: 10px; }
-        .nav-btn { background: none; border: 1px solid #444; color: #fff; padding: 10px 15px; font-size: 10px; letter-spacing: 2px; cursor: pointer; text-transform: uppercase; transition: 0.3s; }
-        .buy-btn { background: var(--gold) !important; color: #000 !important; font-weight: bold; border: none; }
+        body { 
+            margin: 0; background: var(--black); color: var(--white); 
+            font-family: 'Times New Roman', serif; overflow-x: hidden;
+        }
 
-        /* Header Area */
-        .header-area { text-align: center; padding-top: 120px; margin-bottom: 40px; }
-        .main-title { 
-            font-size: clamp(30px, 8vw, 60px); letter-spacing: 5px; font-weight: 900;
+        /* 1. Navigation (From File 2 Design) */
+        .nav-bar {
+            position: fixed; top: 0; width: 100%; height: 120px;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 0 50px; background: rgba(0,0,0,0.9); z-index: 1000;
+            border-bottom: 1px solid #222; box-sizing: border-box;
+        }
+        .logo { font-size: 24px; letter-spacing: 5px; font-weight: bold; }
+        .nav-right { display: flex; gap: 20px; align-items: center; }
+
+        /* 2. Acquisition Drawer (From File 2) */
+        #payment-drawer {
+            position: fixed; top: 0; right: -400px; width: 380px; height: 100%;
+            background: var(--white); color: var(--black); transition: 0.5s;
+            z-index: 2000; padding: 40px; box-sizing: border-box; overflow-y: auto;
+        }
+        #payment-drawer.open { right: 0; }
+        .drawer-pill { 
+            background: #f0f0f0; padding: 15px; margin: 10px 0; 
+            border-radius: 5px; cursor: pointer; font-size: 12px; font-weight: bold;
+        }
+
+        /* 3. Canvas & Grid (From File 1) */
+        .main-container { padding-top: 150px; text-align: center; }
+        .shimmer-title {
+            font-size: clamp(30px, 8vw, 60px); letter-spacing: 8px; font-weight: 900;
             background: linear-gradient(90deg, #FFD700, #FF0055, #D400FF, #00C3FF, #00FFCC);
             background-size: 300% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            animation: colorShift 8s linear infinite; text-transform: uppercase;
+            animation: colorShift 5s linear infinite;
         }
         @keyframes colorShift { to { background-position: 300% center; } }
 
-        /* Grid Container */
-        .canvas-wrapper { 
-            width: 95%; max-width: 1300px; margin: 0 auto; 
-            background: #050505; border: 1px solid #222; 
-            padding: 10px; overflow: auto; height: 70vh;
-            display: grid;
-            grid-template-columns: repeat(60, 20px); /* ৬০ কলাম */
-            gap: 1px; /* ১ পিক্সেল গ্যাপ */
-            justify-content: center;
+        .grid-wrapper {
+            width: 95%; max-width: 1300px; margin: 40px auto;
+            display: grid; grid-template-columns: repeat(60, 20px);
+            gap: 1px; justify-content: center; padding: 10px;
+            background: #050505; border: 1px solid #333; height: 600px; overflow: auto;
         }
-
-        /* Pixel/Plot Styles */
         .plot {
-            width: 20px;
-            height: 20px;
-            background: #111;
-            cursor: pointer;
-            position: relative;
-            transition: 0.2s;
+            width: 20px; height: 20px; background: #111;
+            transition: 0.3s; cursor: pointer; border-radius: 1px;
         }
-        .plot:hover { transform: scale(1.3); z-index: 10; border: 1px solid #fff; }
+        .plot:hover { transform: scale(1.5); z-index: 10; outline: 1px solid #fff; }
+
+        /* 4. Support Information (From File 3) */
+        .info-section {
+            max-width: 800px; margin: 50px auto; text-align: left;
+            padding: 30px; border-top: 1px solid #222;
+        }
+        .info-card { background: #111; padding: 20px; margin-bottom: 20px; border-left: 4px solid var(--gold); }
+        .step-num { color: var(--gold); font-weight: bold; margin-right: 10px; }
+
+        /* Buttons & Social */
+        .btn-gold { 
+            background: var(--gold); color: #000; padding: 12px 25px; 
+            border: none; font-weight: bold; cursor: pointer; letter-spacing: 2px;
+        }
+        .social-btn { color: #fff; font-size: 24px; text-decoration: none; transition: 0.3s; }
+        .social-btn:hover { color: var(--gold); }
 
         /* Tooltip */
         .tooltip {
-            position: fixed; background: #fff; color: #000; padding: 8px 12px;
-            font-size: 11px; pointer-events: none; display: none; z-index: 5000;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3); border-radius: 2px;
+            position: fixed; background: #fff; color: #000; padding: 10px;
+            display: none; z-index: 5000; font-size: 11px; pointer-events: none;
         }
-
-        /* Modal */
-        .modal { position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.98); display:none; align-items:center; justify-content:center; z-index:9999; }
-        .card { background: #fff; color:#000; padding:40px; width:90%; max-width:400px; text-align:center; }
-        input, select { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; }
-        .color-preview { height: 40px; width: 100%; border: 1px solid #000; margin: 10px 0; }
     </style>
 </head>
 <body>
 
-    <div class="top-nav">
-        <div class="logo">12 YEARS LEGACY <span>KAWSAR <small>TM</small></span></div>
+    <div class="nav-bar">
+        <div class="logo">K ARCHIVE</div>
         <div class="nav-right">
-            <button class="nav-btn" onclick="location.href='dashboard.html'">TRACK</button>
-            <button class="nav-btn buy-btn" onclick="openModal()">RESERVE PLOT</button>
+            <a href="https://twitter.com" target="_blank" class="social-btn"><i class="fab fa-twitter"></i></a>
+            <button class="btn-gold" onclick="toggleDrawer()">ACQUISITION DRAWER</button>
         </div>
     </div>
 
-    <div class="header-area">
-        <h1 class="main-title">4,380 Days of History</h1>
-        <p style="color: var(--gold); letter-spacing: 3px; font-size: 12px;">DESCENDING PRICE SYSTEM: $4380 TO $1</p>
+    <div id="payment-drawer">
+        <h2 style="letter-spacing: 3px;">PAYMENT GATEWAY</h2>
+        <p style="font-size: 12px; color: #666;">Select a method to reserve your plot:</p>
+        <div class="drawer-pill" onclick="copyV('912221034')">BINANCE ID: 912221034</div>
+        <div class="drawer-pill" onclick="copyV('TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6')">USDT (TRC20): TTap...8Ws6</div>
+        <hr>
+        <p style="font-size: 13px; font-weight: bold;">01 Complete payment via the Acquisition Drawer.</p>
+        <p style="font-size: 13px;">02 Prepare 4K Photo, Display Name, and Target URL.</p>
+        <p style="font-size: 13px;">03 Submit assets to WhatsApp Support.</p>
+        <button class="btn-gold" style="width: 100%; margin-top: 20px;" onclick="location.href='https://wa.me/8801576940717'">CONTACT SUPPORT</button>
+        <button onclick="toggleDrawer()" style="background:none; border:none; margin-top:20px; cursor:pointer;">CLOSE</button>
     </div>
 
-    <div class="canvas-wrapper" id="gridContainer">
+    <div class="main-container">
+        <h1 class="shimmer-title">12 YEARS LEGACY</h1>
+        <p style="letter-spacing: 5px; color: var(--grey);">4,380 BLOCKS OF DIGITAL HISTORY</p>
+
+        <div class="grid-wrapper" id="gridContainer"></div>
+
+        <div class="info-section">
+            <div class="info-card">
+                <p><span class="step-num">• Renewal Policy:</span> One-time lifetime renewal fee of $365 is mandatory. No recurring costs ever.</p>
+            </div>
+            <div class="info-card">
+                <p><span class="step-num">• Data Modification:</span> $7 administrative fee for media, name or link updates.</p>
+            </div>
+            <div class="info-card">
+                <p><span class="step-num">• Service Window:</span> Concierge active 24h: Thursday, Friday, Saturday.</p>
+            </div>
         </div>
 
-    <div class="tooltip" id="plotTooltip"></div>
-
-    <div id="buy-modal" class="modal">
-        <div class="card">
-            <h2 style="font-size: 16px; letter-spacing: 2px;">ACQUIRE PLOT</h2>
-            <p id="selectedPlotInfo" style="font-size: 12px; color: #666;"></p>
-            <input type="text" id="brandName" placeholder="BRAND NAME">
-            <label style="font-size: 10px; display: block; text-align: left;">PICK YOUR RGB SHADE:</label>
-            <input type="color" id="plotColor" value="#9E7E45" onchange="updatePreview(this.value)">
-            <div class="color-preview" id="cp"></div>
-            <button class="nav-btn buy-btn" style="width:100%; margin-top:10px;" onclick="submitRequest()">SEND REQUEST</button>
-            <button class="nav-btn" style="width:100%; margin-top:5px; color:#000;" onclick="closeModal()">CANCEL</button>
+        <div style="margin-bottom: 50px; display: flex; justify-content: center; gap: 30px;">
+            <a href="https://wa.me/8801576940717" class="social-btn"><i class="fab fa-whatsapp"></i></a>
+            <a href="support.html" class="social-btn"><i class="fas fa-headset"></i></a>
         </div>
     </div>
+
+    <div class="tooltip" id="tooltip"></div>
 
     <script>
         // Firebase Config
@@ -111,80 +149,56 @@
             projectId: "milliondollarhomepage2-71ba3",
             storageBucket: "milliondollarhomepage2-71ba3.firebasestorage.app",
             messagingSenderId: "895107568682",
-            appId: "1:895107568682:web:d48003f71701005f3d5f53"
+            appId: "1:895107568682:web:d48003f71701005f3d5f53",
+            measurementId: "G-RG50BVDLTX"
         };
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
         const totalPlots = 4380;
         const grid = document.getElementById('gridContainer');
-        const tooltip = document.getElementById('plotTooltip');
-        let currentSelectedID = null;
+        const tooltip = document.getElementById('tooltip');
 
-        // Generate Plots
+        // RGB Spectrum Color Grading (10,000+ shades logic)
+        function getColor(i) {
+            const hue = (i * 360 / totalPlots);
+            return `hsl(${hue}, 80%, 50%)`;
+        }
+
+        // Generate 4380 Plots
         for (let i = 1; i <= totalPlots; i++) {
             const plot = document.createElement('div');
             plot.className = 'plot';
-            plot.id = 'plot-' + i;
-            const price = totalPlots - (i - 1);
+            const price = totalPlots - (i - 1); // Descending Price: $4380 to $1
+            
+            // মাউস হোভারে উজ্জ্বল কালার এফেক্ট (RGB Spectrum)
+            const dynamicColor = getColor(i);
             
             plot.onmouseover = (e) => {
+                plot.style.background = dynamicColor;
+                plot.style.boxShadow = `0 0 15px ${dynamicColor}`;
                 tooltip.style.display = 'block';
-                tooltip.innerHTML = `<strong>Plot #${i}</strong><br>Price: $${price}<br>Status: Vacant`;
+                tooltip.innerHTML = `<strong>PLOT #${i}</strong><br>PRICE: $${price}<br>STATUS: VACANT`;
                 tooltip.style.left = (e.clientX + 15) + 'px';
                 tooltip.style.top = (e.clientY + 15) + 'px';
             };
-            plot.onmouseout = () => tooltip.style.display = 'none';
-            plot.onclick = () => openModal(i, price);
-            
+
+            plot.onmouseout = () => {
+                plot.style.boxShadow = 'none';
+                // যদি সোল্ড না হয় তবে কালো থাকবে
+                if(!plot.dataset.sold) plot.style.background = '#111';
+            };
+
+            plot.onclick = () => {
+                toggleDrawer();
+                alert(`You selected Plot #${i}. Price: $${price}. Please complete payment.`);
+            };
+
             grid.appendChild(plot);
         }
 
-        function openModal(id, price) {
-            if(!id) return;
-            currentSelectedID = id;
-            document.getElementById('buy-modal').style.display = 'flex';
-            document.getElementById('selectedPlotInfo').innerText = `Plot #${id} | Current Price: $${price}`;
-            updatePreview("#9E7E45");
-        }
-
-        function closeModal() { document.getElementById('buy-modal').style.display = 'none'; }
-        function updatePreview(c) { document.getElementById('cp').style.background = c; }
-
-        function submitRequest() {
-            const name = document.getElementById('brandName').value;
-            const color = document.getElementById('plotColor').value;
-            if(!name) return alert("Enter Brand Name");
-
-            db.ref('orders/' + currentSelectedID).set({
-                plotID: currentSelectedID,
-                name: name,
-                color: color,
-                status: 'pending'
-            }).then(() => {
-                confetti({ particleCount: 100, spread: 70 });
-                alert("Order Sent! Contact Support with Plot ID #" + currentSelectedID);
-                closeModal();
-            });
-        }
-
-        // Live Load Data
-        db.ref('pixels').on('value', snap => {
-            const data = snap.val();
-            if(!data) return;
-            Object.values(data).forEach(p => {
-                const el = document.getElementById('plot-' + p.plotID);
-                if(el) {
-                    el.style.background = p.color;
-                    el.onmouseover = (e) => {
-                        tooltip.style.display = 'block';
-                        tooltip.innerHTML = `<strong>${p.name}</strong><br>Plot #${p.plotID}<br>Owned Heritage`;
-                        tooltip.style.left = (e.clientX + 15) + 'px';
-                        tooltip.style.top = (e.clientY + 15) + 'px';
-                    };
-                }
-            });
-        });
+        function toggleDrawer() { document.getElementById('payment-drawer').classList.toggle('open'); }
+        function copyV(text) { navigator.clipboard.writeText(text); alert("Copied: " + text); }
     </script>
 </body>
 </html>
