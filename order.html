@@ -2,38 +2,215 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Buy Block - Acquisition Drawer</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ACQUISITION | K ARCHIVE</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <style>
-        body { background: #0B0E11; color: #fff; font-family: sans-serif; text-align: center; padding: 40px; }
-        .box { background: #1E2329; border: 2px solid #FCD535; padding: 30px; display: inline-block; width: 450px; border-radius: 10px; }
-        .payment-list { background: #000; padding: 15px; text-align: left; font-size: 12px; margin-bottom: 20px; border-left: 3px solid #FCD535; }
-        input { width: 90%; padding: 12px; margin: 10px 0; border-radius: 5px; border: 1px solid #444; background: #2b3139; color: #fff; }
-        button { width: 100%; padding: 15px; background: #FCD535; color: #000; border: none; font-weight: bold; cursor: pointer; border-radius: 5px; }
+        :root { --gold: #9E7E45; --black: #000000; --white: #ffffff; --grey: #1a1a1a; }
+        
+        body { 
+            background: var(--black); 
+            color: var(--white); 
+            font-family: 'Times New Roman', serif; 
+            margin: 0; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh; 
+            overflow: hidden;
+        }
+
+        .acquisition-card {
+            background: #050505;
+            border: 1px solid var(--grey);
+            padding: 50px 40px;
+            width: 100%;
+            max-width: 450px;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+
+        h2 { 
+            letter-spacing: 8px; 
+            font-size: 20px; 
+            text-transform: uppercase; 
+            margin-bottom: 30px; 
+            font-weight: 300;
+        }
+
+        /* পেমেন্ট মেথড সেকশন */
+        .payment-methods {
+            text-align: left;
+            background: #0a0a0a;
+            padding: 20px;
+            border: 1px solid #111;
+            margin-bottom: 30px;
+        }
+
+        .pay-item { margin-bottom: 15px; cursor: pointer; }
+        .pay-item:last-child { margin-bottom: 0; }
+        .pay-item h4 { font-size: 9px; color: #555; margin: 0; letter-spacing: 2px; text-transform: uppercase; }
+        .pay-item p { font-size: 11px; color: var(--white); margin: 5px 0 0 0; word-break: break-all; border-bottom: 1px solid #1a1a1a; padding-bottom: 5px; }
+
+        /* ইনপুট ফিল্ড */
+        .input-group { margin-bottom: 20px; text-align: left; }
+        label { font-size: 10px; color: #444; letter-spacing: 2px; text-transform: uppercase; display: block; margin-bottom: 8px; }
+        
+        input { 
+            width: 100%; 
+            padding: 15px; 
+            background: #000; 
+            border: 1px solid var(--grey); 
+            color: #fff; 
+            box-sizing: border-box; 
+            font-family: serif; 
+            outline: none;
+            transition: 0.3s;
+        }
+
+        input:focus { border-color: var(--white); }
+
+        .btn-submit { 
+            width: 100%; 
+            padding: 18px; 
+            background: var(--white); 
+            color: var(--black); 
+            border: none; 
+            font-weight: bold; 
+            letter-spacing: 4px; 
+            cursor: pointer; 
+            text-transform: uppercase;
+            font-size: 11px;
+            margin-top: 10px;
+        }
+
+        .btn-submit:hover { opacity: 0.8; }
+
+        /* পপ-আপ মডাল */
+        .modal { 
+            display: none; 
+            position: fixed; 
+            top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(0,0,0,0.95); 
+            z-index: 1000; 
+            justify-content: center; align-items: center; 
+        }
+        .modal-content { 
+            background: #fff; color: #000; 
+            padding: 40px; width: 90%; max-width: 450px; text-align: center;
+        }
+        .modal-content h3 { letter-spacing: 5px; font-size: 18px; margin-bottom: 15px; }
+        .support-list { text-align: left; display: inline-block; font-size: 12px; line-height: 2; margin: 20px 0; padding-left: 20px; }
+        
+        .chat-btn { 
+            display: block; width: 100%; padding: 15px; 
+            background: #000; color: #fff; text-decoration: none; 
+            font-size: 10px; font-weight: bold; letter-spacing: 2px; margin-top: 20px;
+        }
+        .back-btn { 
+            margin-top: 20px; background: none; border: none; 
+            border-bottom: 1px solid #000; cursor: pointer; font-size: 9px; letter-spacing: 2px; 
+        }
     </style>
 </head>
 <body>
-    <div class="box">
-        <h2 style="color:#FCD535">Acquisition Drawer</h2>
-        <div class="payment-list">
-            <b>1. Binance ID:</b> 912221034<br>
-            <b>2. USDT (TRC20):</b> TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6<br>
-            <b>3. MetaMask (ETH/BNB):</b> 0x443792A4884e8e855f954ccEF910778Aff1eb78E
+
+    <div class="acquisition-card">
+        <h2>Acquisition</h2>
+        
+        <div class="payment-methods">
+            <div class="pay-item" onclick="copy('912221034')">
+                <h4>Binance UID (KAWSAR6700)</h4>
+                <p>912221034</p>
+            </div>
+            <div class="pay-item" onclick="copy('TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6')">
+                <h4>USDT (TRC20)</h4>
+                <p>TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6</p>
+            </div>
+            <div class="pay-item" onclick="copy('0x443792A4884e8e855f954ccEF910778Aff1eb78E')">
+                <h4>MetaMask (ETH/BNB)</h4>
+                <p>0x4437...Aff1eb78E</p>
+            </div>
         </div>
-        <input type="text" id="bn" placeholder="Your Brand Name">
-        <input type="number" id="qty" value="100" min="100" oninput="document.getElementById('tot').innerText=this.value*5">
-        <p>Amount to Pay: $<span id="tot">500</span></p>
-        <button onclick="submitOrder()">SUBMIT ACQUISITION</button>
+
+        <div class="input-group">
+            <label>Brand Asset Name</label>
+            <input type="text" id="brandName" placeholder="e.g. ROLLS ROYCE">
+        </div>
+
+        <div class="input-group">
+            <label>Target Plot ID (#)</label>
+            <input type="number" id="plotID" placeholder="1 - 1000">
+        </div>
+
+        <button class="btn-submit" onclick="handleAcquisition()">Submit Request</button>
     </div>
+
+    <div id="congratsModal" class="modal">
+        <div class="modal-content">
+            <h3 id="congratsTitle">CONGRATULATIONS!</h3>
+            <p id="brandDisplay" style="font-size: 13px; color: #555;"></p>
+            
+            <div style="border-top: 1px solid #eee; margin-top: 20px; padding-top: 20px;">
+                <p style="font-size: 9px; letter-spacing: 2px; font-weight: bold; color: #888;">SUPPORT PROTOCOL:</p>
+                <ul class="support-list">
+                    <li>Mention Plot ID (#)</li>
+                    <li>Submit Brand Asset (4K/PNG)</li>
+                    <li>Target URL (Link)</li>
+                    <li>Payment Screenshot</li>
+                </ul>
+            </div>
+
+            <a href="https://wa.me/8801576940717" target="_blank" class="chat-btn">INITIATE CHAT SUPPORT</a>
+            <button onclick="window.location.href='index.html'" class="back-btn">BACK TO CANVAS</button>
+        </div>
+    </div>
+
     <script>
-        function submitOrder() {
-            const n = document.getElementById('bn').value, q = document.getElementById('qty').value;
-            if(!n || q < 100) return alert("Min 100 blocks required!");
-            confetti();
+        function copy(text) {
+            navigator.clipboard.writeText(text);
+            alert("Address Copied!");
+        }
+
+        function handleAcquisition() {
+            const brand = document.getElementById('brandName').value;
+            const plot = document.getElementById('plotID').value;
+
+            if(!brand || !plot) {
+                alert("Please fill in all protocols.");
+                return;
+            }
+
+            // দুই পাশ থেকে রঙিন কাগজ (Confetti) ছেটানো
+            const end = Date.now() + (3 * 1000);
+            const colors = ['#ffffff', '#9E7E45', '#444444'];
+
+            (function frame() {
+                confetti({
+                    particleCount: 5,
+                    angle: 60,
+                    spread: 55,
+                    origin: { x: 0 },
+                    colors: colors
+                });
+                confetti({
+                    particleCount: 5,
+                    angle: 120,
+                    spread: 55,
+                    origin: { x: 1 },
+                    colors: colors
+                });
+
+                if (Date.now() < end) {
+                    requestAnimationFrame(frame);
+                }
+            }());
+
+            // পপ-আপ দেখানো
             setTimeout(() => {
-                let msg = encodeURIComponent(`I have completed payment.\nBrand: ${n}\nQty: ${q}\nTotal: $${q*5}`);
-                window.location.href = "https://wa.me/8801576940717?text=" + msg;
-            }, 2000);
+                document.getElementById('brandDisplay').innerText = `Your request for "${brand}" on Plot #${plot} has been received.`;
+                document.getElementById('congratsModal').style.display = 'flex';
+            }, 1000);
         }
     </script>
 </body>
